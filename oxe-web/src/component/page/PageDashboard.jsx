@@ -77,6 +77,7 @@ export default class PageDashboard extends React.Component {
 		this.props.history.push("?tab=" + m);
 	}
 
+	// eslint-disable-next-line class-methods-use-this
 	render() {
 		return (
 			<div id="PageDashboard" className="page max-sized-page">

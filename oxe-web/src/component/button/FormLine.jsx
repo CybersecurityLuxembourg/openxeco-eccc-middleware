@@ -9,7 +9,6 @@ import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import _ from "lodash";
 import Chip from "./Chip.jsx";
 import CheckBox from "./CheckBox.jsx";
-import { getOxeApiURL } from "../../utils/env.jsx";
 
 function getSelectStyle() {
 	return {

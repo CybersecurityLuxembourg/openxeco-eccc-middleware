@@ -1,7 +1,5 @@
-import { getOxeApiURL } from "./env.jsx";
-
 export async function getRequest(url, callback, catchBadResponse, catchError) {
-	fetch(getOxeApiURL() + url, {
+	fetch(url, {
 		method: "GET",
 		headers: new Headers({
 			Accept: "application/json, text/html",
@@ -33,7 +31,7 @@ export async function getRequest(url, callback, catchBadResponse, catchError) {
 }
 
 export async function getNoCorsRequest(url, callback, catchBadResponse, catchError) {
-	fetch(getOxeApiURL() + url, {
+	fetch(url, {
 		method: "GET",
 		mode: "cors",
 		headers: {
@@ -59,7 +57,7 @@ export async function getNoCorsRequest(url, callback, catchBadResponse, catchErr
 }
 
 export async function getBlobRequest(url, callback, catchBadResponse, catchError) {
-	fetch(getOxeApiURL() + url, {
+	fetch(url, {
 		method: "GET",
 		headers: new Headers({
 			Accept: "application/json, text/html",
@@ -89,7 +87,7 @@ export async function getBlobRequest(url, callback, catchBadResponse, catchError
 }
 
 export async function postRequest(url, params, callback, catchBadResponse, catchError) {
-	fetch(getOxeApiURL() + url, {
+	fetch(url, {
 		method: "POST",
 		body: JSON.stringify(params),
 		headers: new Headers({
@@ -162,30 +160,6 @@ export async function getForeignImage(url, callback, catchBadResponse, catchErro
 		throw new Error("An error happened while requesting the server");
 	}).then((blob) => {
 		if (typeof blob !== "undefined") callback(blob);
-	}).catch((error) => {
-		catchError(error);
-	});
-}
-
-export async function getRssFeed(url, callback, catchBadResponse, catchError) {
-	fetch("https://api.rss2json.com/v1/api.json?rss_url=" + url, {
-		method: "GET",
-		mode: "cors",
-		headers: {
-			Accept: "application/json",
-			"cache-control": "no-cache",
-		},
-	}).then((response) => {
-		if (response.status === 200) {
-			return response.json();
-		}
-		if (catchBadResponse !== null) {
-			catchBadResponse(response);
-			throw new Error(response.error);
-		}
-		throw new Error("An error happened while requesting the server");
-	}).then((jsonBody) => {
-		if (typeof jsonBody !== "undefined") callback(jsonBody);
 	}).catch((error) => {
 		catchError(error);
 	});

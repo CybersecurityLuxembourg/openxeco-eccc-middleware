@@ -19,7 +19,7 @@ export default class Login extends React.Component {
 		// Log in the user if there is an existing cookie
 
 		if (this.props.cookies.get("access_token_cookie")) {
-			getRequest.call(this, "private/get_my_user", (data) => {
+			getRequest.call(this, getOxeApiURL() + "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
 					this.props.connect(data.id);
 				} else {
@@ -32,10 +32,6 @@ export default class Login extends React.Component {
 				nm.error(error.message);
 			});
 		}
-
-		// This function to notify if the password has been reset correctly
-
-		Login.notifyForPasswordReset();
 	}
 
 	login() {
@@ -44,11 +40,11 @@ export default class Login extends React.Component {
 			password: this.state.password,
 		};
 
-		postRequest.call(this, "account/login", params, (response) => {
+		postRequest.call(this, getOxeApiURL() + "account/login", params, (response) => {
 			// TODO use httponly cookies
 			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
 
-			getRequest.call(this, "private/get_my_user", (data) => {
+			getRequest.call(this, getOxeApiURL() + "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
 					this.props.connect(response.user);
 				} else {
@@ -99,16 +95,7 @@ export default class Login extends React.Component {
 						<div>
 							<div className="Login-title">
 								<h1>
-									{this.state.settings !== null
-										&& this.state.settings.ADMIN_PLATFORM_NAME !== undefined
-										? "Welcome to " + this.state.settings.ADMIN_PLATFORM_NAME
-										: "Welcome"}
-									<div className={"Login-title-small"}>
-										{this.state.settings !== null
-											&& this.state.settings.PROJECT_NAME !== undefined
-											? "Administration platform of " + this.state.settings.PROJECT_NAME
-											: "Administration platform"}
-									</div>
+									oXe/ECCC middleware
 								</h1>
 							</div>
 							<FormLine
@@ -130,7 +117,7 @@ export default class Login extends React.Component {
 							<div className="bottom-right-buttons">
 								<button
 									className="blue-button"
-									onClick={this.login}
+									onClick={() => this.login()}
 								>
 									Login
 								</button>
