@@ -1,0 +1,60 @@
+nav {
+	background: #000 !important;
+	font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    z-index: 300 !important;
+}
+
+.Menu-log-out-nav-item {
+	position: absolute !important;
+	bottom: 10px !important;
+	width: 100%;
+}
+
+.Menu-profile-nav-item {
+	position: absolute !important;
+	bottom: 60px !important;
+	width: 100%;
+}
+
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---navitem---9uL5T .sidenav---navtext---1AE_f,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T .sidenav---navtext---1AE_f {
+  color: #fff !important;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo > *,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---navitem---9uL5T .sidenav---navtext---1AE_f > *,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo > *,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T .sidenav---navtext---1AE_f > * {
+  color: #fff !important;
+}
+
+nav i {
+	color: grey !important;
+	margin-top: 12px !important;
+}
+
+nav div {
+	color: grey !important;
+}
+
+.Menu-notification {
+	color: white !important;
+	font-size: 12px;
+	height: 20px;
+	line-height: 15px;
+	border-radius: 20px;
+	background-color: #e40613;
+	padding: 3px 7px;
+	position: absolute;
+	top: 23px;
+	right: 10px;
+}
+
+.Menu-divider {
+	margin: 3px 10px;
+	background-color: white;
+    opacity: 0.4;
+	height: 2px;
+}
