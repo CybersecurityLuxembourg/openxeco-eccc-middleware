@@ -5,10 +5,10 @@ export async function getRequest(url, callback, catchBadResponse, catchError) {
 			Accept: "application/json, text/html",
 			pragma: "no-cache",
 			"cache-control": "no-cache",
-			"Access-Control-Allow-Origin": url.startsWith("public") ? "*" : undefined,
+			"Access-Control-Allow-Origin": url.includes("/public/") ? "*" : undefined,
 			"Access-Control-Allow-Methods": "GET,OPTIONS,HEAD",
 		}),
-		credentials: url.startsWith("public") ? undefined : "include",
+		credentials: url.includes("/public/") ? undefined : "include",
 	}).then((response) => {
 		if (response.status === 200) {
 			return response.json();

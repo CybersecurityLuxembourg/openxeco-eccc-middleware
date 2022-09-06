@@ -14,8 +14,6 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.connect = this.connect.bind(this);
-
 		this.state = {
 			user: null,
 			logged: false,
@@ -48,7 +46,7 @@ class App extends React.Component {
 						/>
 					</BrowserRouter>
 					: <Login
-						connect={this.connect}
+						connect={(user) => this.connect(user)}
 						cookies={this.props.cookies}
 					/>
 				}

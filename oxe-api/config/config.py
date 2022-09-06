@@ -20,7 +20,7 @@ def _getenv(key, default=None, mandatory=True):
 
 
 ENVIRONMENT         = _getenv('ENVIRONMENT',    default='dev')
-PORT                = _getenv('PORT',           default='5000')
+PORT                = _getenv('PORT',           default='5002')
 
 HTTP_PROXY          = _getenv('HTTP_PROXY', mandatory=False)
 

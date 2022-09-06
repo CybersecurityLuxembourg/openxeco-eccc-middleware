@@ -4,7 +4,7 @@ import "./Warning.css";
 export default class Warning extends React.Component {
 	render() {
 		return (
-			<div className="Warning">
+			<div className="Warning" style={{ height: this.props.height ? this.props.height : "auto" }}>
 				<div className="Warning-logo">
 					<i className="fas fa-exclamation-triangle"/>
 				</div>

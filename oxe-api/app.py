@@ -1,18 +1,9 @@
 from flask import Flask, redirect
-from flask_bcrypt import Bcrypt
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager
-from flask_mail import Mail
 from flask_restful import Api
-from sqlalchemy.engine.url import URL
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from flask_apispec.extension import FlaskApiSpec
-
-from utils.re import has_mail_format
-from utils.resource import get_admin_post_resources
-
-from db.db import DB
 
 import socket
 import sys

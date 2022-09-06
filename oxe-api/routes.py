@@ -1,5 +1,6 @@
 # pylint: disable=unused-import
 # flake8: noqa: F401
+from resource.healthz import Healthz
 import inspect
 import sys
 

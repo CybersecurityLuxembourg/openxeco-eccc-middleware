@@ -40,6 +40,27 @@ export default class Menu extends React.Component {
 						</NavText>
 					</NavItem>
 					<div className="Menu-divider"/>
+					<NavItem
+						eventKey="registration"
+						active={this.props.selectedMenu === "registration"}
+						onClick={() => this.props.history.push("/registration")}>
+						<NavIcon>
+							<i className="fas fa-poll-h" style={{ fontSize: "1.75em" }} />
+						</NavIcon>
+						<NavText>
+							Registration
+						</NavText>
+					</NavItem>
+					<NavItem
+						className="Menu-log-out-nav-item"
+						eventKey="disconnect">
+						<NavIcon>
+							<i className="fas fa-door-open" style={{ fontSize: "1.75em" }} />
+						</NavIcon>
+						<NavText>
+							Log out
+						</NavText>
+					</NavItem>
 				</Nav>
 			</SideNav>
 		);
