@@ -6,7 +6,7 @@ export default class Message extends React.Component {
 		return (
 			<div className="Message" style={{ height: this.props.height ? this.props.height : "100px" }}>
 				<div className="Message-text">
-					{this.props.text}
+					{this.props.content}
 				</div>
 			</div>
 		);
