@@ -19,17 +19,18 @@ def _getenv(key, default=None, mandatory=True):
     return os.getenv(key, default)
 
 
-ENVIRONMENT         = _getenv('ENVIRONMENT',    default='dev')
-PORT                = _getenv('PORT',           default='5002')
+ENVIRONMENT             = _getenv('ENVIRONMENT',            default='dev')
+PORT                    = _getenv('PORT',                   default='5002')
 
-HTTP_PROXY          = _getenv('HTTP_PROXY', mandatory=False)
+OPENXECO_API_ENDPOINT   = _getenv('OPENXECO_API_ENDPOINT',  mandatory=True)
+ECCC_API_ENDPOINT       = _getenv('ECCC_API_ENDPOINT',      mandatory=True)
+ECCC_API_KEY            = _getenv('ECCC_API_KEY',           mandatory=True)
 
-CORS_DOMAINS        = _getenv('CORS_DOMAINS',
-                              mandatory=ENVIRONMENT != "dev",
-                              default="localhost:\\d*" if ENVIRONMENT == "dev" else None)
+HTTP_PROXY              = _getenv('HTTP_PROXY',             mandatory=False)
 
-OPENXECO_API        = _getenv('OPENXECO_API',   default='http://localhost:5000')
-ECCC_API            = _getenv('ECCC_API',       default='http://localhost:5000')
+CORS_DOMAINS            = _getenv('CORS_DOMAINS',
+                                  mandatory=ENVIRONMENT != "dev",
+                                  default="localhost:\\d*" if ENVIRONMENT == "dev" else None)
 
 # remove extra spaces, remove empty items
 domains = filter(len, map(str.strip, CORS_DOMAINS.split(",")))

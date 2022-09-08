@@ -1,5 +1,7 @@
 # pylint: disable=unused-import
 # flake8: noqa: F401
+from resource.eccc.get_status import GetStatus
+from resource.get_endpoints import GetEndpoints
 from resource.healthz import Healthz
 import inspect
 import sys
