@@ -1,7 +1,7 @@
 import React from "react";
 import "./PageDashboard.css";
 import { getRequest } from "../../utils/request.jsx";
-import { getOxeApiURL, getEcccApiURL, getMiddlewareApiURL } from "../../utils/env.jsx";
+import { endpoints } from "../../settings.jsx";
 import Loading from "../box/Loading.jsx";
 import Info from "../box/Info.jsx";
 import Warning from "../box/Warning.jsx";
@@ -45,49 +45,55 @@ export default class PageDashboard extends React.Component {
 	}
 
 	requestOxeEndpoint() {
-		getRequest.call(this, getOxeApiURL() + "healthz", () => {
+		const url = endpoints.openxeco + "healthz";
+
+		getRequest.call(this, url, () => {
 			this.setState({
 				oxeStatus: "OK",
 			});
 		}, (response) => {
 			this.setState({
-				oxeStatus: response.statusText,
+				oxeStatus: response.statusText + ": " + url,
 			});
 		}, (error) => {
 			this.setState({
-				oxeStatus: error.message,
+				oxeStatus: error.message + ": " + url,
 			});
 		});
 	}
 
 	requestEcccEndpoint() {
-		getRequest.call(this, getEcccApiURL() + "public/get_public_node_information?", () => {
+		const url = endpoints.middleware + "eccc/get_status";
+
+		getRequest.call(this, url, (data) => {
 			this.setState({
-				ecccStatus: "OK",
+				ecccStatus: data,
 			});
 		}, (response) => {
 			this.setState({
-				ecccStatus: response.statusText,
+				ecccStatus: response.statusText + ": " + url,
 			});
 		}, (error) => {
 			this.setState({
-				ecccStatus: error.message,
+				ecccStatus: error.message + ": " + url,
 			});
 		});
 	}
 
 	requestMiddlewareEndpoint() {
-		getRequest.call(this, getMiddlewareApiURL() + "healthz", () => {
+		const url = endpoints.middleware + "healthz";
+
+		getRequest.call(this, url, () => {
 			this.setState({
 				middlewareStatus: "OK",
 			});
 		}, (response) => {
 			this.setState({
-				middlewareStatus: response.statusText,
+				middlewareStatus: response.statusText + ": " + url,
 			});
 		}, (error) => {
 			this.setState({
-				middlewareStatus: error.message,
+				middlewareStatus: error.message + ": " + url,
 			});
 		});
 	}

@@ -42,21 +42,33 @@ export default class Registration extends Component {
 				className="Popup-full-size"
 				trigger={
 					<div className={"Registration"}>
-						<i className="fas fa-feather-alt"/>
+						<i className="fas fa-poll-h"/>
 						<div className={"Registration-name"}>
-							{this.props.name}
+							{this.props.user ? this.props.user.email : "User " + this.props.userId}
 						</div>
 					</div>
 				}
 				modal
 				closeOnDocumentClick={false}
 			>
-				{() => <div className="row row-spaced">
-					<div className="col-md-12">
+				{(close) => <div className="row row-spaced">
+					<div className="col-md-9">
 						<h1 className="Registration-title">
 							Registration
 						</h1>
+					</div>
 
+					<div className="col-md-3">
+						<div className={"top-right-buttons"}>
+							<button
+								className={"grey-background"}
+								onClick={close}>
+								<i className="far fa-times-circle"/>
+							</button>
+						</div>
+					</div>
+
+					<div className="col-md-12">
 						<Tab
 							labels={["Global", "Version"]}
 							selectedMenu={this.state.selectedMenu}

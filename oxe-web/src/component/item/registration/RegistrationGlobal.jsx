@@ -13,6 +13,7 @@ export default class RegistrationGlobal extends React.Component {
 	render() {
 		return (
 			<div id="RegistrationGlobal">
+				i
 			</div>
 		);
 	}

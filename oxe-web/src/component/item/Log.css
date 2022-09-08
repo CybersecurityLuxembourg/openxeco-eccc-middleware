@@ -1,5 +1,5 @@
 
-.Registration {
+.Log {
     width: 100%;
     position: relative;
     font-size: 15px;
@@ -15,12 +15,12 @@
     cursor: pointer;
 }
 
-.Registration:hover {
-    background-color: rgba(0, 159, 227, 0.05);
+.Log:hover {
+    background-color: rgba(0, 159, 227, 0.1);
 }
 
-.Registration-name {
-    display: inline-block;
+.Log-name {
+    display:inline-block;
     width: calc(100% - 14px);
     padding-left: 7px;
     text-overflow: ellipsis;
@@ -30,7 +30,7 @@
     color: #009fe3;
 }
 
-.Registration i {
+.Log i {
     display:inline;
     font-size: 14px;
     line-height: 1.2;

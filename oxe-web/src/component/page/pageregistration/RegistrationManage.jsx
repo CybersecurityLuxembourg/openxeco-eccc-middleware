@@ -3,7 +3,7 @@ import "./RegistrationManage.css";
 import { NotificationManager as nm } from "react-notifications";
 import { dictToURI } from "../../../utils/url.jsx";
 import { getRequest } from "../../../utils/request.jsx";
-import { getOxeApiURL } from "../../../utils/env.jsx";
+import { endpoints } from "../../../settings.jsx";
 import Registration from "../../item/Registration.jsx";
 import Message from "../../box/Message.jsx";
 import Loading from "../../box/Loading.jsx";
@@ -14,6 +14,7 @@ export default class RegistrationManage extends React.Component {
 
 		this.state = {
 			formAnswer: null,
+			users: null,
 		};
 	}
 
@@ -32,13 +33,27 @@ export default class RegistrationManage extends React.Component {
 			this.setState({
 				formAnswers: null,
 			}, () => {
-				const filters = {
+				let filters = {
 					form_id: this.props.form.id,
 				};
 
-				getRequest.call(this, getOxeApiURL() + "form/get_form_answers?" + dictToURI(filters), (data) => {
+				getRequest.call(this, endpoints.openxeco + "form/get_form_answers?" + dictToURI(filters), (data) => {
 					this.setState({
 						formAnswers: data,
+					}, () => {
+						filters = {
+							ids: this.getUserList(),
+						};
+
+						getRequest.call(this, endpoints.openxeco + "user/get_users?id=" + dictToURI(filters), (data2) => {
+							this.setState({
+								users: data2.items,
+							});
+						}, (response) => {
+							nm.warning(response.statusText);
+						}, (error) => {
+							nm.error(error.message);
+						});
 					});
 				}, (response) => {
 					nm.warning(response.statusText);
@@ -63,7 +78,6 @@ export default class RegistrationManage extends React.Component {
 		this.setState({ [field]: value });
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	render() {
 		return (
 			<div id="RegistrationManage" className="max-sized-page">
@@ -91,7 +105,12 @@ export default class RegistrationManage extends React.Component {
 							&& this.getUserList().map((u) => (
 								<Registration
 									key={u}
-									user={u}
+									userId={u}
+									user={
+										this.state.users
+											? this.state.users.filter((o) => o.id === u).pop()
+											: undefined
+									}
 									form={this.props.form}
 									formQuestion={this.props.formQuestions}
 									formAnswers={this.state.formAnswers.filter((a) => a.user_id === u)}

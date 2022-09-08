@@ -3,6 +3,7 @@ import "./RegistrationStatus.css";
 import Loading from "../../box/Loading.jsx";
 import Info from "../../box/Info.jsx";
 import Warning from "../../box/Warning.jsx";
+import { formQuestionReferences } from "../../../settings.jsx";
 
 export default class RegistrationStatus extends React.Component {
 	constructor(props) {
@@ -13,19 +14,29 @@ export default class RegistrationStatus extends React.Component {
 	}
 
 	getQuestionBox(ref) {
-		console.log(this.props.formQuestions);
 		const question = this.props.formQuestions.filter((q) => q.reference === ref.reference).pop();
 
 		if (question) {
-			if (question.type === ref.type) {
-				return <Info
-					content={ref.reference + ": OK"}
+			if (question.type !== ref.type) {
+				return <Warning
+					content={ref.reference + ": question found with the wrong type. "
+						+ "The type should be: " + ref.type}
 				/>;
 			}
 
-			return <Warning
-				content={ref.reference + ": question found with the wrong type. "
-					+ "The type should be: " + ref.type}
+			console.log(ref.options, question.options);
+
+			if (["SELECT", "OPTIONS"].includes(question.type)
+				&& ref.options
+				&& ref.options !== question.options) {
+				return <Warning
+					content={ref.reference + ": question found with the wrong options. "
+						+ "The options should be: " + ref.options}
+				/>;
+			}
+
+			return <Info
+				content={ref.reference + ": OK"}
 			/>;
 		}
 
@@ -35,7 +46,7 @@ export default class RegistrationStatus extends React.Component {
 	}
 
 	getExtraWarningBoxes() {
-		if (!this.props.formQuestions || !this.props.formQuestionReferences) {
+		if (!this.props.formQuestions || !formQuestionReferences) {
 			return [];
 		}
 
@@ -45,7 +56,7 @@ export default class RegistrationStatus extends React.Component {
 
 		for (let i = 0; i < this.props.formQuestions.length; i++) {
 			const question = this.props.formQuestions[i];
-			const references = this.props.formQuestionReferences.map((r) => r.reference);
+			const references = formQuestionReferences.map((r) => r.reference);
 
 			if (!question.reference) {
 				warnings.push("No reference found for a question");
@@ -76,6 +87,71 @@ export default class RegistrationStatus extends React.Component {
 				<div className={"row"}>
 					<div className="col-md-12">
 						<h1>Status</h1>
+					</div>
+				</div>
+
+				<div className={"row row-spaced"}>
+					<div className="col-md-9">
+						<h2>ECCC API resources</h2>
+					</div>
+
+					<div className="col-md-3">
+						<div className="top-right-buttons">
+							<button
+								className={"blue-background"}
+								data-hover="Refresh"
+								onClick={() => this.props.refreshEcccResources()}>
+								<span><i className="fas fa-redo-alt"/></span>
+							</button>
+						</div>
+					</div>
+
+					<div className="col-md-6">
+						<h3>Check activity fields</h3>
+
+						{this.props.ecccActivityFields === null
+							&& <Loading
+								height={150}
+							/>
+						}
+
+						{this.props.ecccActivityFields && typeof this.props.ecccActivityFields === "object"
+							&& <Info
+								content={"OK"}
+								height={150}
+							/>
+						}
+
+						{typeof this.props.ecccActivityFields === "string"
+							&& <Warning
+								content={this.props.ecccActivityFields}
+								height={150}
+							/>
+						}
+					</div>
+
+					<div className="col-md-6">
+						<h3>Check cybersecurity domains</h3>
+
+						{this.props.ecccCybersecurityDomains === null
+							&& <Loading
+								height={150}
+							/>
+						}
+
+						{this.props.ecccCybersecurityDomains && typeof this.props.ecccCybersecurityDomains === "object"
+							&& <Info
+								content={"OK"}
+								height={150}
+							/>
+						}
+
+						{typeof this.props.ecccCybersecurityDomains === "string"
+							&& <Warning
+								content={this.props.ecccCybersecurityDomains}
+								height={150}
+							/>
+						}
 					</div>
 				</div>
 
@@ -129,7 +205,7 @@ export default class RegistrationStatus extends React.Component {
 						}
 
 						{this.props.formQuestions
-							&& this.props.formQuestionReferences.map((q) => (
+							&& formQuestionReferences.map((q) => (
 								this.getQuestionBox(q)
 							))
 						}

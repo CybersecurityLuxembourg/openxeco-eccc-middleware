@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 import InsideApp from "./component/InsideApp.jsx";
 import Login from "./component/Login.jsx";
-import { getOxeApiURL } from "./utils/env.jsx";
+import { endpoints } from "./settings.jsx";
 import DialogMessage from "./component/dialog/DialogMessage.jsx";
 
 class App extends React.Component {
@@ -25,7 +25,7 @@ class App extends React.Component {
 
 	// eslint-disable-next-line class-methods-use-this
 	componentDidMount() {
-		document.getElementById("favicon").href = getOxeApiURL() + "public/get_public_image/favicon.ico";
+		document.getElementById("favicon").href = endpoints.openxeco + "public/get_public_image/favicon.ico";
 	}
 
 	connect(user) {
