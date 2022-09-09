@@ -20,12 +20,11 @@ class GetStatus(MethodResource, Resource):
         message = "OK"
 
         try:
-            website = f"{ECCC_API_ENDPOINT}/dzefzefezfz?api_key={ECCC_API_KEY}"
-
-            r = requests.head(website, allow_redirects=True)
+            website = f"{ECCC_API_ENDPOINT}jsonapi/node/cluster?api_key={ECCC_API_KEY}"
+            r = requests.get(website, allow_redirects=True, auth=requests.auth.HTTPBasicAuth('shared', 'ec2018'))
 
             if r.status_code != 200:
-                message.append(f"The ECCC API returned code {r.status_code}")
+                message = f"The ECCC API returned code {r.status_code}"
         except Exception:
             message = "The ECCC API seems unreachable. Please review the configuration of the middleware API " \
                       "or the network access"
