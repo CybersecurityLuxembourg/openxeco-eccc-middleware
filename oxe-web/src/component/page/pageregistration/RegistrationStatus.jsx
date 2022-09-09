@@ -24,8 +24,6 @@ export default class RegistrationStatus extends React.Component {
 				/>;
 			}
 
-			console.log(ref.options, question.options);
-
 			if (["SELECT", "OPTIONS"].includes(question.type)
 				&& ref.options
 				&& ref.options !== question.options) {

@@ -5,8 +5,9 @@ import { dictToURI } from "../../../utils/url.jsx";
 import { getRequest } from "../../../utils/request.jsx";
 import { endpoints } from "../../../settings.jsx";
 import Registration from "../../item/Registration.jsx";
-import Message from "../../box/Message.jsx";
+import User from "../../item/User.jsx";
 import Loading from "../../box/Loading.jsx";
+import Table from "../../table/Table.jsx";
 
 export default class RegistrationManage extends React.Component {
 	constructor(props) {
@@ -79,11 +80,59 @@ export default class RegistrationManage extends React.Component {
 	}
 
 	render() {
+		const columns = [
+			{
+				Header: "Registration",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<div>
+						<Registration
+							key={value}
+							userId={value}
+							user={
+								this.state.users
+									? this.state.users.filter((o) => o.id === value).pop()
+									: undefined
+							}
+							form={this.props.form}
+							formQuestions={this.props.formQuestions}
+							formAnswers={this.state.formAnswers.filter((a) => a.user_id === value)}
+						/>
+					</div>
+				),
+			},
+			{
+				Header: "User",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<div>
+						<User
+							id={value}
+							email={
+								this.state.users && this.state.users.filter((o) => o.id === value).pop()
+									? this.state.users.filter((o) => o.id === value).pop().email
+									: undefined
+							}
+						/>
+					</div>
+				),
+			},
+		];
+
 		return (
 			<div id="RegistrationManage" className="max-sized-page">
 				<div className={"row"}>
-					<div className="col-md-12">
+					<div className="col-md-9">
 						<h1>Manage registrations</h1>
+					</div>
+
+					<div className="col-md-3">
+						<div className={"top-right-buttons"}>
+							<button
+								onClick={() => this.refreshAnswers()}>
+								<i className="fas fa-redo-alt"/>
+							</button>
+						</div>
 					</div>
 
 					<div className="col-md-12">
@@ -94,28 +143,10 @@ export default class RegistrationManage extends React.Component {
 						}
 
 						{this.state.formAnswers
-							&& this.getUserList().length === 0
-							&& <Message
-								content={"No answer found"}
-								height={300}
+							&& <Table
+								columns={columns}
+								data={this.getUserList()}
 							/>
-						}
-
-						{this.state.formAnswers
-							&& this.getUserList().map((u) => (
-								<Registration
-									key={u}
-									userId={u}
-									user={
-										this.state.users
-											? this.state.users.filter((o) => o.id === u).pop()
-											: undefined
-									}
-									form={this.props.form}
-									formQuestion={this.props.formQuestions}
-									formAnswers={this.state.formAnswers.filter((a) => a.user_id === u)}
-								/>
-							))
 						}
 					</div>
 				</div>

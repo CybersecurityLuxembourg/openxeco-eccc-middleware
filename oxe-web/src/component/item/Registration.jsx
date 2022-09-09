@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import "./Registration.css";
 import Popup from "reactjs-popup";
 import Tab from "../tab/Tab.jsx";
-import RegistrationGlobal from "./registration/RegistrationGlobal.jsx";
+import RegistrationStatus from "./registration/RegistrationStatus.jsx";
 import RegistrationAnswers from "./registration/RegistrationAnswers.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
+import { formQuestionReferences } from "../../settings.jsx";
 
 export default class Registration extends Component {
 	constructor(props) {
@@ -13,7 +14,7 @@ export default class Registration extends Component {
 		this.state = {
 			selectedMenu: null,
 			tabs: [
-				"global",
+				"status",
 				"answers",
 			],
 		};
@@ -32,6 +33,13 @@ export default class Registration extends Component {
 		}
 	}
 
+	calculateFormCompletion() {
+		const total = formQuestionReferences.length;
+		const answeredQuestion = this.props.formAnswers.length;
+
+		return Math.ceil((answeredQuestion / total) * 100);
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -44,7 +52,7 @@ export default class Registration extends Component {
 					<div className={"Registration"}>
 						<i className="fas fa-poll-h"/>
 						<div className={"Registration-name"}>
-							{this.props.user ? this.props.user.email : "User " + this.props.userId}
+							Completed at {this.calculateFormCompletion()}%
 						</div>
 					</div>
 				}
@@ -70,16 +78,19 @@ export default class Registration extends Component {
 
 					<div className="col-md-12">
 						<Tab
-							labels={["Global", "Version"]}
+							labels={["Status", "Answers"]}
 							selectedMenu={this.state.selectedMenu}
 							onMenuClick={this.onMenuClick}
 							keys={this.state.tabs}
 							content={[
-								<RegistrationGlobal
+								<RegistrationStatus
 									key={this.state.tabs[0]}
+									calculateFormCompletion={() => this.calculateFormCompletion()}
 								/>,
 								<RegistrationAnswers
 									key={this.state.tabs[1]}
+									formQuestions={this.props.formQuestions}
+									formAnswers={this.props.formAnswers}
 								/>,
 							]}
 						/>

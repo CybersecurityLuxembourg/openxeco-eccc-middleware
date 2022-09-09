@@ -1,7 +1,7 @@
 import React from "react";
-import "./RegistrationGlobal.css";
+import "./RegistrationStatus.css";
 
-export default class RegistrationGlobal extends React.Component {
+export default class RegistrationStatus extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -12,7 +12,7 @@ export default class RegistrationGlobal extends React.Component {
 	// eslint-disable-next-line class-methods-use-this
 	render() {
 		return (
-			<div id="RegistrationGlobal">
+			<div id="RegistrationStatus">
 				i
 			</div>
 		);
