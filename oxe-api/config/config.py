@@ -23,8 +23,11 @@ ENVIRONMENT             = _getenv('ENVIRONMENT',            default='dev')
 PORT                    = _getenv('PORT',                   default='5002')
 
 OPENXECO_API_ENDPOINT   = _getenv('OPENXECO_API_ENDPOINT',  mandatory=True)
+
 ECCC_API_ENDPOINT       = _getenv('ECCC_API_ENDPOINT',      mandatory=True)
 ECCC_API_KEY            = _getenv('ECCC_API_KEY',           mandatory=True)
+ECCC_HTTP_AUTH_LOGIN    = _getenv('ECCC_HTTP_AUTH_LOGIN',   mandatory=False, default=None)
+ECCC_HTTP_AUTH_PASS     = _getenv('ECCC_HTTP_AUTH_PASS',    mandatory=False, default=None)
 
 HTTP_PROXY              = _getenv('HTTP_PROXY',             mandatory=False)
 

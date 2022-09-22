@@ -1,10 +1,9 @@
 from flask_apispec import MethodResource
 from flask_apispec import doc
 from flask_restful import Resource
-import requests
 
 from decorator.catch_exception import catch_exception
-from config.config import ECCC_API_ENDPOINT, ECCC_API_KEY
+from utils.request import get_request_eccc
 
 
 class GetStatus(MethodResource, Resource):
@@ -20,8 +19,7 @@ class GetStatus(MethodResource, Resource):
         message = "OK"
 
         try:
-            website = f"{ECCC_API_ENDPOINT}jsonapi/node/cluster?api_key={ECCC_API_KEY}"
-            r = requests.get(website, allow_redirects=True, auth=requests.auth.HTTPBasicAuth('shared', 'ec2018'))
+            r = get_request_eccc("jsonapi/taxonomy_term/activities_of_interest")
 
             if r.status_code != 200:
                 message = f"The ECCC API returned code {r.status_code}"
