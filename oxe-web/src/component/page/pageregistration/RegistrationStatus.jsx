@@ -88,7 +88,7 @@ export default class RegistrationStatus extends React.Component {
 					</div>
 				</div>
 
-				<div className={"row row-spaced"}>
+				{/* <div className={"row row-spaced"}>
 					<div className="col-md-9">
 						<h2>ECCC API resources</h2>
 					</div>
@@ -113,7 +113,8 @@ export default class RegistrationStatus extends React.Component {
 							/>
 						}
 
-						{this.props.ecccActivityFields && typeof this.props.ecccActivityFields === "object"
+						{this.props.ecccActivityFields
+							&& typeof this.props.ecccActivityFields === "object"
 							&& <Info
 								content={"OK"}
 								height={150}
@@ -137,7 +138,8 @@ export default class RegistrationStatus extends React.Component {
 							/>
 						}
 
-						{this.props.ecccCybersecurityDomains && typeof this.props.ecccCybersecurityDomains === "object"
+						{this.props.ecccCybersecurityDomains
+							&& typeof this.props.ecccCybersecurityDomains === "object"
 							&& <Info
 								content={"OK"}
 								height={150}
@@ -151,7 +153,7 @@ export default class RegistrationStatus extends React.Component {
 							/>
 						}
 					</div>
-				</div>
+				</div> */}
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-9">

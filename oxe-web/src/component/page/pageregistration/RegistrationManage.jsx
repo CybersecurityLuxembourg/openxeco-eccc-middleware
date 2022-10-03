@@ -82,7 +82,23 @@ export default class RegistrationManage extends React.Component {
 	render() {
 		const columns = [
 			{
-				Header: "Registration",
+				Header: "User",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<div>
+						<User
+							id={value}
+							email={
+								this.state.users && this.state.users.filter((o) => o.id === value).pop()
+									? this.state.users.filter((o) => o.id === value).pop().email
+									: undefined
+							}
+						/>
+					</div>
+				),
+			},
+			{
+				Header: "Form",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
 					<div>
@@ -102,20 +118,9 @@ export default class RegistrationManage extends React.Component {
 				),
 			},
 			{
-				Header: "User",
+				Header: "Synchronization status",
 				accessor: (x) => x,
-				Cell: ({ cell: { value } }) => (
-					<div>
-						<User
-							id={value}
-							email={
-								this.state.users && this.state.users.filter((o) => o.id === value).pop()
-									? this.state.users.filter((o) => o.id === value).pop().email
-									: undefined
-							}
-						/>
-					</div>
-				),
+				Cell: "Not synchronized [TO BE IMPLEMENTED]",
 			},
 		];
 

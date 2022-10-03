@@ -62,7 +62,6 @@ export default class RegistrationAnswers extends React.Component {
 								<div className="col-md-6">
 									<fieldset className="RegistratioAnswer-answer">
 										<legend>ECCC</legend>
-										aaa
 									</fieldset>
 								</div>
 							</div>
