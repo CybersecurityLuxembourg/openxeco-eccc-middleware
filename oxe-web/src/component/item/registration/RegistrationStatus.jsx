@@ -38,10 +38,16 @@ export default class RegistrationStatus extends React.Component {
 					<div className="col-md-6">
 						<h3>Synchronization status</h3>
 
-						<Warning
-							content={"The form is not synchronized to the ECCC solution"}
-							height={150}
-						/>
+						{this.props.syncStatus === "Synchronized"
+							? <Info
+								content={this.props.syncStatus}
+								height={150}
+							/>
+							: <Warning
+								content={this.props.syncStatus}
+								height={150}
+							/>
+						}
 					</div>
 				</div>
 			</div>

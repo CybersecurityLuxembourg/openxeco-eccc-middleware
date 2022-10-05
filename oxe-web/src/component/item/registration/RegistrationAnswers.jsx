@@ -2,6 +2,7 @@ import React from "react";
 import "./RegistrationAnswers.css";
 import dompurify from "dompurify";
 import Message from "../../box/Message.jsx";
+import { getEcccRegistrationFieldValue } from "../../../utils/registration.jsx";
 
 export default class RegistrationAnswers extends React.Component {
 	constructor(props) {
@@ -11,7 +12,17 @@ export default class RegistrationAnswers extends React.Component {
 		};
 	}
 
-	getAnswerOfQuestion(q) {
+	getAnswerOfQuestion(questionId) {
+		const answer = this.props.formAnswers.filter((a) => a.form_question_id === questionId);
+
+		if (answer.length > 0) {
+			return answer[0];
+		}
+
+		return null;
+	}
+
+	getEcccAnswerOfQuestion(questionId) {
 		const answer = this.props.formAnswers.filter((a) => a.form_question_id === q);
 
 		if (answer.length > 0) {
@@ -62,6 +73,8 @@ export default class RegistrationAnswers extends React.Component {
 								<div className="col-md-6">
 									<fieldset className="RegistratioAnswer-answer">
 										<legend>ECCC</legend>
+
+										{this.getEcccAnswerOfQuestion(q.id)}
 									</fieldset>
 								</div>
 							</div>

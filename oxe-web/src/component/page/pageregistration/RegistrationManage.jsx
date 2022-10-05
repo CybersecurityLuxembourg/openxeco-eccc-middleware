@@ -14,27 +14,33 @@ export default class RegistrationManage extends React.Component {
 		super(props);
 
 		this.state = {
-			formAnswer: null,
+			formAnswers: null,
 			users: null,
+			ecccRegistrations: null,
 		};
 	}
 
 	componentDidMount() {
-		this.refreshAnswers();
+		this.refresh();
 	}
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.form !== this.props.form) {
-			this.refreshAnswers();
+			this.refresh();
 		}
 	}
 
-	refreshAnswers() {
+	refresh() {
+		this.fetchAnswers();
+		this.fetchEcccRegistrations();
+	}
+
+	fetchAnswers() {
 		if (this.props.form) {
 			this.setState({
 				formAnswers: null,
 			}, () => {
-				let filters = {
+				const filters = {
 					form_id: this.props.form.id,
 				};
 
@@ -42,19 +48,7 @@ export default class RegistrationManage extends React.Component {
 					this.setState({
 						formAnswers: data,
 					}, () => {
-						filters = {
-							ids: this.getUserList(),
-						};
-
-						getRequest.call(this, endpoints.openxeco + "user/get_users?id=" + dictToURI(filters), (data2) => {
-							this.setState({
-								users: data2.items,
-							});
-						}, (response) => {
-							nm.warning(response.statusText);
-						}, (error) => {
-							nm.error(error.message);
-						});
+						this.fetchUsers();
 					});
 				}, (response) => {
 					nm.warning(response.statusText);
@@ -65,6 +59,36 @@ export default class RegistrationManage extends React.Component {
 		}
 	}
 
+	fetchUsers() {
+		const filters = {
+			ids: this.getUserList(),
+		};
+
+		getRequest.call(this, endpoints.openxeco + "user/get_users?id=" + dictToURI(filters), (data2) => {
+			this.setState({
+				users: data2.items,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	fetchEcccRegistrations() {
+		const url = endpoints.middleware + "eccc/get_registrations";
+
+		getRequest.call(this, url, (data) => {
+			this.setState({
+				ecccRegistrations: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
 	getUserList() {
 		if (!this.state.formAnswers) {
 			return [];
@@ -73,6 +97,65 @@ export default class RegistrationManage extends React.Component {
 		return [...new Set(
 			this.state.formAnswers.map((a) => a.user_id),
 		)];
+	}
+
+	getEcccRegistrationObject(orgId) {
+		if (!this.state.ecccRegistrations) {
+			return null;
+		}
+
+		if (typeof this.state.ecccRegistrations !== "object"
+				|| !Array.isArray(this.state.ecccRegistrations.data)) {
+			return null;
+		}
+
+		const sel = this.state.ecccRegistrations.data
+			.filter((r) => r.attributes.field_iot_org_pic === orgId);
+
+		if (sel.length > 0) {
+			return sel;
+		}
+
+		return null;
+	}
+
+	getSynchronisationStatus(orgId) {
+		if (!this.state.ecccRegistrations) {
+			return "Loading ECCC registrations...";
+		}
+
+		if (typeof this.state.ecccRegistrations !== "object"
+				|| !Array.isArray(this.state.ecccRegistrations.data)) {
+			return "ERROR: Unexpected result for ECCC registrations";
+		}
+
+		const sel = this.state.ecccRegistrations.data
+			.filter((r) => r.attributes.field_iot_org_pic === orgId);
+
+		if (sel.length > 0) {
+			return "Synchronized";
+		}
+
+		return "Not synchronized";
+	}
+
+	getRegistrationNumber(userId) {
+		const refQuestions = this.props.formQuestions
+			.filter((q) => q.reference === "FORM-ECCC-001-Q103");
+
+		if (refQuestions.length === 0) {
+			return "Question not found";
+		}
+
+		const answers = this.state.formAnswers
+			.filter((a) => a.user_id === userId)
+			.filter((a) => a.form_question_id === refQuestions[0].id);
+
+		if (answers.length === 0) {
+			return "Not found";
+		}
+
+		return answers[0].value;
 	}
 
 	changeState(field, value) {
@@ -113,14 +196,35 @@ export default class RegistrationManage extends React.Component {
 							form={this.props.form}
 							formQuestions={this.props.formQuestions}
 							formAnswers={this.state.formAnswers.filter((a) => a.user_id === value)}
+							ecccObject={this.getEcccRegistrationObject(
+								this.getRegistrationNumber(value),
+							)}
+							syncStatus={this.getSynchronisationStatus(
+								this.getRegistrationNumber(value),
+							)}
 						/>
+					</div>
+				),
+			},
+			{
+				Header: "Registration number",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<div>
+						{this.getRegistrationNumber(value)}
 					</div>
 				),
 			},
 			{
 				Header: "Synchronization status",
 				accessor: (x) => x,
-				Cell: "Not synchronized [TO BE IMPLEMENTED]",
+				Cell: ({ cell: { value } }) => (
+					<div>
+						{this.getSynchronisationStatus(
+							this.getRegistrationNumber(value),
+						)}
+					</div>
+				),
 			},
 		];
 
@@ -134,7 +238,7 @@ export default class RegistrationManage extends React.Component {
 					<div className="col-md-3">
 						<div className={"top-right-buttons"}>
 							<button
-								onClick={() => this.refreshAnswers()}>
+								onClick={() => this.refresh()}>
 								<i className="fas fa-redo-alt"/>
 							</button>
 						</div>
