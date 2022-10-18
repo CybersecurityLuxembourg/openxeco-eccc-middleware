@@ -1,5 +1,6 @@
 from flask import Flask, redirect
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
@@ -14,6 +15,11 @@ from config import config  # pylint: disable=wrong-import-position
 app = Flask(__name__)
 
 app.config["ERROR_404_HELP"] = False
+
+app.config["JWT_SECRET_KEY"] = config.JWT_SECRET_KEY
+app.config["JWT_TOKEN_LOCATION"] = ['headers', 'cookies', 'query_string']
+app.config["JWT_COOKIE_SECURE"] = config.ENVIRONMENT != "dev"
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["CORS_SUPPORTS_CREDENTIALS"] = True
@@ -32,6 +38,7 @@ app.config['APISPEC_SPEC'] = APISpec(
 
 # Add additional plugins
 cors = CORS(app)
+jwt = JWTManager(app)
 docs = FlaskApiSpec(app)
 
 # Init and set the resources for Flask

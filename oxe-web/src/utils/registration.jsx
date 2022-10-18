@@ -31,6 +31,10 @@ export function getEcccRegistrationFieldValue(obj, ref) {
 		return "TODO";
 	case "FORM-ECCC-001-Q115":
 		return "TODO";
+	case "FORM-ECCC-001-Q116":
+		return "TODO";
+	case "FORM-ECCC-001-Q117":
+		return "TODO";
 	case "FORM-ECCC-001-Q201":
 		return "TODO";
 	case "FORM-ECCC-001-Q202":

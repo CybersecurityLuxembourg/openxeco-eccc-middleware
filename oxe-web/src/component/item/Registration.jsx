@@ -5,7 +5,7 @@ import Tab from "../tab/Tab.jsx";
 import RegistrationStatus from "./registration/RegistrationStatus.jsx";
 import RegistrationAnswers from "./registration/RegistrationAnswers.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
-import { formQuestionReferences } from "../../settings.jsx";
+import { formQuestions } from "../../settings.jsx";
 
 export default class Registration extends Component {
 	constructor(props) {
@@ -34,7 +34,7 @@ export default class Registration extends Component {
 	}
 
 	calculateFormCompletion() {
-		const total = formQuestionReferences.length;
+		const total = formQuestions.length;
 		const answeredQuestion = this.props.formAnswers.length;
 
 		return Math.ceil((answeredQuestion / total) * 100);

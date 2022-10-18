@@ -3,7 +3,12 @@ from urllib import request
 import requests
 
 from config.config import HTTP_PROXY
-from config.config import ECCC_API_ENDPOINT, ECCC_API_KEY, ECCC_HTTP_AUTH_LOGIN, ECCC_HTTP_AUTH_PASS
+from config.config import \
+    OPENXECO_API_ENDPOINT, \
+    ECCC_API_ENDPOINT, \
+    ECCC_API_KEY, \
+    ECCC_HTTP_AUTH_LOGIN, \
+    ECCC_HTTP_AUTH_PASS
 
 
 def get_request(target):
@@ -15,8 +20,37 @@ def get_request(target):
     return response.read()
 
 
+def get_request_oxe(target, jwt=None):
+    url = f"{OPENXECO_API_ENDPOINT}{target}{'?jwt=' + jwt if jwt else ''}"
+    r = requests.get(
+        url,
+        allow_redirects=True,
+    )
+    return r
+
+
+def post_request_oxe(target, data, jwt=None):
+    url = f"{OPENXECO_API_ENDPOINT}{target}{'?jwt=' + jwt if jwt else ''}"
+    r = requests.post(
+        url,
+        data=data,
+        allow_redirects=True,
+    )
+    return r
+
+
+def patch_request_oxe(target, data, jwt=None):
+    url = f"{OPENXECO_API_ENDPOINT}{target}{'?jwt=' + jwt if jwt else ''}"
+    r = requests.patch(
+        url,
+        data=data,
+        allow_redirects=True,
+    )
+    return r
+
+
 def get_request_eccc(target, with_api_key=True, with_http_auth=True):
-    url = f"{ECCC_API_ENDPOINT}{target}{'?api_key=' + ECCC_API_KEY if with_api_key else ''}"
+    url = f"{ECCC_API_ENDPOINT}{target}{'?api-key=' + ECCC_API_KEY if with_api_key else ''}"
     r = requests.get(
         url,
         allow_redirects=True,
@@ -28,7 +62,7 @@ def get_request_eccc(target, with_api_key=True, with_http_auth=True):
 
 
 def post_request_eccc(target, data, with_api_key=True, with_http_auth=True):
-    url = f"{ECCC_API_ENDPOINT}{target}{'?api_key=' + ECCC_API_KEY if with_api_key else ''}"
+    url = f"{ECCC_API_ENDPOINT}{target}{'?api-key=' + ECCC_API_KEY if with_api_key else ''}"
     r = requests.post(
         url,
         data=data,
@@ -41,7 +75,7 @@ def post_request_eccc(target, data, with_api_key=True, with_http_auth=True):
 
 
 def patch_request_eccc(target, data, with_api_key=True, with_http_auth=True):
-    url = f"{ECCC_API_ENDPOINT}{target}{'?api_key=' + ECCC_API_KEY if with_api_key else ''}"
+    url = f"{ECCC_API_ENDPOINT}{target}{'?api-key=' + ECCC_API_KEY if with_api_key else ''}"
     r = requests.patch(
         url,
         data=data,

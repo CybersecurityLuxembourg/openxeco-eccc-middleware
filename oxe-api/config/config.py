@@ -22,6 +22,10 @@ def _getenv(key, default=None, mandatory=True):
 ENVIRONMENT             = _getenv('ENVIRONMENT',            default='dev')
 PORT                    = _getenv('PORT',                   default='5002')
 
+JWT_SECRET_KEY          = _getenv('JWT_SECRET_KEY', mandatory=True)
+
+REG_FORM_REFERENCE      = _getenv('REG_FORM_REFERENCE',     default='FORM-ECCC-001')
+
 OPENXECO_API_ENDPOINT   = _getenv('OPENXECO_API_ENDPOINT',  mandatory=True)
 
 ECCC_API_ENDPOINT       = _getenv('ECCC_API_ENDPOINT',      mandatory=True)

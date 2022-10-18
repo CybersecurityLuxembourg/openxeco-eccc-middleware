@@ -123,7 +123,7 @@ export default class InsideApp extends React.Component {
 							userGroupRights={this.state.userGroupRights}
 							refreshUserInfo={() => this.refreshUserInfo()}
 							formReference={this.props.formReference}
-							formQuestionReferences={this.props.formQuestionReferences}
+							formQuestions={this.props.formQuestions}
 							{...props}
 						/>}/>
 
