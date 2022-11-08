@@ -34,10 +34,17 @@ export default class Registration extends Component {
 	}
 
 	calculateFormCompletion() {
-		const total = formQuestions.length;
-		const answeredQuestion = this.props.formAnswers.length;
+		const mandatoryReferences = formQuestions
+			.filter((q) => q.mandatory)
+			.map((q) => q.reference);
+		const total = mandatoryReferences.length;
+		const mandatoryQuestionIds = this.props.formQuestions
+			.filter((q) => mandatoryReferences.indexOf(q.reference) >= 0)
+			.map((q) => q.id);
+		const answeredQuestions = this.props.formAnswers
+			.filter((a) => mandatoryQuestionIds.indexOf(a.form_question_id) >= 0).length;
 
-		return Math.ceil((answeredQuestion / total) * 100);
+		return Math.min(100, Math.ceil((answeredQuestions / total) * 100));
 	}
 
 	changeState(field, value) {
@@ -87,6 +94,7 @@ export default class Registration extends Component {
 									key={this.state.tabs[0]}
 									calculateFormCompletion={() => this.calculateFormCompletion()}
 									syncStatus={this.props.syncStatus}
+									ecccObject={this.props.ecccObject}
 								/>,
 								<RegistrationAnswers
 									key={this.state.tabs[1]}

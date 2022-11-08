@@ -3,6 +3,7 @@ import "./RegistrationAnswers.css";
 import dompurify from "dompurify";
 import Message from "../../box/Message.jsx";
 import { getEcccRegistrationFieldValue } from "../../../utils/registration.jsx";
+import { formQuestions } from "../../../settings.jsx";
 
 export default class RegistrationAnswers extends React.Component {
 	constructor(props) {
@@ -30,6 +31,19 @@ export default class RegistrationAnswers extends React.Component {
 		return "Not synchronized";
 	}
 
+	isFieldValueMissing(question) {
+		const questions = formQuestions.filter((q) => q.reference === question.reference);
+
+		if (questions.length > 0) {
+			if ((!this.getAnswerOfQuestion(question.id) || !this.getAnswerOfQuestion(question.id).value)
+				&& questions[0].mandatory) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -55,7 +69,8 @@ export default class RegistrationAnswers extends React.Component {
 								</div>
 
 								<div className="col-md-6">
-									<fieldset className="RegistratioAnswer-answer">
+									<fieldset className={"RegistratioAnswer-answer "
+										+ (this.isFieldValueMissing(q) && "RegistratioAnswer-answer-red")}>
 										<legend>openXeco</legend>
 										{this.getAnswerOfQuestion(q.id) && this.getAnswerOfQuestion(q.id).value
 											? <div dangerouslySetInnerHTML={{

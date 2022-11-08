@@ -15,6 +15,10 @@
     height:  calc(100% - 20px);
 }
 
+.RegistratioAnswer-answer-red {
+    border: solid 1px red;
+}
+
 .RegistratioAnswer-answer legend {
     font-size: 13px;
     padding-left: 3px;
