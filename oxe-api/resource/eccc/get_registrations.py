@@ -20,6 +20,5 @@ class GetRegistrations(MethodResource, Resource):
     def get(self):
 
         r = get_request_eccc("jsonapi/node/cluster")
-        print(r.content)
 
         return json.loads(r.content), "200 "
