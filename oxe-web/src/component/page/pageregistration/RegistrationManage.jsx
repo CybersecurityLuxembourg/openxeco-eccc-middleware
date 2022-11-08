@@ -141,7 +141,7 @@ export default class RegistrationManage extends React.Component {
 
 	getRegistrationNumber(userId) {
 		const refQuestions = this.props.formQuestions
-			.filter((q) => q.reference === "FORM-ECCC-001-Q103");
+			.filter((q) => q.reference === "FORM-ECCC-001-Q105");
 
 		if (refQuestions.length === 0) {
 			return "Question not found";
@@ -153,6 +153,25 @@ export default class RegistrationManage extends React.Component {
 
 		if (answers.length === 0) {
 			return "Not found";
+		}
+
+		return answers[0].value;
+	}
+
+	isValidatedByUser(userId) {
+		const refQuestions = this.props.formQuestions
+			.filter((q) => q.reference === "FORM-ECCC-001-Q501");
+
+		if (refQuestions.length === 0) {
+			return "Question not found";
+		}
+
+		const answers = this.state.formAnswers
+			.filter((a) => a.user_id === userId)
+			.filter((a) => a.form_question_id === refQuestions[0].id);
+
+		if (answers.length === 0) {
+			return "FALSE";
 		}
 
 		return answers[0].value;
@@ -212,6 +231,15 @@ export default class RegistrationManage extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					<div>
 						{this.getRegistrationNumber(value)}
+					</div>
+				),
+			},
+			{
+				Header: "Validated by user",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<div>
+						{this.isValidatedByUser(value)}
 					</div>
 				),
 			},

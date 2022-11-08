@@ -60,6 +60,7 @@ export default class RegistrationStatus extends React.Component {
 				}
 
 				this.reorderQuestions();
+				nm.warning("The form questions have been generated. Please refresh");
 			}, (response) => {
 				this.setState({
 					userGroupAssignments: response.statusText,
@@ -80,8 +81,6 @@ export default class RegistrationStatus extends React.Component {
 		};
 
 		postRequest.call(this, endpoints.openxeco + "form/add_form_question", params1, (question) => {
-			nm.info("The question " + questionToCreate.reference + " has been created");
-
 			const params2 = {
 				id: question.id,
 				status: "ACTIVE",
@@ -89,7 +88,6 @@ export default class RegistrationStatus extends React.Component {
 			};
 
 			postRequest.call(this, endpoints.openxeco + "form/update_form_question", params2, () => {
-				nm.info("The question " + questionToCreate.reference + " has been updated");
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -144,8 +142,6 @@ export default class RegistrationStatus extends React.Component {
 		for (let i = 0; i < formQuestions.length; i++) {
 			boxes.push(this.getQuestionBox(formQuestions[i]));
 		}
-
-		console.log(boxes);
 
 		boxes = boxes.filter((b) => b);
 

@@ -23,13 +23,11 @@ export default class RegistrationAnswers extends React.Component {
 	}
 
 	getEcccAnswerOfQuestion(questionId) {
-		const answer = this.props.formAnswers.filter((a) => a.form_question_id === q);
-
-		if (answer.length > 0) {
-			return answer[0];
+		if (this.props.ecccObject) {
+			return getEcccRegistrationFieldValue(this.props.ecccObject, questionId);
 		}
 
-		return null;
+		return "Not synchronized";
 	}
 
 	changeState(field, value) {
