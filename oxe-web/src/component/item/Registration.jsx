@@ -5,7 +5,7 @@ import Tab from "../tab/Tab.jsx";
 import RegistrationStatus from "./registration/RegistrationStatus.jsx";
 import RegistrationAnswers from "./registration/RegistrationAnswers.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
-import { formQuestions } from "../../settings.jsx";
+import { getFormQuestions } from "../../utils/registration.jsx";
 
 export default class Registration extends Component {
 	constructor(props) {
@@ -34,7 +34,7 @@ export default class Registration extends Component {
 	}
 
 	calculateFormCompletion() {
-		const mandatoryReferences = formQuestions
+		const mandatoryReferences = getFormQuestions()
 			.filter((q) => q.mandatory)
 			.map((q) => q.reference);
 		const total = mandatoryReferences.length;
@@ -92,9 +92,12 @@ export default class Registration extends Component {
 							content={[
 								<RegistrationStatus
 									key={this.state.tabs[0]}
+									formQuestions={this.props.formQuestions}
+									formAnswers={this.props.formAnswers}
 									calculateFormCompletion={() => this.calculateFormCompletion()}
 									syncStatus={this.props.syncStatus}
 									ecccObject={this.props.ecccObject}
+									afterUpload={this.props.afterUpload}
 								/>,
 								<RegistrationAnswers
 									key={this.state.tabs[1]}

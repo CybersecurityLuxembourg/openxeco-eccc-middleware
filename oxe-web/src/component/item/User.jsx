@@ -9,7 +9,7 @@ import UserGlobal from "./user/UserGlobal.jsx";
 import UserEntity from "./user/UserEntity.jsx";
 import UserNote from "./user/UserNote.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
-import { endpoints } from "../../settings.jsx";
+import { getOpenxecoEndpoint } from "../../utils/env.jsx";
 
 export default class User extends Component {
 	constructor(props) {
@@ -70,7 +70,7 @@ export default class User extends Component {
 			id: this.props.id,
 		};
 
-		postRequest.call(this, endpoints.openxeco + "user/delete_user", params, () => {
+		postRequest.call(this, getOpenxecoEndpoint() + "user/delete_user", params, () => {
 			nm.info("The user has been deleted");
 
 			if (close) {

@@ -3,7 +3,7 @@ import "./RegistrationManage.css";
 import { NotificationManager as nm } from "react-notifications";
 import { dictToURI } from "../../../utils/url.jsx";
 import { getRequest } from "../../../utils/request.jsx";
-import { endpoints } from "../../../settings.jsx";
+import { getOpenxecoEndpoint, getMiddlewareEndpoint } from "../../../utils/env.jsx";
 import Registration from "../../item/Registration.jsx";
 import User from "../../item/User.jsx";
 import Loading from "../../box/Loading.jsx";
@@ -44,7 +44,7 @@ export default class RegistrationManage extends React.Component {
 					form_id: this.props.form.id,
 				};
 
-				getRequest.call(this, endpoints.openxeco + "form/get_form_answers?" + dictToURI(filters), (data) => {
+				getRequest.call(this, getOpenxecoEndpoint() + "form/get_form_answers?" + dictToURI(filters), (data) => {
 					this.setState({
 						formAnswers: data,
 					}, () => {
@@ -64,7 +64,7 @@ export default class RegistrationManage extends React.Component {
 			ids: this.getUserList(),
 		};
 
-		getRequest.call(this, endpoints.openxeco + "user/get_users?id=" + dictToURI(filters), (data2) => {
+		getRequest.call(this, getOpenxecoEndpoint() + "user/get_users?id=" + dictToURI(filters), (data2) => {
 			this.setState({
 				users: data2.items,
 			});
@@ -76,7 +76,7 @@ export default class RegistrationManage extends React.Component {
 	}
 
 	fetchEcccRegistrations() {
-		const url = endpoints.middleware + "eccc/get_registrations";
+		const url = getMiddlewareEndpoint() + "eccc/get_registrations";
 
 		getRequest.call(this, url, (data) => {
 			this.setState({
@@ -221,6 +221,7 @@ export default class RegistrationManage extends React.Component {
 							syncStatus={this.getSynchronisationStatus(
 								this.getRegistrationNumber(value),
 							)}
+							afterUpload={() => this.refresh()}
 						/>
 					</div>
 				),

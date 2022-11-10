@@ -8,7 +8,7 @@ import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
 import Note from "../Note.jsx";
 import FormLine from "../../button/FormLine.jsx";
-import { endpoints } from "../../../settings.jsx";
+import { getOpenxecoEndpoint } from "../../../utils/env.jsx";
 
 export default class UserNote extends React.Component {
 	constructor(props) {
@@ -37,7 +37,7 @@ export default class UserNote extends React.Component {
 			page: page || 1,
 		};
 
-		getRequest.call(this, endpoints.openxeco + "note/get_notes?" + dictToURI(params), (data) => {
+		getRequest.call(this, getOpenxecoEndpoint() + "note/get_notes?" + dictToURI(params), (data) => {
 			this.setState({
 				notes: this.state.notes && params.page !== 1
 					? this.state.notes.concat(data.items)
@@ -54,7 +54,7 @@ export default class UserNote extends React.Component {
 					.map((i) => i.admin))];
 
 				if (missingUserIds.length > 0) {
-					getRequest.call(this, endpoints.openxeco + "user/get_users?ids=" + missingUserIds.join(","), (data2) => {
+					getRequest.call(this, getOpenxecoEndpoint() + "user/get_users?ids=" + missingUserIds.join(","), (data2) => {
 						this.setState({
 							users: this.state.users
 								? this.state.users.concat(data2.items)
@@ -80,7 +80,7 @@ export default class UserNote extends React.Component {
 			user: this.props.id,
 		};
 
-		postRequest.call(this, endpoints.openxeco + "note/add_note", params, () => {
+		postRequest.call(this, getOpenxecoEndpoint() + "note/add_note", params, () => {
 			if (close) {
 				close();
 			}

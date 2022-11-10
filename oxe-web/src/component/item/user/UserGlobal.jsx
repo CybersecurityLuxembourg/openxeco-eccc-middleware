@@ -4,7 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
-import { endpoints } from "../../../settings.jsx";
+import { getOpenxecoEndpoint } from "../../../utils/env.jsx";
 
 export default class UserGlobal extends React.Component {
 	constructor(props) {
@@ -20,7 +20,7 @@ export default class UserGlobal extends React.Component {
 	}
 
 	refresh() {
-		getRequest.call(this, endpoints.openxeco + "user/get_user/" + this.props.id, (data) => {
+		getRequest.call(this, getOpenxecoEndpoint() + "user/get_user/" + this.props.id, (data) => {
 			this.setState({
 				user: data,
 			});
@@ -38,7 +38,7 @@ export default class UserGlobal extends React.Component {
 				[prop]: value,
 			};
 
-			postRequest.call(this, endpoints.openxeco + "user/update_user", params, () => {
+			postRequest.call(this, getOpenxecoEndpoint() + "user/update_user", params, () => {
 				const user = { ...this.state.user };
 
 				user[prop] = value;

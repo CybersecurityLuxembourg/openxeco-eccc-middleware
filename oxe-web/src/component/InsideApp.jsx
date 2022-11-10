@@ -7,7 +7,7 @@ import Menu from "./bar/Menu.jsx";
 import Loading from "./box/Loading.jsx";
 import PageDashboard from "./page/PageDashboard.jsx";
 import PageRegistration from "./page/PageRegistration.jsx";
-import { endpoints } from "../settings.jsx";
+import { getOpenxecoEndpoint } from "../utils/env.jsx";
 
 export default class InsideApp extends React.Component {
 	constructor(props) {
@@ -33,7 +33,7 @@ export default class InsideApp extends React.Component {
 	}
 
 	refreshSettings(afterRefresh) {
-		getRequest.call(this, endpoints.openxeco + "public/get_public_settings", (data) => {
+		getRequest.call(this, getOpenxecoEndpoint() + "public/get_public_settings", (data) => {
 			this.setState({
 				settings: data,
 			}, () => {
@@ -54,13 +54,13 @@ export default class InsideApp extends React.Component {
 				userGroupAssignments: null,
 				userGroupRights: null,
 			}, () => {
-				getRequest.call(this, endpoints.openxeco + "user/get_user_group_assignments", (data) => {
+				getRequest.call(this, getOpenxecoEndpoint() + "user/get_user_group_assignments", (data) => {
 					this.setState({
 						userGroupAssignments: data.filter((a) => a.user_id === this.props.user).pop()
 							|| "No group found for this user",
 					}, () => {
 						if (typeof this.state.userGroupAssignments === "object") {
-							getRequest.call(this, endpoints.openxeco + "user/get_user_group_rights/"
+							getRequest.call(this, getOpenxecoEndpoint() + "user/get_user_group_rights/"
 								+ this.state.userGroupAssignments.group_id, (data2) => {
 								this.setState({
 									userGroupRights: data2,
@@ -94,7 +94,7 @@ export default class InsideApp extends React.Component {
 	}
 
 	render() {
-		if (!this.state.settings || !endpoints.openxeco || !endpoints.eccc) {
+		if (!this.state.settings || !getOpenxecoEndpoint()) {
 			return <Loading/>;
 		}
 

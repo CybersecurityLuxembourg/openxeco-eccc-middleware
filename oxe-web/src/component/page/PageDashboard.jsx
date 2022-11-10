@@ -1,7 +1,7 @@
 import React from "react";
 import "./PageDashboard.css";
 import { getRequest } from "../../utils/request.jsx";
-import { endpoints } from "../../settings.jsx";
+import { getOpenxecoEndpoint, getMiddlewareEndpoint } from "../../utils/env.jsx";
 import Loading from "../box/Loading.jsx";
 import Info from "../box/Info.jsx";
 import Warning from "../box/Warning.jsx";
@@ -45,7 +45,7 @@ export default class PageDashboard extends React.Component {
 	}
 
 	requestOxeEndpoint() {
-		const url = endpoints.openxeco + "healthz";
+		const url = getOpenxecoEndpoint() + "healthz";
 
 		getRequest.call(this, url, () => {
 			this.setState({
@@ -63,7 +63,7 @@ export default class PageDashboard extends React.Component {
 	}
 
 	requestEcccEndpoint() {
-		const url = endpoints.middleware + "eccc/get_status";
+		const url = getMiddlewareEndpoint() + "eccc/get_status";
 
 		getRequest.call(this, url, (data) => {
 			this.setState({
@@ -81,7 +81,7 @@ export default class PageDashboard extends React.Component {
 	}
 
 	requestMiddlewareEndpoint() {
-		const url = endpoints.middleware + "healthz";
+		const url = getMiddlewareEndpoint() + "healthz";
 
 		getRequest.call(this, url, () => {
 			this.setState({

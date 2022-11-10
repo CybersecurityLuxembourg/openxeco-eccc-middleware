@@ -4,7 +4,8 @@ import { NotificationManager as nm } from "react-notifications";
 import Loading from "../../box/Loading.jsx";
 import Info from "../../box/Info.jsx";
 import Warning from "../../box/Warning.jsx";
-import { endpoints, formQuestions, formReference } from "../../../settings.jsx";
+import { getFormQuestions, getFormReference } from "../../../utils/registration.jsx";
+import { getOpenxecoEndpoint } from "../../../utils/env.jsx";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 
@@ -21,14 +22,14 @@ export default class RegistrationStatus extends React.Component {
 			name: "ECCC membership registration",
 		};
 
-		postRequest.call(this, endpoints.openxeco + "form/add_form", params, (form) => {
+		postRequest.call(this, getOpenxecoEndpoint + "form/add_form", params, (form) => {
 			params = {
 				id: form.id,
-				reference: formReference,
+				reference: getFormReference(),
 				status: "INACTIVE",
 			};
 
-			postRequest.call(this, endpoints.openxeco + "form/update_form", params, () => {
+			postRequest.call(this, getOpenxecoEndpoint + "form/update_form", params, () => {
 				if (this.props.refreshFormAndQuestions) {
 					this.props.refreshFormAndQuestions();
 				}
@@ -50,9 +51,9 @@ export default class RegistrationStatus extends React.Component {
 
 	generateQuestions() {
 		if (this.props.form) {
-			getRequest.call(this, endpoints.openxeco + "form/get_form_questions?form_id=" + this.props.form.id, (questions) => {
+			getRequest.call(this, getOpenxecoEndpoint + "form/get_form_questions?form_id=" + this.props.form.id, (questions) => {
 				const existingQuestionReferences = questions.map((q) => q.reference);
-				const questionToCreate = formQuestions
+				const questionToCreate = getFormQuestions()
 					.filter((q) => !existingQuestionReferences.includes(q.reference));
 
 				for (let i = 0; i < questionToCreate.length; i++) {
@@ -80,14 +81,16 @@ export default class RegistrationStatus extends React.Component {
 			form_id: formId,
 		};
 
-		postRequest.call(this, endpoints.openxeco + "form/add_form_question", params1, (question) => {
+		postRequest.call(this, getOpenxecoEndpoint + "form/add_form_question", params1, (question) => {
 			const params2 = {
 				id: question.id,
 				status: "ACTIVE",
 				...questionToCreate,
 			};
 
-			postRequest.call(this, endpoints.openxeco + "form/update_form_question", params2, () => {
+			delete params2.mandatory;
+
+			postRequest.call(this, getOpenxecoEndpoint + "form/update_form_question", params2, () => {
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -102,7 +105,7 @@ export default class RegistrationStatus extends React.Component {
 
 	reorderQuestions() {
 		if (this.props.form) {
-			getRequest.call(this, endpoints.openxeco + "form/get_form_questions?form_id=" + this.props.form.id, (questions) => {
+			getRequest.call(this, getOpenxecoEndpoint + "form/get_form_questions?form_id=" + this.props.form.id, (questions) => {
 				const existingReferences = questions.map((q) => q.reference);
 				const references = this.props.formQuestions.map((q) => q.reference);
 				let positions = references
@@ -115,7 +118,7 @@ export default class RegistrationStatus extends React.Component {
 					question_order: positions,
 				};
 
-				postRequest.call(this, endpoints.openxeco + "form/update_form_question_order", params, () => {
+				postRequest.call(this, getOpenxecoEndpoint + "form/update_form_question_order", params, () => {
 					nm.info("The questions has been reordered");
 				}, (response) => {
 					nm.warning(response.statusText);
@@ -139,8 +142,8 @@ export default class RegistrationStatus extends React.Component {
 	getQuestionBoxes() {
 		let boxes = [];
 
-		for (let i = 0; i < formQuestions.length; i++) {
-			boxes.push(this.getQuestionBox(formQuestions[i]));
+		for (let i = 0; i < getFormQuestions().length; i++) {
+			boxes.push(this.getQuestionBox(getFormQuestions()[i]));
 		}
 
 		boxes = boxes.filter((b) => b);
@@ -177,7 +180,7 @@ export default class RegistrationStatus extends React.Component {
 	}
 
 	getExtraWarningBoxes() {
-		if (!this.props.formQuestions || !formQuestions) {
+		if (!this.props.formQuestions || !getFormQuestions()) {
 			return [];
 		}
 
@@ -187,7 +190,7 @@ export default class RegistrationStatus extends React.Component {
 
 		for (let i = 0; i < this.props.formQuestions.length; i++) {
 			const question = this.props.formQuestions[i];
-			const references = formQuestions.map((r) => r.reference);
+			const references = getFormQuestions().map((r) => r.reference);
 
 			if (!question.reference) {
 				warnings.push("No reference found for a question");

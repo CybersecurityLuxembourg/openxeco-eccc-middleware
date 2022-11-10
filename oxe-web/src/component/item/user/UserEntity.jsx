@@ -6,7 +6,7 @@ import Loading from "../../box/Loading.jsx";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
-import { endpoints } from "../../../settings.jsx";
+import { getOpenxecoEndpoint } from "../../../utils/env.jsx";
 
 export default class UserEntity extends React.Component {
 	constructor(props) {
@@ -27,7 +27,7 @@ export default class UserEntity extends React.Component {
 	}
 
 	refresh() {
-		getRequest.call(this, endpoints.openxeco + "user/get_user_entity_enums", (data) => {
+		getRequest.call(this, getOpenxecoEndpoint() + "user/get_user_entity_enums", (data) => {
 			this.setState({
 				userEntitiesEnums: data,
 			});
@@ -37,7 +37,7 @@ export default class UserEntity extends React.Component {
 			nm.error(error.message);
 		});
 
-		getRequest.call(this, endpoints.openxeco + "user/get_user_entities/" + this.props.id, (data) => {
+		getRequest.call(this, getOpenxecoEndpoint() + "user/get_user_entities/" + this.props.id, (data) => {
 			this.setState({
 				userEntities: data,
 			});
@@ -49,7 +49,7 @@ export default class UserEntity extends React.Component {
 	}
 
 	getAllEntities() {
-		getRequest.call(this, endpoints.openxeco + "entity/get_entities", (data) => {
+		getRequest.call(this, getOpenxecoEndpoint() + "entity/get_entities", (data) => {
 			this.setState({
 				allEntities: data,
 			});
@@ -67,7 +67,7 @@ export default class UserEntity extends React.Component {
 			department: this.state.selectedDepartment,
 		};
 
-		postRequest.call(this, endpoints.openxeco + "user/add_user_entity", params, () => {
+		postRequest.call(this, getOpenxecoEndpoint() + "user/add_user_entity", params, () => {
 			this.refresh();
 			nm.info("The entity has been added to the user");
 			close();
@@ -86,7 +86,7 @@ export default class UserEntity extends React.Component {
 			entity: id,
 		};
 
-		postRequest.call(this, endpoints.openxeco + "user/delete_user_entity", params, () => {
+		postRequest.call(this, getOpenxecoEndpoint() + "user/delete_user_entity", params, () => {
 			this.refresh();
 			nm.info("The row has been deleted");
 		}, (response) => {
@@ -105,7 +105,7 @@ export default class UserEntity extends React.Component {
 			department,
 		};
 
-		postRequest.call(this, endpoints.openxeco + "user/update_user_entity", params, () => {
+		postRequest.call(this, getOpenxecoEndpoint() + "user/update_user_entity", params, () => {
 			this.refresh();
 			nm.info("The assignment has been updated");
 		}, (response) => {

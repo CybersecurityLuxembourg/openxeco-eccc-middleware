@@ -1,65 +1,323 @@
-// eslint-disable-next-line import/prefer-default-export
-export function getEcccRegistrationFieldValue(obj, ref) {
-	switch (ref) {
-	case "FORM-ECCC-001-Q101":
-		return obj.attributes.title;
-	case "FORM-ECCC-001-Q102":
-		return obj.attributes.field_address.country_code;
-	case "FORM-ECCC-001-Q103":
-		return obj.attributes.field_address.locality;
-	case "FORM-ECCC-001-Q104":
-		return obj.attributes.field_address.address_line1;
-	case "FORM-ECCC-001-Q105":
-		return obj.attributes.field_iot_org_pic;
-	case "FORM-ECCC-001-Q106":
-		return obj.attributes.field_headquarter;
-	case "FORM-ECCC-001-Q107":
-		return obj.attributes.fiels_url;
-	case "FORM-ECCC-001-Q108":
-		return obj.attributes.field_phone_number;
-	case "FORM-ECCC-001-Q109":
-		return obj.attributes.field_general_contact_e_mail;
-	case "FORM-ECCC-001-Q110":
-		return obj.relationships.field_cluster_type;
-	case "FORM-ECCC-001-Q111":
-		return obj.attributes.field_subsidiaries_eu;
-	case "FORM-ECCC-001-Q112":
-		return obj.attributes.field_majority_shares_noneu;
-	case "FORM-ECCC-001-Q113":
-		return obj.attributes.field_article_136_compliance;
-	case "FORM-ECCC-001-Q114":
-		return obj.attributes.field_data_sharing_consent;
-	case "FORM-ECCC-001-Q201":
-		return obj.attributes.field_first_name;
-	case "FORM-ECCC-001-Q202":
-		return obj.attributes.field_family_name;
-	case "FORM-ECCC-001-Q203":
-		return obj.attributes.field_position;
-	case "FORM-ECCC-001-Q204":
-		return obj.attributes.field_representative_gender;
-	case "FORM-ECCC-001-Q205":
-		return obj.attributes.field_e_mail;
-	case "FORM-ECCC-001-Q206":
-		return obj.attributes.field_representative_phone_numbe;
-	case "FORM-ECCC-001-Q207":
-		return obj.attributes.field_representative_expertise;
-	case "FORM-ECCC-001-Q301":
-		return obj.relationships.field_field_of_activity;
-	case "FORM-ECCC-001-Q302":
-		return obj.attributes.field_field_of_activity_descr;
-	case "FORM-ECCC-001-Q303":
-		return obj.relationships.field_cluster_thematic_area;
-	case "FORM-ECCC-001-Q304":
-		return obj.attributes.field_goals_to_achieve;
-	case "FORM-ECCC-001-Q305":
-		return obj.attributes.field_goals_to_contribute;
-	case "FORM-ECCC-001-Q401":
-		return "TODO";
-	case "FORM-ECCC-001-Q402":
-		return "TODO";
-	case "FORM-ECCC-001-Q501":
-		return "<i>INFORMATION NOT STORED AT ECCC LEVEL</i>";
-	default:
-		return "ERROR: VALUE NOT FOUND";
+function getFieldLocation() {
+	return {
+		"FORM-ECCC-001-Q101": "attributes.title",
+		"FORM-ECCC-001-Q102": "attributes.field_address.country_code",
+		"FORM-ECCC-001-Q103": "attributes.field_address.locality",
+		"FORM-ECCC-001-Q104": "attributes.field_address.address_line1",
+		"FORM-ECCC-001-Q105": "attributes.field_iot_org_pic",
+		"FORM-ECCC-001-Q106": "attributes.field_headquarter",
+		"FORM-ECCC-001-Q107": "attributes.field_url",
+		"FORM-ECCC-001-Q108": "attributes.field_phone_number",
+		"FORM-ECCC-001-Q109": "attributes.field_general_contact_e_mail",
+		"FORM-ECCC-001-Q110": "relationships.field_cluster_type",
+		"FORM-ECCC-001-Q111": "attributes.field_subsidiaries_eu",
+		"FORM-ECCC-001-Q112": "attributes.field_majority_shares_noneu",
+		"FORM-ECCC-001-Q113": "attributes.field_article_136_compliance",
+		"FORM-ECCC-001-Q114": "attributes.field_data_sharing_consent",
+
+		"FORM-ECCC-001-Q201": "attributes.field_first_name",
+		"FORM-ECCC-001-Q202": "attributes.field_family_name",
+		"FORM-ECCC-001-Q203": "attributes.field_position",
+		"FORM-ECCC-001-Q204": "attributes.field_representative_gender",
+		"FORM-ECCC-001-Q205": "attributes.field_e_mail",
+		"FORM-ECCC-001-Q206": "attributes.field_representative_phone_numbe",
+		"FORM-ECCC-001-Q207": "attributes.field_representative_expertise",
+
+		"FORM-ECCC-001-Q301": "relationships.field_field_of_activity",
+		"FORM-ECCC-001-Q302": "attributes.field_field_of_activity_descr",
+		"FORM-ECCC-001-Q303": "relationships.field_cluster_thematic_area",
+		"FORM-ECCC-001-Q304": "attributes.field_goals_to_achieve",
+		"FORM-ECCC-001-Q305": "attributes.field_goals_to_contribute",
+
+		"FORM-ECCC-001-Q401": null,
+		"FORM-ECCC-001-Q402": null,
+
+		"FORM-ECCC-001-Q501": null,
+	};
+}
+
+function getQuestionReferenceOfAnswer(questions, answer) {
+	const qu = questions.filter((q) => q.id === answer.form_question_id);
+
+	if (qu.length > 0) {
+		return qu[0].reference;
 	}
+
+	return null;
+}
+
+export function getFormReference() {
+	return "FORM-ECCC-001";
+}
+
+export function getFormQuestions(taxonomies) {
+	return [{
+		reference: "FORM-ECCC-001-Q101",
+		position: 1,
+		type: "TEXT",
+		value: "<p><b>Your organisation</b></p><p>Name</p>",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q102",
+		position: 2,
+		type: "SELECT",
+		value: "Address: Country",
+		options: taxonomies && taxonomies.country ? taxonomies.country.join("|") : undefined,
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q103",
+		position: 3,
+		type: "TEXT",
+		value: "Address: Street address",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q104",
+		position: 4,
+		type: "TEXT",
+		value: "Address: City",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q105",
+		position: 5,
+		type: "TEXT",
+		value: "Company/organization registration number",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q106",
+		position: 6,
+		type: "TEXT",
+		value: "Is this your organisation’s main seat / headquarter? (is your organisation a subsidiary of an organisation?)"
+			+ "<br/><br/>"
+			+ "If not, please provide the name and address of the main seat / headquarter",
+	},
+	{
+		reference: "FORM-ECCC-001-Q107",
+		position: 7,
+		type: "TEXT",
+		value: "Website",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q108",
+		position: 8,
+		type: "TEXT",
+		value: "Phone number",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q109",
+		position: 9,
+		type: "TEXT",
+		value: "Email",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q110",
+		position: 10,
+		type: "TEXT",
+		value: "Organisation type",
+		options: taxonomies && taxonomies.cluster_type ? taxonomies.cluster_type.join("|") : undefined,
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q111",
+		position: 11,
+		type: "TEXT",
+		value: "Does your organization have subsidiaries in other EU Member States (including EEA/EFTA countries)"
+			+ "<br/><br/>"
+			+ "If yes, please specify",
+	},
+	{
+		reference: "FORM-ECCC-001-Q112",
+		position: 12,
+		type: "TEXT",
+		value: "Do you hold majority shares of organizations located outside of the Member State (incl.  EEA/EFTA countries)?"
+			+ "<br/><br/>"
+			+ "If yes, please specify",
+	},
+	{
+		reference: "FORM-ECCC-001-Q113",
+		position: 13,
+		type: "CHECKBOX",
+		value: "Does your organization comply to the requirements described in Article 136 of the EU Financial Regulation?  (see Annex 3)",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q114",
+		position: 14,
+		type: "CHECKBOX",
+		value: "Please review and accept the Confidentiality agreement",
+		mandatory: true,
+	},
+
+	{
+		reference: "FORM-ECCC-001-Q201",
+		position: 15,
+		type: "TEXT",
+		value: "<p><b>Representative / Contact Person</b></p><p>First name</p>",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q202",
+		position: 16,
+		type: "TEXT",
+		value: "Family name",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q203",
+		position: 17,
+		type: "TEXT",
+		value: "Position",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q204",
+		position: 18,
+		type: "OPTIONS",
+		value: "Gender",
+		options: "Male|Female|Prefer not to say",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q205",
+		position: 19,
+		type: "TEXT",
+		value: "Email",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q206",
+		position: 20,
+		type: "TEXT",
+		value: "Phone number (personal)",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q207",
+		position: 21,
+		type: "TEXT",
+		value: "Please specify the contact person’s expertise in the field of cybersecurity",
+		mandatory: true,
+	},
+
+	{
+		reference: "FORM-ECCC-001-Q301",
+		position: 22,
+		type: "SELECT",
+		value: "<p><b>Fields of Activity / Expertise</b></p><p>Your organizations expertise in the field of cybersecurity (according to Article 8 (3)</p>",
+		options: taxonomies && taxonomies.field_of_activity ? taxonomies.field_of_activity.join("|") : undefined,
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q302",
+		position: 23,
+		type: "TEXTAREA",
+		value: "Expertise - detail description",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q303",
+		position: 24,
+		type: "SELECT",
+		value: "Expertise according to the Cybersecurity Taxonomy",
+		options: taxonomies && taxonomies.cluster_thematic_area ? taxonomies.cluster_thematic_area.join("|") : undefined,
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q304",
+		position: 25,
+		type: "TEXTAREA",
+		value: "What do you seek to achieve by joining the community?",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q305",
+		position: 26,
+		type: "TEXTAREA",
+		value: "How and in which goals and tasks of community can you contribute?",
+		mandatory: true,
+	},
+
+	{
+		reference: "FORM-ECCC-001-Q401",
+		position: 27,
+		type: "CHECKBOX",
+		value: "<p><b>Disclaimer</b></p><p>Article 9 – Tasks of community</p>",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q402",
+		position: 28,
+		type: "CHECKBOX",
+		value: "GDPR Conformity",
+		mandatory: true,
+	},
+
+	{
+		reference: "FORM-ECCC-001-Q501",
+		position: 29,
+		type: "CHECKBOX",
+		value: "<p><b>Confirmation</b></p><p>I have finished filling the form and accept the answers to be reviewed by the NCC</p>",
+		mandatory: true,
+	},
+	];
+}
+
+export function getEcccRegistrationFieldValue(obj, ref) {
+	if (ref in getFieldLocation() && ref in this.getFieldLocation()[ref]) {
+		const path = getFieldLocation()[ref].split(".");
+		let value = obj;
+
+		for (let i = 0; i < path.length; i++) {
+			if (path[i] in value) {
+				value = value[path[i]];
+			} else {
+				return null;
+			}
+		}
+
+		return value;
+	}
+
+	return null;
+}
+
+export function buildRegistrationBody(questions, answers) {
+	const body = {
+		type: "node--cluster",
+		attributes: {
+			field_address: {},
+		},
+		relationships: {},
+	};
+
+	for (let i = 0; i < answers.length; i++) {
+		const questionReference = getQuestionReferenceOfAnswer(questions, answers[i]);
+
+		if (getFieldLocation()[questionReference]) {
+			const path = getFieldLocation()[questionReference].split(".");
+			let subBody = body;
+
+			for (let y = 0; y < path.length; y++) {
+				if (y < path.length - 1) {
+					if (!(path[y] in subBody)) {
+						subBody[path[y]] = {};
+					}
+
+					subBody = subBody[path[y]];
+				} else {
+					console.log(answers[i].value);
+					subBody[path[y]] = answers[i].value;
+				}
+			}
+		}
+	}
+
+	return body;
 }

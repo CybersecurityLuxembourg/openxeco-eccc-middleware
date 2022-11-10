@@ -3,8 +3,7 @@ import "./Login.css";
 import { NotificationManager as nm } from "react-notifications";
 import FormLine from "./button/FormLine.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
-import { endpoints } from "../settings.jsx";
-import { getCookieOptions } from "../utils/env.jsx";
+import { getOpenxecoEndpoint, getCookieOptions } from "../utils/env.jsx";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -18,24 +17,9 @@ export default class Login extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		this.getEndpoints();
-	}
-
-	getEndpoints() {
-		getRequest.call(this, endpoints.middleware + "get_endpoints", (data) => {
-			Object.assign(endpoints, data);
-			this.checkCookie();
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
-	}
-
 	checkCookie() {
 		if (this.props.cookies.get("access_token_cookie")) {
-			getRequest.call(this, endpoints.openxeco + "private/get_my_user", (data) => {
+			getRequest.call(this, getOpenxecoEndpoint() + "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
 					this.props.connect(data.id);
 				} else {
@@ -56,11 +40,11 @@ export default class Login extends React.Component {
 			password: this.state.password,
 		};
 
-		postRequest.call(this, endpoints.openxeco + "account/login", params, (response) => {
+		postRequest.call(this, getOpenxecoEndpoint() + "account/login", params, (response) => {
 			// TODO use httponly cookies
 			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
 
-			getRequest.call(this, endpoints.openxeco + "private/get_my_user", (data) => {
+			getRequest.call(this, getOpenxecoEndpoint() + "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
 					this.props.connect(response.user);
 				} else {
@@ -94,16 +78,16 @@ export default class Login extends React.Component {
 			<div id="Login">
 				<div id="Login-area">
 					<ul className="Login-circles">
-						<li style={{ backgroundImage: "url(" + endpoints.openxeco + "public/get_public_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + endpoints.openxeco + "public/get_public_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + endpoints.openxeco + "public/get_public_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + endpoints.openxeco + "public/get_public_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + endpoints.openxeco + "public/get_public_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + endpoints.openxeco + "public/get_public_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + endpoints.openxeco + "public/get_public_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + endpoints.openxeco + "public/get_public_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + endpoints.openxeco + "public/get_public_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + endpoints.openxeco + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getOpenxecoEndpoint() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getOpenxecoEndpoint() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getOpenxecoEndpoint() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getOpenxecoEndpoint() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getOpenxecoEndpoint() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getOpenxecoEndpoint() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getOpenxecoEndpoint() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getOpenxecoEndpoint() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getOpenxecoEndpoint() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getOpenxecoEndpoint() + "public/get_public_image/logo.png)" }}></li>
 					</ul>
 				</div>
 				<div id="Login-box" className={"fade-in"}>

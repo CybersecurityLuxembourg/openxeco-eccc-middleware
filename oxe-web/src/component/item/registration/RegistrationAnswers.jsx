@@ -2,8 +2,7 @@ import React from "react";
 import "./RegistrationAnswers.css";
 import dompurify from "dompurify";
 import Message from "../../box/Message.jsx";
-import { getEcccRegistrationFieldValue } from "../../../utils/registration.jsx";
-import { formQuestions } from "../../../settings.jsx";
+import { getEcccRegistrationFieldValue, getFormQuestions } from "../../../utils/registration.jsx";
 
 export default class RegistrationAnswers extends React.Component {
 	constructor(props) {
@@ -32,7 +31,7 @@ export default class RegistrationAnswers extends React.Component {
 	}
 
 	isFieldValueMissing(question) {
-		const questions = formQuestions.filter((q) => q.reference === question.reference);
+		const questions = getFormQuestions().filter((q) => q.reference === question.reference);
 
 		if (questions.length > 0) {
 			if ((!this.getAnswerOfQuestion(question.id) || !this.getAnswerOfQuestion(question.id).value)
