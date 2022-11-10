@@ -53,7 +53,7 @@ class UpdateRegistration(MethodResource, Resource):
                 if r.attributes.field_iot_org_pic == kwargs["body"]["attributes"]["field_iot_org_pic"]
             ]
         except Exception:
-            return "", "500 Fail to parse the registrations from the ECCC endpoint"
+            return "", "500 Failed to parse the registrations from the ECCC endpoint"
 
         if len(filtered_registrations) == 0:
             return "", "400 Organisation not found with this registration number"
@@ -70,7 +70,7 @@ class UpdateRegistration(MethodResource, Resource):
                 if c.attributes.field_iso_code == kwargs["body"]["attributes"]["field_address"]["country_code"]
             ]
         except Exception:
-            return "", "500 Fail to parse the countries from the ECCC endpoint"
+            return "", "500 Failed to parse the countries from the ECCC endpoint"
 
         if len(filtered_countries) == 0:
             return "", "400 No country found with the provided country code"
@@ -84,7 +84,7 @@ class UpdateRegistration(MethodResource, Resource):
 
         # Body building
 
-        kwargs["body"]["id"] = filtered_registrations[0].id
+        kwargs["body"]["id"] = registration_id
         kwargs["body"]["type"] = "node--cluster"
 
         body = {
