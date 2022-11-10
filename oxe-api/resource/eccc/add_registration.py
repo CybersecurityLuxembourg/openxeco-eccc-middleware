@@ -45,15 +45,15 @@ class AddRegistration(MethodResource, Resource):
         # Checking if organisation with same registration number is not existing
 
         registrations = get_request_eccc("jsonapi/node/cluster")
-        registrations = json.loads(registrations.content)
+        registrations = json.loads(registrations.content)["data"]
 
         try:
             filtered_registrations = [
                 r for r in registrations
-                if r.attributes.field_iot_org_pic == kwargs["body"]["attributes"]["field_iot_org_pic"]
+                if r["attributes"]["field_iot_org_pic"] == kwargs["body"]["attributes"]["field_iot_org_pic"]
             ]
         except Exception:
-            return "", "500 Fail to parse the registrations from the ECCC endpoint"
+            return "", "500 Failed to parse the registrations from the ECCC endpoint"
 
         if len(filtered_registrations) > 0:
             return "", "400 Organisation already existing with this registration number"
@@ -61,14 +61,15 @@ class AddRegistration(MethodResource, Resource):
         # Copying country in mandatory field
 
         eccc_countries = get_request_eccc("jsonapi/taxonomy_term/country")
+        eccc_countries = json.loads(eccc_countries.content)["data"]
 
         try:
             filtered_countries = [
-                c for c in eccc_countries.data
-                if c.attributes.field_iso_code == kwargs["body"]["attributes"]["field_address"]["country_code"]
+                c for c in eccc_countries
+                if c["attributes"]["field_iso_code"] == kwargs["body"]["attributes"]["field_address"]["country_code"]
             ]
         except Exception:
-            return "", "500 Fail to parse the countries from the ECCC endpoint"
+            return "", "500 Failed to parse the countries from the ECCC endpoint"
 
         if len(filtered_countries) == 0:
             return "", "400 No country found with the provided country code"
