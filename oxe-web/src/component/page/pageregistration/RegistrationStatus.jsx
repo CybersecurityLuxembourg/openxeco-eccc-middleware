@@ -14,6 +14,12 @@ export default class RegistrationStatus extends React.Component {
 		super(props);
 
 		this.state = {
+			requiredTaxonomies: {
+				country: "Countries",
+				cluster_type: "Cluster types",
+				cluster_thematic_area: "Cluster thematic areas",
+				fields_of_activity: "Fields of activity",
+			},
 		};
 	}
 
@@ -22,14 +28,14 @@ export default class RegistrationStatus extends React.Component {
 			name: "ECCC membership registration",
 		};
 
-		postRequest.call(this, getOpenxecoEndpoint + "form/add_form", params, (form) => {
+		postRequest.call(this, getOpenxecoEndpoint() + "form/add_form", params, (form) => {
 			params = {
 				id: form.id,
 				reference: getFormReference(),
 				status: "INACTIVE",
 			};
 
-			postRequest.call(this, getOpenxecoEndpoint + "form/update_form", params, () => {
+			postRequest.call(this, getOpenxecoEndpoint() + "form/update_form", params, () => {
 				if (this.props.refreshFormAndQuestions) {
 					this.props.refreshFormAndQuestions();
 				}
@@ -51,9 +57,9 @@ export default class RegistrationStatus extends React.Component {
 
 	generateQuestions() {
 		if (this.props.form) {
-			getRequest.call(this, getOpenxecoEndpoint + "form/get_form_questions?form_id=" + this.props.form.id, (questions) => {
+			getRequest.call(this, getOpenxecoEndpoint() + "form/get_form_questions?form_id=" + this.props.form.id, (questions) => {
 				const existingQuestionReferences = questions.map((q) => q.reference);
-				const questionToCreate = getFormQuestions()
+				const questionToCreate = getFormQuestions(this.props.ecccTaxonomies)
 					.filter((q) => !existingQuestionReferences.includes(q.reference));
 
 				for (let i = 0; i < questionToCreate.length; i++) {
@@ -61,7 +67,7 @@ export default class RegistrationStatus extends React.Component {
 				}
 
 				this.reorderQuestions();
-				nm.warning("The form questions have been generated. Please refresh");
+				nm.info("The form questions have been generated. Please refresh");
 			}, (response) => {
 				this.setState({
 					userGroupAssignments: response.statusText,
@@ -81,7 +87,7 @@ export default class RegistrationStatus extends React.Component {
 			form_id: formId,
 		};
 
-		postRequest.call(this, getOpenxecoEndpoint + "form/add_form_question", params1, (question) => {
+		postRequest.call(this, getOpenxecoEndpoint() + "form/add_form_question", params1, (question) => {
 			const params2 = {
 				id: question.id,
 				status: "ACTIVE",
@@ -90,7 +96,7 @@ export default class RegistrationStatus extends React.Component {
 
 			delete params2.mandatory;
 
-			postRequest.call(this, getOpenxecoEndpoint + "form/update_form_question", params2, () => {
+			postRequest.call(this, getOpenxecoEndpoint() + "form/update_form_question", params2, () => {
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -105,7 +111,7 @@ export default class RegistrationStatus extends React.Component {
 
 	reorderQuestions() {
 		if (this.props.form) {
-			getRequest.call(this, getOpenxecoEndpoint + "form/get_form_questions?form_id=" + this.props.form.id, (questions) => {
+			getRequest.call(this, getOpenxecoEndpoint() + "form/get_form_questions?form_id=" + this.props.form.id, (questions) => {
 				const existingReferences = questions.map((q) => q.reference);
 				const references = this.props.formQuestions.map((q) => q.reference);
 				let positions = references
@@ -118,7 +124,7 @@ export default class RegistrationStatus extends React.Component {
 					question_order: positions,
 				};
 
-				postRequest.call(this, getOpenxecoEndpoint + "form/update_form_question_order", params, () => {
+				postRequest.call(this, getOpenxecoEndpoint() + "form/update_form_question_order", params, () => {
 					nm.info("The questions has been reordered");
 				}, (response) => {
 					nm.warning(response.statusText);
@@ -141,9 +147,9 @@ export default class RegistrationStatus extends React.Component {
 
 	getQuestionBoxes() {
 		let boxes = [];
-
+		console.log(getFormQuestions(this.props.ecccTaxonomies));
 		for (let i = 0; i < getFormQuestions().length; i++) {
-			boxes.push(this.getQuestionBox(getFormQuestions()[i]));
+			boxes.push(this.getQuestionBox(getFormQuestions(this.props.ecccTaxonomies)[i]));
 		}
 
 		boxes = boxes.filter((b) => b);
@@ -219,14 +225,8 @@ export default class RegistrationStatus extends React.Component {
 		return (
 			<div id="RegistrationStatus" className="max-sized-page">
 				<div className={"row"}>
-					<div className="col-md-12">
-						<h1>Status</h1>
-					</div>
-				</div>
-
-				<div className={"row row-spaced"}>
 					<div className="col-md-9">
-						<h2>openXeco form configuration</h2>
+						<h1>Status</h1>
 					</div>
 
 					<div className="col-md-3">
@@ -238,6 +238,45 @@ export default class RegistrationStatus extends React.Component {
 								<span><i className="fas fa-redo-alt"/></span>
 							</button>
 						</div>
+					</div>
+				</div>
+
+				<div className={"row row-spaced"}>
+					<div className="col-md-12">
+						<h2>Required ECCC taxonomies</h2>
+					</div>
+
+					{this.props.ecccTaxonomies
+						&& Object.keys(this.state.requiredTaxonomies).map((k) => (
+							<div className="col-md-6" key={k}>
+								<h3>Taxonomy: {this.state.requiredTaxonomies[k]}</h3>
+
+								{this.props.ecccTaxonomies[k] && this.props.ecccTaxonomies[k].length > 0
+									? <Info
+										content={"Taxonomy found and complete"}
+										height={50}
+									/>
+									: <Warning
+										content={"Taxonomy not found or empty"}
+										height={50}
+									/>
+								}
+							</div>
+						))
+					}
+
+					{!this.props.ecccTaxonomies
+						&& <div className="col-md-12">
+							<Loading
+								height={50}
+							/>
+						</div>
+					}
+				</div>
+
+				<div className={"row row-spaced"}>
+					<div className="col-md-12">
+						<h2>openXeco form configuration</h2>
 					</div>
 
 					<div className="col-md-12">

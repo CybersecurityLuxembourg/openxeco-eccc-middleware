@@ -6,7 +6,7 @@ import RegistrationManage from "./pageregistration/RegistrationManage.jsx";
 import Tab from "../tab/Tab.jsx";
 import { dictToURI } from "../../utils/url.jsx";
 import { getRequest } from "../../utils/request.jsx";
-import { getOpenxecoEndpoint } from "../../utils/env.jsx";
+import { getOpenxecoEndpoint, getMiddlewareEndpoint } from "../../utils/env.jsx";
 import { getFormReference } from "../../utils/registration.jsx";
 
 export default class PageRegistration extends React.Component {
@@ -16,6 +16,7 @@ export default class PageRegistration extends React.Component {
 		this.state = {
 			form: null,
 			formQuestions: null,
+			ecccTaxonomies: null,
 
 			tabs: [
 				"status",
@@ -25,10 +26,32 @@ export default class PageRegistration extends React.Component {
 	}
 
 	componentDidMount() {
-		this.refreshFormAndQuestions();
+		this.refresh();
 	}
 
-	refreshFormAndQuestions() {
+	refresh() {
+		this.getEcccTaxonomies();
+		this.getFormAndQuestions();
+	}
+
+	getEcccTaxonomies() {
+		this.setState({
+			ecccTaxonomies: null,
+		}, () => {
+			getRequest.call(this, getMiddlewareEndpoint() + "eccc/get_taxonomies", (data) => {
+				console.log(data);
+				this.setState({
+					ecccTaxonomies: data,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		});
+	}
+
+	getFormAndQuestions() {
 		this.setState({
 			form: null,
 			formQuestions: null,
@@ -78,12 +101,14 @@ export default class PageRegistration extends React.Component {
 							key={this.state.tabs[0]}
 							form={this.state.form}
 							formQuestions={this.state.formQuestions}
-							refreshFormAndQuestions={() => this.refreshFormAndQuestions()}
+							ecccTaxonomies={this.state.ecccTaxonomies}
+							refreshFormAndQuestions={() => this.refresh()}
 						/>,
 						<RegistrationManage
 							key={this.state.tabs[1]}
 							form={this.state.form}
 							formQuestions={this.state.formQuestions}
+							ecccTaxonomies={this.state.ecccTaxonomies}
 						/>,
 					]}
 				/>

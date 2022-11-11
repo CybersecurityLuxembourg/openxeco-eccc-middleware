@@ -25,13 +25,13 @@ class GetTaxonomies(MethodResource, Resource):
             "country",
             "cluster_type",
             "cluster_thematic_area",
-            "field_of_activity"
+            "fields_of_activity"
         ]
 
         for t in taxonomies:
-            r = get_request_eccc(f"taxonomy_term/{t}")
+            r = get_request_eccc(f"jsonapi/taxonomy_term/{t}")
             r = json.loads(r.content)
 
-            data[t] = [a["attributes"]["name"] for a in r.data]
+            data[t] = [a["attributes"]["name"] for a in r["data"]]
 
         return data, "200 "

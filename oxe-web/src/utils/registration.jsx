@@ -179,7 +179,7 @@ export function getFormQuestions(taxonomies) {
 	{
 		reference: "FORM-ECCC-001-Q204",
 		position: 18,
-		type: "OPTIONS",
+		type: "SELECT",
 		value: "Gender",
 		options: "Male|Female|Prefer not to say",
 		mandatory: true,
@@ -209,9 +209,9 @@ export function getFormQuestions(taxonomies) {
 	{
 		reference: "FORM-ECCC-001-Q301",
 		position: 22,
-		type: "SELECT",
+		type: "OPTIONS",
 		value: "<p><b>Fields of Activity / Expertise</b></p><p>Your organizations expertise in the field of cybersecurity (according to Article 8 (3)</p>",
-		options: taxonomies && taxonomies.field_of_activity ? taxonomies.field_of_activity.join("|") : undefined,
+		options: taxonomies && taxonomies.fields_of_activity ? taxonomies.fields_of_activity.join("|") : undefined,
 		mandatory: true,
 	},
 	{
@@ -224,7 +224,7 @@ export function getFormQuestions(taxonomies) {
 	{
 		reference: "FORM-ECCC-001-Q303",
 		position: 24,
-		type: "SELECT",
+		type: "OPTIONS",
 		value: "Expertise according to the Cybersecurity Taxonomy",
 		options: taxonomies && taxonomies.cluster_thematic_area ? taxonomies.cluster_thematic_area.join("|") : undefined,
 		mandatory: true,
