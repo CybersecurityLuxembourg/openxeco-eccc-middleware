@@ -36,11 +36,11 @@ function getFieldLocation() {
 	};
 }
 
-function getQuestionReferenceOfAnswer(questions, answer) {
+function getQuestionOfAnswer(questions, answer) {
 	const qu = questions.filter((q) => q.id === answer.form_question_id);
 
 	if (qu.length > 0) {
-		return qu[0].reference;
+		return qu[0];
 	}
 
 	return null;
@@ -298,10 +298,10 @@ export function buildRegistrationBody(questions, answers) {
 	};
 
 	for (let i = 0; i < answers.length; i++) {
-		const questionReference = getQuestionReferenceOfAnswer(questions, answers[i]);
+		const question = getQuestionOfAnswer(questions, answers[i]);
 
-		if (getFieldLocation()[questionReference]) {
-			const path = getFieldLocation()[questionReference].split(".");
+		if (getFieldLocation()[question.reference]) {
+			const path = getFieldLocation()[question.reference].split(".");
 			let subBody = body;
 
 			for (let y = 0; y < path.length; y++) {
@@ -311,8 +311,9 @@ export function buildRegistrationBody(questions, answers) {
 					}
 
 					subBody = subBody[path[y]];
+				} else if (question.type === "CHECKBOX") {
+					subBody[path[y]] = answers[i].value === "TRUE";
 				} else {
-					console.log(answers[i].value);
 					subBody[path[y]] = answers[i].value;
 				}
 			}

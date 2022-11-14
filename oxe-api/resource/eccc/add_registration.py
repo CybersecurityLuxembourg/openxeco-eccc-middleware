@@ -8,6 +8,11 @@ import json
 from decorator.catch_exception import catch_exception
 from utils.request import post_request_eccc
 from utils.request import get_request_eccc
+from utils.registration import \
+    manage_country, \
+    manage_cluster_thematic_areas, \
+    manage_cluster_types, \
+    manage_fields_of_activity
 
 
 class AddRegistration(MethodResource, Resource):
@@ -58,28 +63,12 @@ class AddRegistration(MethodResource, Resource):
         if len(filtered_registrations) > 0:
             return "", "400 Organisation already existing with this registration number"
 
-        # Copying country in mandatory field
+        # Manage taxonomy values in body
 
-        eccc_countries = get_request_eccc("jsonapi/taxonomy_term/country")
-        eccc_countries = json.loads(eccc_countries.content)["data"]
-
-        try:
-            filtered_countries = [
-                c for c in eccc_countries
-                if c["attributes"]["field_iso_code"] == kwargs["body"]["attributes"]["field_address"]["country_code"]
-            ]
-        except Exception:
-            return "", "500 Failed to parse the countries from the ECCC endpoint"
-
-        if len(filtered_countries) == 0:
-            return "", "400 No country found with the provided country code"
-
-        kwargs["body"]["relationships"]["field_country"] = {
-            "data": {
-                "type": "taxonomy_term--country",
-                "id": filtered_countries[0].id
-            }
-        }
+        kwargs = manage_country(kwargs)
+        kwargs = manage_cluster_types(kwargs)
+        kwargs = manage_cluster_thematic_areas(kwargs)
+        kwargs = manage_fields_of_activity(kwargs)
 
         # Body building
 
