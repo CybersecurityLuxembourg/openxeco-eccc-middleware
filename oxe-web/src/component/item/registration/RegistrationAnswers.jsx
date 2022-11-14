@@ -27,7 +27,10 @@ export default class RegistrationAnswers extends React.Component {
 			return getEcccRegistrationFieldValue(this.props.ecccObject, questionId);
 		}
 
-		return "Not synchronized";
+		return <Message
+			height={30}
+			content="Not synchronized"
+		/>;
 	}
 
 	isFieldValueMissing(question) {
@@ -74,10 +77,11 @@ export default class RegistrationAnswers extends React.Component {
 										{this.getAnswerOfQuestion(q.id) && this.getAnswerOfQuestion(q.id).value
 											? <div dangerouslySetInnerHTML={{
 												__html:
-												dompurify.sanitize(this.getAnswerOfQuestion(q.id).value),
+												dompurify.sanitize(this.getAnswerOfQuestion(q.id).value.replaceAll("\n", "<br/>")),
 											}} />
 											: <Message
-												text="No answer found"
+												height={30}
+												content="No answer found"
 											/>}
 									</fieldset>
 								</div>

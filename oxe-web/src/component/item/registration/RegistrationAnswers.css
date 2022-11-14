@@ -23,3 +23,8 @@
     font-size: 13px;
     padding-left: 3px;
 }
+
+.RegistratioAnswer-answer .Message-text {
+    color: #BBB !important;
+    font-size: 12px;
+}
