@@ -14,7 +14,7 @@ https://github.com/CybersecurityLuxembourg/openxeco-core/blob/main/README.md#for
 
 ## Edit the environment variables
 
-The project is using the python-dotenv package so you can copy and adjust the local file *openxeco-core/oxe-api/.env.example* with such content:
+The project is using the python-dotenv package so you can copy and adjust the local file *openxeco-eccc-middleware/oxe-api/.env.example* with such content:
 
 .env.example
 ```

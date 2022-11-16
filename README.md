@@ -55,7 +55,7 @@
 To set up the dev environment, please see those sub-project README files:
 
 - [oxe-api/README.md](oxe-api/README.md)
-- [oxe-web/README.md](oxe-web-admin/README.md)
+- [oxe-web/README.md](oxe-web/README.md)
 
 ## For testers
 
@@ -84,7 +84,7 @@ $ newgrp docker
 $ docker network create openxeco
 $ docker build \
     -f openxeco-eccc-middleware-oxe-web/Dockerfile \
-    -t oxe-web-admin \
+    -t oxe-web \
     --build-arg TARGET_DIR=openxeco-eccc-middleware-oxe-web \
     https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/releases/latest/download/openxeco-eccc-middleware-oxe-web.tar.gz
 $ docker run -d -p 3000:80 oxe-web
