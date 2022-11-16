@@ -6,35 +6,25 @@
 </tr>
 <tr>
   <td>Container builder</td>
-  <td><a href="https://github.com/CybersecurityLuxembourg/openxeco/actions/workflows/oxe-api_docker.yml"><img src="https://github.com/CybersecurityLuxembourg/openxeco/actions/workflows/oxe-api_docker.yml/badge.svg" /></a></td>
+  <td><a href="https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/actions/workflows/oxe-api_docker.yml"><img src="https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/actions/workflows/oxe-api_docker.yml/badge.svg" /></a></td>
 </tr>
 <tr>
   <td>Bandit Workflow</td>
-  <td><a href="https://github.com/CybersecurityLuxembourg/openxeco/actions/workflows/oxe-api_pycqa-bandit.yml"><img src="https://github.com/CybersecurityLuxembourg/openxeco/actions/workflows/oxe-api_pycqa-bandit.yml/badge.svg" /></a></td>
+  <td><a href="https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/actions/workflows/oxe-api_pycqa-bandit.yml"><img src="https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/actions/workflows/oxe-api_pycqa-bandit.yml/badge.svg" /></a></td>
 </tr>
 <tr>
   <td>Prospector Workflow</td>
-  <td><a href="https://github.com/CybersecurityLuxembourg/openxeco/actions/workflows/oxe-api_pycqa-prospector.yml"><img src="https://github.com/CybersecurityLuxembourg/openxeco/actions/workflows/oxe-api_pycqa-prospector.yml/badge.svg" /></a></td>
+  <td><a href="https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/actions/workflows/oxe-api_pycqa-prospector.yml"><img src="https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/actions/workflows/oxe-api_pycqa-prospector.yml/badge.svg" /></a></td>
 </tr>
 </table>
 
 <table>
 <tr>
-  <td>Admin web</td>
+  <td>Web application</td>
 </tr>
 <tr>
   <td>Package builder</td>
-  <td><a href="https://github.com/CybersecurityLuxembourg/openxeco/actions/workflows/oxe-web-admin_package.yml"><img src="https://github.com/CybersecurityLuxembourg/openxeco/actions/workflows/oxe-web-admin_package.yml/badge.svg" /></a></td>
-</tr>
-</table>
-
-<table>
-<tr>
-  <td>Community web</td>
-</tr>
-<tr>
-  <td>Package builder</td>
-  <td><a href="https://github.com/CybersecurityLuxembourg/openxeco/actions/workflows/oxe-web-community_package.yml"><img src="https://github.com/CybersecurityLuxembourg/openxeco/actions/workflows/oxe-web-community_package.yml/badge.svg" /></a></td>
+  <td><a href="https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/actions/workflows/oxe-web_package.yml"><img src="https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/actions/workflows/oxe-web.yml/badge.svg" /></a></td>
 </tr>
 </table>
 
@@ -44,7 +34,7 @@
 </tr>
 <tr>
   <td>FOSSA</td>
-  <td><a href="https://app.fossa.com/projects/git%2Bgithub.com%2FCybersecurityLuxembourg%2Fopenxeco-core?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FCybersecurityLuxembourg%2Fopenxeco-core.svg?type=shield"/></a></td>
+  <td><a href="https://app.fossa.com/projects/git%2Bgithub.com%2FCybersecurityLuxembourg%2Fopenxeco-eccc-middleware?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FCybersecurityLuxembourg%2Fopenxeco-eccc-middleware.svg?type=shield"/></a></td>
 </tr>
 </table>
 
@@ -92,48 +82,20 @@ $ newgrp docker
 
 ```
 $ docker network create openxeco
-$ docker run -d \
-    --network openxeco \
-    --network-alias mariadb \
-    -p 3306:3306 \
-    -e MARIADB_ROOT_PASSWORD=E4syPass \
-    mariadb:10.7.3
-$ docker run -d \
-  --network openxeco \
-  --network-alias smtp \
-  -p 1025:1025 \
-  -p 1080:1080 \
-  reachfive/fake-smtp-server
 $ docker build \
-    -f openxeco-core-oxe-web-admin/Dockerfile \
+    -f openxeco-eccc-middleware-oxe-web/Dockerfile \
     -t oxe-web-admin \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin \
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-admin.tar.gz
-$ docker run -d -p 3000:80 oxe-web-admin
-$ docker build \
-    -f openxeco-core-oxe-web-community/Dockerfile \
-    -t oxe-web-community \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-community \
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-community.tar.gz
-$ docker run -d -p 3001:80 oxe-web-community
+    --build-arg TARGET_DIR=openxeco-eccc-middleware-oxe-web \
+    https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/releases/latest/download/openxeco-eccc-middleware-oxe-web.tar.gz
+$ docker run -d -p 3000:80 oxe-web
 $ docker run -d -p 5000:5000 \
     --network openxeco \
     -e ENVIRONMENT=dev \
     -e JWT_SECRET_KEY=my_secret_developer_key \
-    -e DB_HOSTNAME=mariadb \
-    -e DB_PORT=3306 \
-    -e DB_NAME=OPENXECO \
-    -e DB_USERNAME=root \
-    -e DB_PASSWORD=E4syPass \
-    -e MAIL_SERVER=smtp \
-    -e MAIL_PORT=1025 \
-    -e MAIL_USE_TLS=True \
-    -e MAIL_USE_SSL=False \
-    -e MAIL_DEFAULT_SENDER=my-default-sender@example.org \
-    -e IMAGE_FOLDER=/image_folder \
-    -e DOCUMENT_FOLDER=/document_folder \
-    -e INITIAL_ADMIN_EMAIL=my-default-admin@example.org \
-    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:latest
+    -e OPENXECO_API_ENDPOINT=http://localhost:5000/ \
+    -e ECCC_API_ENDPOINT=http://eccc.example.com/ \
+    -e ECCC_API_KEY=ECCC_EXAMPLE_KEY \
+    ghcr.io/cybersecurityluxembourg/openxeco-eccc-middleware-oxe-api:latest
 ```
 
 ### Enjoy the solution
@@ -142,10 +104,4 @@ Access the user interface:
 - http://localhost:3006
 
 Access the API documentation:
-- http://localhost:5000
-
-## For production server
-
-To set up the production instance, please see this file:
-
-- [doc/INSTALL_SERVER.md](doc/INSTALL_SERVER.md)
+- http://localhost:5002
