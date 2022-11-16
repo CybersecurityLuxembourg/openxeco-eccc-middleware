@@ -4,17 +4,13 @@ All the versions mentioned are the recommended ones.
 
 # Setup development environment
 
-## Create and run the MariaDB container
+## Setup development environment of openxeco-core
 
-```
-# Change 3306 to 3307 if another local MariaDB is installed. Make sure to adapt config files.
-$ docker run -d \
-    --network openxeco \
-    --network-alias mariadb \
-    -p 3306:3306 \
-    -e MARIADB_ROOT_PASSWORD=E4syPass \
-    mariadb:10.7.3
-```
+This project is dependent of the openxeco-core project. It uses the openXeco API 
+
+To know how to deploy openXeco, please see:
+
+https://github.com/CybersecurityLuxembourg/openxeco-core/blob/main/README.md#for-development
 
 ## Edit the environment variables
 
@@ -26,22 +22,10 @@ ENVIRONMENT=dev
 
 JWT_SECRET_KEY=my_secret_developer_key
 
-DB_HOSTNAME=127.0.0.1
-DB_PORT=3306
-DB_NAME=OPENXECO
-DB_USERNAME=root
-DB_PASSWORD=E4syPass
+OPENXECO_API_ENDPOINT=https://api.example.com/
 
-MAIL_SERVER=127.0.0.1
-MAIL_PORT=1025
-MAIL_USE_TLS=False
-MAIL_USE_SSL=False
-MAIL_DEFAULT_SENDER=my-default-sender@example.org
-
-IMAGE_FOLDER=/var/lib/oxe-api/image_folder
-DOCUMENT_FOLDER=/var/lib/oxe-api/document_folder
-
-INITIAL_ADMIN_EMAIL=my-default-admin@example.org
+ECCC_API_ENDPOINT=https://eccc.example.com/
+ECCC_API_KEY=EXAMPLE_OF_KEY
 ```
 
 ## Install Python 3.8.6
@@ -53,8 +37,8 @@ INITIAL_ADMIN_EMAIL=my-default-admin@example.org
 For Linux:
 
 ```bash
-$ git clone https://github.com/CybersecurityLuxembourg/openxeco-core.git
-$ cd openxeco-core/oxe-api
+$ git clone https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware.git
+$ cd openxeco-eccc-middleware/oxe-api
 $ cp .env.example .env # Edit accordingly
 $ sudo apt install python3-venv -y
 $ python3 -m venv venv
@@ -66,7 +50,7 @@ $ pip install -U -r requirements.txt
 For Windows
 
 ```
-> cd %USERPROFILE%\openxeco-core\oxe-api
+> cd %USERPROFILE%\openxeco-eccc-middleware\oxe-api
 > python -m venv venv
 > .\venv\Scripts\activate
 > pip install -U pip setuptools
@@ -79,7 +63,7 @@ You have to make sure that the python environment is active, to double check:
 
 ```
 $ echo ${VIRTUAL_ENV}
-/home/luser/openxeco-core/oxe-api/venv
+/home/luser/openxeco-eccc-middleware/oxe-api/venv
 ```
 
 If not, repeat the steps above.
@@ -89,29 +73,6 @@ If not, repeat the steps above.
 ```
 $ python app.py
 ```
-
-## Mock SMTP server
-
-Some resources of the API requires a SMTP server, you can simulate in local environment with the following command:
-
-```
-$ python -m smtpd -n -c DebuggingServer localhost:1025
-```
-
-### Optional
-
-Alternatively you can use a docker container for the fake SMTP server.
-
-```
-$ docker run -d \
-  --network openxeco \
-  --network-alias smtp \
-  -p 1025:1025 \
-  -p 1080:1080 \
-  reachfive/fake-smtp-server
-```
-
-The mails are retrievable via [http://localhost:1080](http://localhost:1080).
 
 # Test and audit the code
 
@@ -169,9 +130,3 @@ To run the PyCQA/bandit use the command below.
 $ sudo apt install bandit
 $ bandit -r . -x ./test/,./venv/
 ```
-
-# Manage the database structure
-
-The database structure is automatically created/upgraded when starting the API. 
-
-For further information about the structure management, please see the [documentation of Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/).
