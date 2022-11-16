@@ -24,6 +24,6 @@ COPY app.py 		/app/app.py
 COPY config         /app/config
 COPY docker/entrypoint.sh /entrypoint.sh
 
-EXPOSE 5000
+EXPOSE 5002
 
 CMD /entrypoint.sh

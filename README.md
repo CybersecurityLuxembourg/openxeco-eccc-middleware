@@ -87,8 +87,8 @@ $ docker build \
     -t oxe-web \
     --build-arg TARGET_DIR=openxeco-eccc-middleware-oxe-web \
     https://github.com/CybersecurityLuxembourg/openxeco-eccc-middleware/releases/latest/download/openxeco-eccc-middleware-oxe-web.tar.gz
-$ docker run -d -p 3000:80 oxe-web
-$ docker run -d -p 5000:5000 \
+$ docker run -d -p 3006:80 oxe-web
+$ docker run -d -p 5002:5002 \
     --network openxeco \
     -e ENVIRONMENT=dev \
     -e JWT_SECRET_KEY=my_secret_developer_key \
