@@ -4,10 +4,10 @@ services:
     image: "openxeco-api:latest"
     restart: always
     ports:
-      - "5000:5000"
+      - "5002:5002"
     environment:
       DEBUG: "true"
       JWT_SECRET_KEY: "some_random_secret"
-      OPENXECO_API_ENDPOINT: "
-      ECCC_API_ENDPOINT:
-      ECCC_API_KEY:
+      OPENXECO_API_ENDPOINT: "http://localhost:5000/"
+      ECCC_API_ENDPOINT: ""
+      ECCC_API_KEY: ""
