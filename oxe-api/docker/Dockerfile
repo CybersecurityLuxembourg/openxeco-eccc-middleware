@@ -25,3 +25,5 @@ COPY config         /app/config
 COPY docker/entrypoint.sh /entrypoint.sh
 
 EXPOSE 5002
+
+ENTRYPOINT ["tail", "-f", "/dev/null"]
