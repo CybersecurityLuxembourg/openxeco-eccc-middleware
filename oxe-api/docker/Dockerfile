@@ -25,5 +25,3 @@ COPY config         /app/config
 COPY docker/entrypoint.sh /entrypoint.sh
 
 EXPOSE 5002
-
-CMD /entrypoint.sh
