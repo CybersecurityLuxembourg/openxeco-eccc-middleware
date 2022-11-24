@@ -147,7 +147,7 @@ export default class RegistrationStatus extends React.Component {
 
 	getQuestionBoxes() {
 		let boxes = [];
-		console.log(getFormQuestions(this.props.ecccTaxonomies));
+
 		for (let i = 0; i < getFormQuestions().length; i++) {
 			boxes.push(this.getQuestionBox(getFormQuestions(this.props.ecccTaxonomies)[i]));
 		}
@@ -251,13 +251,13 @@ export default class RegistrationStatus extends React.Component {
 							<div className="col-md-6" key={k}>
 								<h3>Taxonomy: {this.state.requiredTaxonomies[k]}</h3>
 
-								{this.props.ecccTaxonomies[k] && this.props.ecccTaxonomies[k].length > 0
+								{this.props.ecccTaxonomies[k]
 									? <Info
 										content={"Taxonomy found and complete"}
 										height={50}
 									/>
 									: <Warning
-										content={"Taxonomy not found or empty"}
+										content={"Taxonomy not found"}
 										height={50}
 									/>
 								}

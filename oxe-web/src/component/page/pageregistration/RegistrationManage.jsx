@@ -3,6 +3,7 @@ import "./RegistrationManage.css";
 import { NotificationManager as nm } from "react-notifications";
 import { dictToURI } from "../../../utils/url.jsx";
 import { getRequest } from "../../../utils/request.jsx";
+import { areValuesEqual } from "../../../utils/registration.jsx";
 import { getOpenxecoEndpoint, getMiddlewareEndpoint } from "../../../utils/env.jsx";
 import Registration from "../../item/Registration.jsx";
 import User from "../../item/User.jsx";
@@ -113,7 +114,7 @@ export default class RegistrationManage extends React.Component {
 			.filter((r) => r.attributes.field_iot_org_pic === orgId);
 
 		if (sel.length > 0) {
-			return sel;
+			return sel[0];
 		}
 
 		return null;
@@ -129,14 +130,22 @@ export default class RegistrationManage extends React.Component {
 			return "ERROR: Unexpected result for ECCC registrations";
 		}
 
-		const sel = this.state.ecccRegistrations.data
+		let ecccObject = this.state.ecccRegistrations.data
 			.filter((r) => r.attributes.field_iot_org_pic === orgId);
 
-		if (sel.length > 0) {
+		if (ecccObject.length > 0) {
+			ecccObject = ecccObject[0];
+
+			for (let i = 0; i < this.props.formQuestions.length; i++) {
+				if (areValuesEqual(this.props.formQuestions[i], ecccObject, this.state.formAnswers)) {
+					return "Uploaded but not synchronized";
+				}
+			}
+
 			return "Synchronized";
 		}
 
-		return "Not synchronized";
+		return "Not uploaded";
 	}
 
 	getRegistrationNumber(userId) {
@@ -221,6 +230,7 @@ export default class RegistrationManage extends React.Component {
 							syncStatus={this.getSynchronisationStatus(
 								this.getRegistrationNumber(value),
 							)}
+							ecccTaxonomies={this.props.ecccTaxonomies}
 							afterUpload={() => this.refresh()}
 						/>
 					</div>

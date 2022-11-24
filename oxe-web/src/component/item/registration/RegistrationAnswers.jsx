@@ -2,7 +2,12 @@ import React from "react";
 import "./RegistrationAnswers.css";
 import dompurify from "dompurify";
 import Message from "../../box/Message.jsx";
-import { getEcccRegistrationFieldValue, getFormQuestions } from "../../../utils/registration.jsx";
+import {
+	getEcccRegistrationFieldValue,
+	getOxeRegistrationFieldValue,
+	getFormQuestions,
+	areValuesEqual,
+} from "../../../utils/registration.jsx";
 
 export default class RegistrationAnswers extends React.Component {
 	constructor(props) {
@@ -24,7 +29,24 @@ export default class RegistrationAnswers extends React.Component {
 
 	getEcccAnswerOfQuestion(questionId) {
 		if (this.props.ecccObject) {
-			return getEcccRegistrationFieldValue(this.props.ecccObject, questionId);
+			const qu = this.props.formQuestions.filter((q) => q.id === questionId);
+
+			if (qu.length > 0) {
+				return <div>
+					{getEcccRegistrationFieldValue(qu[0], this.props.ecccObject, this.props.ecccTaxonomies)
+						? getEcccRegistrationFieldValue(qu[0], this.props.ecccObject, this.props.ecccTaxonomies)
+						: <Message
+							height={30}
+							content="No answer found"
+						/>
+					}
+				</div>;
+			}
+
+			return <Message
+				height={30}
+				content="Question not found"
+			/>;
 		}
 
 		return <Message
@@ -74,10 +96,10 @@ export default class RegistrationAnswers extends React.Component {
 									<fieldset className={"RegistratioAnswer-answer "
 										+ (this.isFieldValueMissing(q) && "RegistratioAnswer-answer-red")}>
 										<legend>openXeco</legend>
-										{this.getAnswerOfQuestion(q.id) && this.getAnswerOfQuestion(q.id).value
+										{getOxeRegistrationFieldValue(q, this.props.formAnswers)
 											? <div dangerouslySetInnerHTML={{
 												__html:
-												dompurify.sanitize(this.getAnswerOfQuestion(q.id).value.replaceAll("\n", "<br/>")),
+												dompurify.sanitize(getOxeRegistrationFieldValue(q, this.props.formAnswers)),
 											}} />
 											: <Message
 												height={30}
@@ -87,7 +109,8 @@ export default class RegistrationAnswers extends React.Component {
 								</div>
 
 								<div className="col-md-6">
-									<fieldset className="RegistratioAnswer-answer">
+									<fieldset className={"RegistratioAnswer-answer "
+										+ (!areValuesEqual(q, this.props.ecccObject, this.props.formAnswers) && "RegistratioAnswer-answer-orange")}>
 										<legend>ECCC</legend>
 
 										{this.getEcccAnswerOfQuestion(q.id)}

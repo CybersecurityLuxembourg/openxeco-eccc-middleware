@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import "./Log.css";
 import Popup from "reactjs-popup";
-import FormLine from "../button/FormLine.jsx";
-import Loading from "../box/Loading.jsx";
-import Message from "../box/Message.jsx";
 
 export default class Log extends Component {
 	constructor(props) {
@@ -11,6 +8,20 @@ export default class Log extends Component {
 
 		this.state = {
 		};
+	}
+
+	parseLog() {
+		if (this.props.content) {
+			if (this.props.content.indexOf("{") >= 0) {
+				try {
+					return <div><pre>{JSON.stringify(JSON.parse(this.props.content.substring(this.props.content.indexOf("{"))), null, 2)}</pre></div>;
+				} catch {
+					return this.props.content;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	render() {
@@ -21,8 +32,8 @@ export default class Log extends Component {
 					<div className={"Log"}>
 						<i className="fas fa-history"/>
 						<div className={"Log-name"}>
-							{this.props.info !== undefined && this.props.info !== null
-								? this.props.info.request + " " + this.props.info.sys_date
+							{this.props.name
+								? this.props.name
 								: "Unfound log"
 							}
 						</div>
@@ -31,12 +42,12 @@ export default class Log extends Component {
 				modal
 				closeOnDocumentClick
 			>
-				{(close) => 
+				{(close) => (
 					<div className="row">
 						<div className="col-md-9">
 							<h1>
-								{this.props.info !== undefined && this.props.info !== null
-									? "Log " + this.props.info.sys_date
+								{this.props.name
+									? this.props.name
 									: "Unfound log"
 								}
 							</h1>
@@ -52,66 +63,11 @@ export default class Log extends Component {
 							</div>
 						</div>
 
-						{this.props.info !== undefined && this.props.info !== null
-							? <div className="col-md-12">
-								<FormLine
-									label={"Resource"}
-									value={this.props.info.request}
-									disabled={true}
-								/>
-								<FormLine
-									label={"Method"}
-									value={this.props.info.request_method}
-									disabled={true}
-								/>
-								<FormLine
-									label={"Status code"}
-									value={this.props.info.status_code}
-									disabled={true}
-								/>
-								<FormLine
-									type={"textarea"}
-									label={"Status description"}
-									value={this.props.info.status_description}
-									disabled={true}
-								/>
-								<FormLine
-									label={"System date"}
-									value={this.props.info.sys_date}
-									disabled={true}
-								/>
-							</div>
-							: <Loading
-								height={250}
-							/>
-						}
-
 						<div className="col-md-12">
-							<h3>Parameters</h3>
+							{this.parseLog()}
 						</div>
-
-						{this.props.info !== undefined && this.props.info !== null
-							&& this.props.info.params !== null
-							&& <div className="col-md-12">
-								{JSON.stringify(this.props.info.params, null, 4)}
-							</div>
-						}
-
-						{this.props.info !== undefined && this.props.info !== null
-							&& this.props.info.params === null
-							&& <Message
-								height={150}
-								text={"No parameter for this request"}
-							/>
-						}
-
-						{(this.props.info === undefined || this.props.info === null)
-							&& <Loading
-								height={150}
-							/>
-						}
 					</div>
-				}
+				)}
 			</Popup>
 		);
 	}

@@ -19,6 +19,10 @@
     border: solid 1px red;
 }
 
+.RegistratioAnswer-answer-orange {
+    border: solid 1px orange;
+}
+
 .RegistratioAnswer-answer legend {
     font-size: 13px;
     padding-left: 3px;

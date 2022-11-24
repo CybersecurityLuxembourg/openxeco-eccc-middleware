@@ -1,3 +1,6 @@
+import React from "react";
+import Message from "../component/box/Message.jsx";
+
 function getFieldLocation() {
 	return {
 		"FORM-ECCC-001-Q101": "attributes.title",
@@ -6,7 +9,7 @@ function getFieldLocation() {
 		"FORM-ECCC-001-Q104": "attributes.field_address.address_line1",
 		"FORM-ECCC-001-Q105": "attributes.field_iot_org_pic",
 		"FORM-ECCC-001-Q106": "attributes.field_headquarter",
-		"FORM-ECCC-001-Q107": "attributes.field_url",
+		"FORM-ECCC-001-Q107": "attributes.field_url.uri",
 		"FORM-ECCC-001-Q108": "attributes.field_phone_number",
 		"FORM-ECCC-001-Q109": "attributes.field_general_contact_e_mail",
 		"FORM-ECCC-001-Q110": "relationships.field_cluster_type",
@@ -23,7 +26,7 @@ function getFieldLocation() {
 		"FORM-ECCC-001-Q206": "attributes.field_representative_phone_numbe",
 		"FORM-ECCC-001-Q207": "attributes.field_representative_expertise",
 
-		"FORM-ECCC-001-Q301": "relationships.field_field_of_activity",
+		"FORM-ECCC-001-Q301": "relationships.field_fields_of_activity",
 		"FORM-ECCC-001-Q302": "attributes.field_field_of_activity_descr",
 		"FORM-ECCC-001-Q303": "relationships.field_cluster_thematic_area",
 		"FORM-ECCC-001-Q304": "attributes.field_goals_to_achieve",
@@ -63,7 +66,7 @@ export function getFormQuestions(taxonomies) {
 		position: 2,
 		type: "SELECT",
 		value: "Address: Country",
-		options: taxonomies && taxonomies.country ? taxonomies.country.join("|") : undefined,
+		options: taxonomies && taxonomies.country ? Object.keys(taxonomies.country).map((e) => taxonomies.country[e]).join("|") : undefined,
 		mandatory: true,
 	},
 	{
@@ -121,7 +124,7 @@ export function getFormQuestions(taxonomies) {
 		position: 10,
 		type: "TEXT",
 		value: "Organisation type",
-		options: taxonomies && taxonomies.cluster_type ? taxonomies.cluster_type.join("|") : undefined,
+		options: taxonomies && taxonomies.cluster_type ? Object.keys(taxonomies.cluster_type).map((e) => taxonomies.cluster_type[e]).join("|") : undefined,
 		mandatory: true,
 	},
 	{
@@ -211,7 +214,7 @@ export function getFormQuestions(taxonomies) {
 		position: 22,
 		type: "OPTIONS",
 		value: "<p><b>Fields of Activity / Expertise</b></p><p>Your organizations expertise in the field of cybersecurity (according to Article 8 (3)</p>",
-		options: taxonomies && taxonomies.fields_of_activity ? taxonomies.fields_of_activity.join("|") : undefined,
+		options: taxonomies && taxonomies.fields_of_activity ? Object.keys(taxonomies.fields_of_activity).map((e) => taxonomies.fields_of_activity[e]).join("|") : undefined,
 		mandatory: true,
 	},
 	{
@@ -226,7 +229,7 @@ export function getFormQuestions(taxonomies) {
 		position: 24,
 		type: "OPTIONS",
 		value: "Expertise according to the Cybersecurity Taxonomy",
-		options: taxonomies && taxonomies.cluster_thematic_area ? taxonomies.cluster_thematic_area.join("|") : undefined,
+		options: taxonomies && taxonomies.cluster_thematic_area ? Object.keys(taxonomies.cluster_thematic_area).map((e) => taxonomies.cluster_thematic_area[e]).join("|") : undefined,
 		mandatory: true,
 	},
 	{
@@ -269,20 +272,58 @@ export function getFormQuestions(taxonomies) {
 	];
 }
 
-export function getEcccRegistrationFieldValue(obj, ref) {
-	if (ref in getFieldLocation() && ref in this.getFieldLocation()[ref]) {
-		const path = getFieldLocation()[ref].split(".");
-		let value = obj;
+export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies = {}) {
+	const location = getFieldLocation()[question.reference];
+
+	if (location) {
+		const path = location.split(".");
+		let value = ecccObject;
 
 		for (let i = 0; i < path.length; i++) {
-			if (path[i] in value) {
+			if (value[path[i]]) {
 				value = value[path[i]];
 			} else {
 				return null;
 			}
 		}
 
+		if (location.startsWith("relationships.")) {
+			const t = taxonomies[location.split(".").slice(-1)[0].split(".")];
+
+			if (t) {
+				return "C'est un objet avec une taxo";
+			}
+
+			return <Message
+				height={30}
+				content={"No taxonomy found"}
+			/>;
+		}
+
 		return value;
+	}
+
+	return null;
+}
+
+export function getOxeRegistrationFieldValue(question, answers) {
+	const answer = answers.filter((a) => a.form_question_id === question.id);
+
+	if (answer.length > 0) {
+		if (answer[0].value) {
+			if (getFieldLocation()[question.reference]
+				&& getFieldLocation()[question.reference].startsWith("relationships.")) {
+				return answer[0].value.split(/\|/).sort().join(", ");
+			}
+
+			if (["TRUE", "FALSE"].indexOf(answer[0].value) >= 0) {
+				return answer[0].value.toLowerCase();
+			}
+
+			return answer[0].value.replaceAll("\n", "<br/>");
+		}
+
+		return answer[0].value;
 	}
 
 	return null;
@@ -321,4 +362,15 @@ export function buildRegistrationBody(questions, answers) {
 	}
 
 	return body;
+}
+
+export function areValuesEqual(question, ecccObject, answers, taxonomies = {}) {
+	const ecccValue = getEcccRegistrationFieldValue(question, ecccObject, taxonomies);
+	const oxeValue = getOxeRegistrationFieldValue(question, answers);
+
+	if (ecccValue === oxeValue) {
+		return true;
+	}
+
+	return false;
 }

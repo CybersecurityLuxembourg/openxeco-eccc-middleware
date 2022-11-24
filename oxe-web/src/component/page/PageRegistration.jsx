@@ -39,7 +39,6 @@ export default class PageRegistration extends React.Component {
 			ecccTaxonomies: null,
 		}, () => {
 			getRequest.call(this, getMiddlewareEndpoint() + "eccc/get_taxonomies", (data) => {
-				console.log(data);
 				this.setState({
 					ecccTaxonomies: data,
 				});

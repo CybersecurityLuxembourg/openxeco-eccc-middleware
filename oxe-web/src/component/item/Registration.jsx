@@ -104,6 +104,7 @@ export default class Registration extends Component {
 									formQuestions={this.props.formQuestions}
 									formAnswers={this.props.formAnswers}
 									ecccObject={this.props.ecccObject}
+									ecccTaxonomies={this.props.ecccTaxonomies}
 								/>,
 							]}
 						/>

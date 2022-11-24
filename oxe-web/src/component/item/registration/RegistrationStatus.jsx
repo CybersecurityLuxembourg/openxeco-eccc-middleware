@@ -3,6 +3,7 @@ import "./RegistrationStatus.css";
 import { NotificationManager as nm } from "react-notifications";
 import { postRequest } from "../../../utils/request.jsx";
 import { buildRegistrationBody } from "../../../utils/registration.jsx";
+import Log from "../Log.jsx";
 import Info from "../../box/Info.jsx";
 import Warning from "../../box/Warning.jsx";
 import Message from "../../box/Message.jsx";
@@ -14,11 +15,11 @@ export default class RegistrationStatus extends React.Component {
 		super(props);
 
 		this.state = {
+			logs: {},
 		};
 	}
 
 	pushRegistration() {
-		console.log(buildRegistrationBody(this.props.formQuestions, this.props.formAnswers));
 		const params = {
 			body: buildRegistrationBody(this.props.formQuestions, this.props.formAnswers),
 		};
@@ -36,7 +37,6 @@ export default class RegistrationStatus extends React.Component {
 	}
 
 	updateRegistration() {
-		console.log(buildRegistrationBody(this.props.formQuestions, this.props.formAnswers));
 		const params = {
 			body: buildRegistrationBody(this.props.formQuestions, this.props.formAnswers),
 		};
@@ -47,7 +47,12 @@ export default class RegistrationStatus extends React.Component {
 			}
 			nm.info("The registration has been updated");
 		}, (response) => {
-			nm.warning(response.statusText);
+			nm.warning("An error occured. Please check the logs below");
+			const l = this.state.logs;
+			l["Log " + new Date().toISOString()] = response.statusText;
+			this.setState({
+				logs: l,
+			});
 		}, (error) => {
 			nm.error(error.message);
 		});
@@ -150,6 +155,24 @@ export default class RegistrationStatus extends React.Component {
 								/>
 							</div>
 						}
+					</div>
+				}
+
+				{Object.keys(this.state.logs).length > 0
+					&& <div className={"row"}>
+						<div className="col-md-12">
+							<h2>Logs</h2>
+						</div>
+
+						<div className="col-md-12" key={"l"}>
+							{Object.keys(this.state.logs).map((l) => (
+								<Log
+									key={l}
+									name={l}
+									content={this.state.logs[l]}
+								/>
+							))}
+						</div>
 					</div>
 				}
 			</div>
