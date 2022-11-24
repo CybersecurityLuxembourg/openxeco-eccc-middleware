@@ -39,19 +39,20 @@ def manage_cluster_types(kwargs):
 
         try:
             eccc_cluster_types = {
-                c["attributes"]["name"]: c["id"] for c in eccc_cluster_types["data"]
+                c["attributes"]["name"]: c["id"] for c in eccc_cluster_types
             }
         except Exception:
             return "", "500 Failed to parse the 'cluster_type' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_cluster_type"] = [{
-                "data": {
-                    "type": "taxonomy_term--cluster_type",
-                    "id": eccc_cluster_types[o],
-                }
-            } for o in kwargs["body"]["relationships"]["field_cluster_type"].split("|")
-            if o in eccc_cluster_types
-        ]
+        kwargs["body"]["relationships"]["field_cluster_type"] = {
+            "data": [{
+                "type": "taxonomy_term--cluster_type",
+                "id": eccc_cluster_types[o],
+            }
+                for o in kwargs["body"]["relationships"]["field_cluster_type"].split("|")
+                if o in eccc_cluster_types
+            ]
+        }
 
     return kwargs
 
@@ -64,19 +65,20 @@ def manage_cluster_thematic_areas(kwargs):
 
         try:
             eccc_cluster_thematic_areas = {
-                c["attributes"]["name"]: c["id"] for c in eccc_cluster_thematic_areas["data"]
+                c["attributes"]["name"]: c["id"] for c in eccc_cluster_thematic_areas
             }
         except Exception:
             return "", "500 Failed to parse the 'cluster_thematic_area' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_cluster_thematic_area"] = [{
-            "data": {
+        kwargs["body"]["relationships"]["field_cluster_thematic_area"] = {
+            "data": [{
                 "type": "taxonomy_term--cluster_thematic_area",
                 "id": eccc_cluster_thematic_areas[o],
             }
-        } for o in kwargs["body"]["relationships"]["field_cluster_thematic_area"].split("|")
-            if o in eccc_cluster_thematic_areas
-        ]
+                for o in kwargs["body"]["relationships"]["field_cluster_thematic_area"].split("|")
+                if o in eccc_cluster_thematic_areas
+            ]
+        }
 
     return kwargs
 
@@ -89,18 +91,21 @@ def manage_fields_of_activity(kwargs):
 
         try:
             eccc_fields_of_activity = {
-                c["attributes"]["name"]: c["id"] for c in eccc_fields_of_activity["data"]
+                c["attributes"]["name"]: c["id"] for c in eccc_fields_of_activity
             }
         except Exception:
             return "", "500 Failed to parse the 'fields_of_activity' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_fields_of_activity"] = [{
-                "data": {
-                    "type": "taxonomy_term--fields_of_activity",
-                    "id": eccc_fields_of_activity[o],
-                }
-            } for o in kwargs["body"]["relationships"]["field_fields_of_activity"].split("|")
-            if o in eccc_fields_of_activity
-        ]
+        kwargs["body"]["relationships"]["field_field_of_activity"] = {
+            "data": [{
+                "type": "taxonomy_term--fields_of_activity",
+                "id": eccc_fields_of_activity[o],
+            }
+                for o in kwargs["body"]["relationships"]["field_fields_of_activity"].split("|")
+                if o in eccc_fields_of_activity
+            ]
+        }
+
+        del kwargs["body"]["relationships"]["field_fields_of_activity"]
 
     return kwargs

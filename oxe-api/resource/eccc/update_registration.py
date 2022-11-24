@@ -49,13 +49,13 @@ class UpdateRegistration(MethodResource, Resource):
 
         # Checking if organisation exists and include its ID
 
-        registrations = get_request_eccc("jsonapi/node/cluster")
+        registrations = get_request_eccc("jsonapi/node/cluster", params="&filter[status]=false")
         registrations = json.loads(registrations.content)
 
         try:
             filtered_registrations = [
-                r for r in registrations.data
-                if r.attributes.field_iot_org_pic == kwargs["body"]["attributes"]["field_iot_org_pic"]
+                r for r in registrations["data"]
+                if r["attributes"]["field_iot_org_pic"] == kwargs["body"]["attributes"]["field_iot_org_pic"]
             ]
         except Exception:
             return "", "500 Failed to parse the registrations from the ECCC endpoint"
@@ -63,7 +63,7 @@ class UpdateRegistration(MethodResource, Resource):
         if len(filtered_registrations) == 0:
             return "", "400 Organisation not found with this registration number"
 
-        registration_id = filtered_registrations[0].id
+        registration_id = filtered_registrations[0]["id"]
 
         # Manage taxonomy values in body
 
@@ -74,8 +74,8 @@ class UpdateRegistration(MethodResource, Resource):
 
         # Body building
 
-        kwargs["body"]["id"] = registration_id
         kwargs["body"]["type"] = "node--cluster"
+        kwargs["body"]["id"] = registration_id
 
         body = {
             "data": kwargs["body"],
@@ -83,7 +83,7 @@ class UpdateRegistration(MethodResource, Resource):
 
         # Query ECCC endpoint
 
-        r = patch_request_eccc("jsonapi/node/cluster", body)
+        r = patch_request_eccc(f"jsonapi/node/cluster/{registration_id}", json.dumps(body))
 
         if r.status_code != 200:
             return "", f"{r.status_code} ECCC API ERROR: {r.text}"

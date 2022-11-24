@@ -49,8 +49,8 @@ def patch_request_oxe(target, data, jwt=None):
     return r
 
 
-def get_request_eccc(target, with_api_key=True, with_http_auth=True):
-    url = f"{ECCC_API_ENDPOINT}{target}{'?api-key=' + ECCC_API_KEY if with_api_key else ''}"
+def get_request_eccc(target, with_api_key=True, with_http_auth=True, params=""):
+    url = f"{ECCC_API_ENDPOINT}{target}?{'api-key=' + ECCC_API_KEY if with_api_key else ''}{params}"
     r = requests.get(
         url,
         allow_redirects=True,
@@ -65,6 +65,10 @@ def post_request_eccc(target, data, with_api_key=True, with_http_auth=True):
     url = f"{ECCC_API_ENDPOINT}{target}{'?api-key=' + ECCC_API_KEY if with_api_key else ''}"
     r = requests.post(
         url,
+        headers={
+            "Content-Type": "application/vnd.api+json",
+            "Accept": "application/vnd.api+json",
+        },
         data=data,
         allow_redirects=True,
         auth=requests.auth.HTTPBasicAuth(ECCC_HTTP_AUTH_LOGIN, ECCC_HTTP_AUTH_PASS)
@@ -78,6 +82,10 @@ def patch_request_eccc(target, data, with_api_key=True, with_http_auth=True):
     url = f"{ECCC_API_ENDPOINT}{target}{'?api-key=' + ECCC_API_KEY if with_api_key else ''}"
     r = requests.patch(
         url,
+        headers={
+            "Content-Type": "application/vnd.api+json",
+            "Accept": "application/vnd.api+json",
+        },
         data=data,
         allow_redirects=True,
         auth=requests.auth.HTTPBasicAuth(ECCC_HTTP_AUTH_LOGIN, ECCC_HTTP_AUTH_PASS)

@@ -32,6 +32,6 @@ class GetTaxonomies(MethodResource, Resource):
             r = get_request_eccc(f"jsonapi/taxonomy_term/{t}")
             r = json.loads(r.content)
 
-            data[t] = [a["attributes"]["name"] for a in r["data"]]
+            data[t] = {a["id"]: a["attributes"]["name"] for a in r["data"]}
 
         return data, "200 "

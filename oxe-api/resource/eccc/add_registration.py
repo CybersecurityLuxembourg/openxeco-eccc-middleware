@@ -80,7 +80,7 @@ class AddRegistration(MethodResource, Resource):
 
         # Query ECCC endpoint
 
-        r = post_request_eccc("jsonapi/node/cluster", body)
+        r = post_request_eccc("jsonapi/node/cluster", json.dumps(body))
 
         if r.status_code != 200:
             return "", f"{r.status_code} ECCC API ERROR: {r.text}"
