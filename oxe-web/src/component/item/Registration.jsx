@@ -47,6 +47,12 @@ export default class Registration extends Component {
 		return Math.min(100, Math.ceil((answeredQuestions / total) * 100));
 	}
 
+	onClose() {
+		if (this.props.onClose) {
+			this.props.onClose();
+		}
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -64,6 +70,7 @@ export default class Registration extends Component {
 					</div>
 				}
 				modal
+				onClose={() => this.onClose()}
 				closeOnDocumentClick={false}
 			>
 				{(close) => <div className="row row-spaced">

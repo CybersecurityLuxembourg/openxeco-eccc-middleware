@@ -232,6 +232,7 @@ export default class RegistrationManage extends React.Component {
 							)}
 							ecccTaxonomies={this.props.ecccTaxonomies}
 							afterUpload={() => this.refresh()}
+							onClose={() => this.refresh()}
 						/>
 					</div>
 				),
