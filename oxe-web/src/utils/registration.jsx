@@ -3,11 +3,12 @@ import Message from "../component/box/Message.jsx";
 
 function getFieldLocation() {
 	return {
+		"FORM-ECCC-001-Q000": null,
 		"FORM-ECCC-001-Q101": "attributes.title",
 		"FORM-ECCC-001-Q102": "attributes.field_address.country_code",
 		"FORM-ECCC-001-Q103": "attributes.field_address.locality",
 		"FORM-ECCC-001-Q104": "attributes.field_address.address_line1",
-		"FORM-ECCC-001-Q105": "attributes.field_iot_org_pic",
+		"FORM-ECCC-001-Q105": "attributes.field_registration_number ",
 		"FORM-ECCC-001-Q106": "attributes.field_headquarter",
 		"FORM-ECCC-001-Q107": "attributes.field_url.uri",
 		"FORM-ECCC-001-Q108": "attributes.field_phone_number",
@@ -55,6 +56,14 @@ export function getFormReference() {
 
 export function getFormQuestions(taxonomies) {
 	return [{
+		reference: "FORM-ECCC-001-Q000",
+		position: 0,
+		type: "TEXT",
+		value: "ID",
+		mandatory: false,
+		status: "INACTIVE",
+	},
+	{
 		reference: "FORM-ECCC-001-Q101",
 		position: 1,
 		type: "TEXT",
@@ -365,6 +374,10 @@ export function buildRegistrationBody(questions, answers) {
 }
 
 export function areValuesEqual(question, ecccObject, answers, taxonomies = {}) {
+	if (!ecccObject) {
+		return false;
+	}
+
 	const ecccValue = getEcccRegistrationFieldValue(question, ecccObject, taxonomies);
 	const oxeValue = getOxeRegistrationFieldValue(question, answers);
 

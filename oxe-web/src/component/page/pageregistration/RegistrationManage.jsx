@@ -111,7 +111,7 @@ export default class RegistrationManage extends React.Component {
 		}
 
 		const sel = this.state.ecccRegistrations.data
-			.filter((r) => r.attributes.field_iot_org_pic === orgId);
+			.filter((r) => r.attributes.field_registration_number === orgId);
 
 		if (sel.length > 0) {
 			return sel[0];
@@ -130,27 +130,33 @@ export default class RegistrationManage extends React.Component {
 			return "ERROR: Unexpected result for ECCC registrations";
 		}
 
+		console.log(orgId);
+
+		if (!orgId || orgId === "Not found") {
+			return "Not uploaded";
+		}
+
 		let ecccObject = this.state.ecccRegistrations.data
-			.filter((r) => r.attributes.field_iot_org_pic === orgId);
+			.filter((r) => r.id === orgId);
 
 		if (ecccObject.length > 0) {
 			ecccObject = ecccObject[0];
 
 			for (let i = 0; i < this.props.formQuestions.length; i++) {
 				if (areValuesEqual(this.props.formQuestions[i], ecccObject, this.state.formAnswers)) {
-					return "Uploaded but not synchronized";
+					return "Uploaded - not synchronized";
 				}
 			}
 
-			return "Synchronized";
+			return "Uploaded - synchronized";
 		}
 
-		return "Not uploaded";
+		return "Uploaded - not found";
 	}
 
-	getRegistrationNumber(userId) {
+	getRegistrationId(userId) {
 		const refQuestions = this.props.formQuestions
-			.filter((q) => q.reference === "FORM-ECCC-001-Q105");
+			.filter((q) => q.reference === "FORM-ECCC-001-Q000");
 
 		if (refQuestions.length === 0) {
 			return "Question not found";
@@ -225,24 +231,15 @@ export default class RegistrationManage extends React.Component {
 							formQuestions={this.props.formQuestions}
 							formAnswers={this.state.formAnswers.filter((a) => a.user_id === value)}
 							ecccObject={this.getEcccRegistrationObject(
-								this.getRegistrationNumber(value),
+								this.getRegistrationId(value),
 							)}
 							syncStatus={this.getSynchronisationStatus(
-								this.getRegistrationNumber(value),
+								this.getRegistrationId(value),
 							)}
 							ecccTaxonomies={this.props.ecccTaxonomies}
 							afterUpload={() => this.refresh()}
 							onClose={() => this.refresh()}
 						/>
-					</div>
-				),
-			},
-			{
-				Header: "Registration number",
-				accessor: (x) => x,
-				Cell: ({ cell: { value } }) => (
-					<div>
-						{this.getRegistrationNumber(value)}
 					</div>
 				),
 			},
@@ -261,7 +258,7 @@ export default class RegistrationManage extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					<div>
 						{this.getSynchronisationStatus(
-							this.getRegistrationNumber(value),
+							this.getRegistrationId(value),
 						)}
 					</div>
 				),

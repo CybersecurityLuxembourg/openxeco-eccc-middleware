@@ -38,8 +38,6 @@ class AddRegistration(MethodResource, Resource):
 
         if "title" not in kwargs["body"]["attributes"]:
             return "", "400 'title' key not found in 'body.attributes' argument"
-        if "field_iot_org_pic" not in kwargs["body"]["attributes"]:
-            return "", "400 'field_iot_org_pic' key not found in 'body.attributes' argument"
         if "field_address" not in kwargs["body"]["attributes"]:
             return "", "400 'field_address' key not found in 'body.attributes' argument"
         if "country_code" not in kwargs["body"]["attributes"]["field_address"]:

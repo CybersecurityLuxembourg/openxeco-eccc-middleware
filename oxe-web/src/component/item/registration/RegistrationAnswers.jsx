@@ -51,7 +51,7 @@ export default class RegistrationAnswers extends React.Component {
 
 		return <Message
 			height={30}
-			content="Not synchronized"
+			content="Not uploaded"
 		/>;
 	}
 
