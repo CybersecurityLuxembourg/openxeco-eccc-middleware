@@ -8,7 +8,7 @@ function getFieldLocation() {
 		"FORM-ECCC-001-Q102": "attributes.field_address.country_code",
 		"FORM-ECCC-001-Q103": "attributes.field_address.locality",
 		"FORM-ECCC-001-Q104": "attributes.field_address.address_line1",
-		"FORM-ECCC-001-Q105": "attributes.field_registration_number ",
+		"FORM-ECCC-001-Q105": "attributes.field_registration_number",
 		"FORM-ECCC-001-Q106": "attributes.field_headquarter",
 		"FORM-ECCC-001-Q107": "attributes.field_url.uri",
 		"FORM-ECCC-001-Q108": "attributes.field_phone_number",
@@ -131,7 +131,7 @@ export function getFormQuestions(taxonomies) {
 	{
 		reference: "FORM-ECCC-001-Q110",
 		position: 10,
-		type: "TEXT",
+		type: "SELECT",
 		value: "Organisation type",
 		options: taxonomies && taxonomies.cluster_type ? Object.keys(taxonomies.cluster_type).map((e) => taxonomies.cluster_type[e]).join("|") : undefined,
 		mandatory: true,
@@ -283,12 +283,14 @@ export function getFormQuestions(taxonomies) {
 
 export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies = {}) {
 	const location = getFieldLocation()[question.reference];
+	console.log(location);
 
 	if (location) {
 		const path = location.split(".");
 		let value = ecccObject;
 
 		for (let i = 0; i < path.length; i++) {
+			console.log(path[i], value);
 			if (value[path[i]]) {
 				value = value[path[i]];
 			} else {
@@ -308,7 +310,7 @@ export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies =
 				content={"No taxonomy found"}
 			/>;
 		}
-
+		console.log(location, value);
 		return value;
 	}
 
