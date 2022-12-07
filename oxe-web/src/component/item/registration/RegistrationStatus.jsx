@@ -30,7 +30,12 @@ export default class RegistrationStatus extends React.Component {
 			}
 			nm.info("The registration has been pushed");
 		}, (response) => {
-			nm.warning(response.statusText);
+			nm.warning("An error occured. Please check the logs below");
+			const l = this.state.logs;
+			l["Log " + new Date().toISOString()] = response.statusText;
+			this.setState({
+				logs: l,
+			});
 		}, (error) => {
 			nm.error(error.message);
 		});
