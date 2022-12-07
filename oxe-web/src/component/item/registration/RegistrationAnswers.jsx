@@ -51,7 +51,7 @@ export default class RegistrationAnswers extends React.Component {
 
 		return <Message
 			height={30}
-			content="Not uploaded"
+			content="Registration not uploaded or not found"
 		/>;
 	}
 
