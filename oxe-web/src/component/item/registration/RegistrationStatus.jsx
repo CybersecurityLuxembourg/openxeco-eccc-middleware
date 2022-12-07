@@ -8,7 +8,7 @@ import Info from "../../box/Info.jsx";
 import Warning from "../../box/Warning.jsx";
 import Message from "../../box/Message.jsx";
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
-import { getMiddlewareEndpoint } from "../../../utils/env.jsx";
+import { getMiddlewareEndpoint, getOpenxecoEndpoint } from "../../../utils/env.jsx";
 
 export default class RegistrationStatus extends React.Component {
 	constructor(props) {
@@ -24,11 +24,32 @@ export default class RegistrationStatus extends React.Component {
 			body: buildRegistrationBody(this.props.formQuestions, this.props.formAnswers),
 		};
 
-		postRequest.call(this, getMiddlewareEndpoint() + "eccc/add_registration", params, () => {
-			if (this.props.afterUpload) {
-				this.props.afterUpload();
-			}
+		postRequest.call(this, getMiddlewareEndpoint() + "eccc/add_registration", params, (data) => {
 			nm.info("The registration has been pushed");
+
+			const params2 = {
+				user_id: this.props.userId,
+				form_question_id: this.props.formQuestions
+					.filter((q) => q.reference === "FORM-ECCC-001-Q000")
+					.map((q) => q.id).pop(),
+				value: data.data.id,
+			};
+
+			postRequest.call(this, getOpenxecoEndpoint() + "form/add_form_answer", params2, () => {
+				if (this.props.afterUpload) {
+					this.props.afterUpload();
+				}
+				nm.info("The registration ID has been updated on openXeco");
+			}, (response) => {
+				nm.warning("An error occured while updating the openXeco registration. Please check the logs below");
+				const l = this.state.logs;
+				l["Log " + new Date().toISOString()] = response.statusText;
+				this.setState({
+					logs: l,
+				});
+			}, (error) => {
+				nm.error(error.message);
+			});
 		}, (response) => {
 			nm.warning("An error occured. Please check the logs below");
 			const l = this.state.logs;

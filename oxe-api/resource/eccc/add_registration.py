@@ -7,7 +7,6 @@ import json
 
 from decorator.catch_exception import catch_exception
 from utils.request import post_request_eccc
-from utils.request import get_request_eccc
 from utils.registration import \
     manage_country, \
     manage_cluster_thematic_areas, \
@@ -45,22 +44,6 @@ class AddRegistration(MethodResource, Resource):
         if "address_line1" not in kwargs["body"]["attributes"]["field_address"]:
             return "", "400 'address_line1' key not found in 'body.attributes.field_address' argument"
 
-        # Checking if organisation with same registration number is not existing
-
-        registrations = get_request_eccc("jsonapi/node/cluster")
-        registrations = json.loads(registrations.content)["data"]
-
-        try:
-            filtered_registrations = [
-                r for r in registrations
-                if r["attributes"]["field_iot_org_pic"] == kwargs["body"]["attributes"]["field_iot_org_pic"]
-            ]
-        except Exception:
-            return "", "500 Failed to parse the registrations from the ECCC endpoint"
-
-        if len(filtered_registrations) > 0:
-            return "", "400 Organisation already existing with this registration number"
-
         # Manage taxonomy values in body
 
         kwargs = manage_country(kwargs)
@@ -80,7 +63,7 @@ class AddRegistration(MethodResource, Resource):
 
         r = post_request_eccc("jsonapi/node/cluster", json.dumps(body))
 
-        if r.status_code != 200:
+        if r.status_code not in [200, 201]:
             return "", f"{r.status_code} ECCC API ERROR: {r.text}"
 
-        return r.content, "200 "
+        return json.loads(r.content), "200 "

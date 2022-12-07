@@ -99,6 +99,7 @@ export default class Registration extends Component {
 							content={[
 								<RegistrationStatus
 									key={this.state.tabs[0]}
+									userId={this.props.userId}
 									formQuestions={this.props.formQuestions}
 									formAnswers={this.props.formAnswers}
 									calculateFormCompletion={() => this.calculateFormCompletion()}
