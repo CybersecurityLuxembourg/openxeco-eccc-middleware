@@ -193,7 +193,7 @@ export function getFormQuestions(taxonomies) {
 		position: 18,
 		type: "SELECT",
 		value: "Gender",
-		options: "Male|Female|Prefer not to say",
+		options: "male|female|na",
 		mandatory: true,
 	},
 	{
