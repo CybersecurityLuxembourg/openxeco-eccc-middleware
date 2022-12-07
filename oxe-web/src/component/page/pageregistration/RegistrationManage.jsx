@@ -111,7 +111,7 @@ export default class RegistrationManage extends React.Component {
 		}
 
 		const sel = this.state.ecccRegistrations.data
-			.filter((r) => r.attributes.field_registration_number === orgId);
+			.filter((r) => r.id === orgId);
 
 		if (sel.length > 0) {
 			return sel[0];
