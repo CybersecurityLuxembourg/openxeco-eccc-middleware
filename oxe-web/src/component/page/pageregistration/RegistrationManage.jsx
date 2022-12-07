@@ -130,8 +130,6 @@ export default class RegistrationManage extends React.Component {
 			return "ERROR: Unexpected result for ECCC registrations";
 		}
 
-		console.log(orgId);
-
 		if (!orgId || orgId === "Not found") {
 			return "Not uploaded";
 		}
