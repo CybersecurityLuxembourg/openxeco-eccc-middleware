@@ -112,10 +112,8 @@ export default class RegistrationStatus extends React.Component {
 	reorderQuestions() {
 		if (this.props.form) {
 			getRequest.call(this, getOpenxecoEndpoint() + "form/get_form_questions?form_id=" + this.props.form.id, (questions) => {
-				const existingReferences = questions.map((q) => q.reference);
 				const references = this.props.formQuestions.map((q) => q.reference);
-				let positions = references
-					.map((r) => existingReferences.filter((e) => e.reference === r).pop());
+				let positions = references.map((r) => questions.filter((e) => e.reference === r).pop());
 				positions = positions.filter((r) => r);
 				positions = positions.map((p) => p.id);
 
