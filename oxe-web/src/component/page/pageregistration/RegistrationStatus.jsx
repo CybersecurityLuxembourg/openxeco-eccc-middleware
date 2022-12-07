@@ -241,6 +241,79 @@ export default class RegistrationStatus extends React.Component {
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
+						<h2>openXeco user configuration</h2>
+					</div>
+
+					<div className="col-md-12">
+						<h3>Check user rights</h3>
+
+						{!this.props.userGroupRights
+							&& <Loading
+								height={150}
+							/>
+						}
+
+						{this.props.userGroupRights
+							&& this.props.userGroupRights
+								.filter((a) => a.resource === "/form/add_form_answer").length > 0
+							&& <Info
+								content={"OK: /form/add_form_answer"}
+								height={150}
+							/>
+						}
+
+						{this.props.userGroupRights
+							&& this.props.userGroupRights
+								.filter((a) => a.resource === "/form/add_form_answer").length === 0
+							&& <Warning
+								content={<div>
+									The current user does not have the following resource to use this
+									resource: /form/add_form_answer
+									<br/>
+									It won&apos;t be possible to perform an upload of registration
+									not a modification of a registration
+									<br/>
+									Please review the right on the openXeco administration app
+								</div>}
+								height={150}
+							/>
+						}
+
+						{!this.props.userGroupRights
+							&& <Loading
+								height={150}
+							/>
+						}
+
+						{this.props.userGroupRights
+							&& this.props.userGroupRights
+								.filter((a) => a.resource === "/form/update_form_answer").length > 0
+							&& <Info
+								content={"OK: /form/update_form_answer"}
+								height={150}
+							/>
+						}
+
+						{this.props.userGroupRights
+							&& this.props.userGroupRights
+								.filter((a) => a.resource === "/form/update_form_answer").length === 0
+							&& <Warning
+								content={<div>
+									The current user does not have the following resource to use this
+									resource: /form/update_form_answer
+									<br/>
+									It won&apos;t be possible to perform a modification of a registration
+									<br/>
+									Please review the right on the openXeco administration app
+								</div>}
+								height={150}
+							/>
+						}
+					</div>
+				</div>
+
+				<div className={"row row-spaced"}>
+					<div className="col-md-12">
 						<h2>Required ECCC taxonomies</h2>
 					</div>
 

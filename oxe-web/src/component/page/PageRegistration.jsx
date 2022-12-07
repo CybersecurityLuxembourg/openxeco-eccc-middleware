@@ -102,6 +102,7 @@ export default class PageRegistration extends React.Component {
 							formQuestions={this.state.formQuestions}
 							ecccTaxonomies={this.state.ecccTaxonomies}
 							refreshFormAndQuestions={() => this.refresh()}
+							userGroupRights={this.props.userGroupRights}
 						/>,
 						<RegistrationManage
 							key={this.state.tabs[1]}
