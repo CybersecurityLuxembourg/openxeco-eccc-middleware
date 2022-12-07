@@ -1,10 +1,16 @@
 import React from "react";
 import "./RegistrationAnswers.css";
 import dompurify from "dompurify";
+import { NotificationManager as nm } from "react-notifications";
+import Popup from "reactjs-popup";
 import Message from "../../box/Message.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import { postRequest } from "../../../utils/request.jsx";
+import { getOpenxecoEndpoint } from "../../../utils/env.jsx";
 import {
 	getEcccRegistrationFieldValue,
 	getOxeRegistrationFieldValue,
+	getOxeRegistrationFieldId,
 	getFormQuestions,
 	areValuesEqual,
 } from "../../../utils/registration.jsx";
@@ -14,6 +20,7 @@ export default class RegistrationAnswers extends React.Component {
 		super(props);
 
 		this.state = {
+			fieldValue: null,
 		};
 	}
 
@@ -68,6 +75,29 @@ export default class RegistrationAnswers extends React.Component {
 		return false;
 	}
 
+	updateAnswer(answerId, close) {
+		const params = {
+			id: answerId,
+			value: this.state.fieldValue,
+		};
+
+		postRequest.call(this, getOpenxecoEndpoint() + "form/update_form_answer", params, () => {
+			nm.info("The answer has been updated");
+
+			if (close) {
+				close();
+			}
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	onEditOpen(value) {
+		this.setState({ fieldValue: value });
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -105,6 +135,60 @@ export default class RegistrationAnswers extends React.Component {
 												height={30}
 												content="No answer found"
 											/>}
+										<div className="RegistratioAnswer-edit">
+											<Popup
+												trigger={<button className={"RegistratioAnswer-edit-button small-button"}>
+													<i className="fas fa-edit"/>
+												</button>}
+												modal
+												onOpen={() => this.onEditOpen(
+													getOxeRegistrationFieldValue(q, this.props.formAnswers),
+												)}
+												closeOnDocumentClick
+											>
+												{(close) => (
+													<div className="row">
+														<div className="col-md-9 row-spaced">
+															<h3>Update an answer</h3>
+														</div>
+
+														<div className={"col-md-3"}>
+															<div className="top-right-buttons">
+																<button
+																	className={"grey-background"}
+																	data-hover="Close"
+																	data-active=""
+																	onClick={close}>
+																	<span><i className="far fa-times-circle"/></span>
+																</button>
+															</div>
+														</div>
+
+														<div className="col-md-12">
+															<FormLine
+																label={"Answer"}
+																value={this.state.fieldValue}
+																onChange={(v) => this.changeState("fieldValue", v)}
+															/>
+														</div>
+
+														<div className="col-md-12">
+															<div className={"right-buttons"}>
+																<button
+																	data-hover="Ok"
+																	data-active=""
+																	onClick={() => this.updateAnswer(
+																		getOxeRegistrationFieldId(q, this.props.formAnswers),
+																		close,
+																	)}>
+																	<i className="far fa-check-circle"/> Update answer
+																</button>
+															</div>
+														</div>
+													</div>
+												)}
+											</Popup>
+										</div>
 									</fieldset>
 								</div>
 

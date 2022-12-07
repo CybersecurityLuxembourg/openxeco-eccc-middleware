@@ -32,3 +32,9 @@
     color: #BBB !important;
     font-size: 12px;
 }
+
+.RegistratioAnswer-edit .RegistratioAnswer-edit-button {
+    position: absolute;
+    top: 5px;
+    right: 40px;
+}

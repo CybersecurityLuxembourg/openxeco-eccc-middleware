@@ -283,14 +283,12 @@ export function getFormQuestions(taxonomies) {
 
 export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies = {}) {
 	const location = getFieldLocation()[question.reference];
-	console.log(location);
 
 	if (location) {
 		const path = location.split(".");
 		let value = ecccObject;
 
 		for (let i = 0; i < path.length; i++) {
-			console.log(path[i], value);
 			if (value[path[i]]) {
 				value = value[path[i]];
 			} else {
@@ -310,7 +308,7 @@ export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies =
 				content={"No taxonomy found"}
 			/>;
 		}
-		console.log(location, value);
+
 		return value;
 	}
 
@@ -335,6 +333,16 @@ export function getOxeRegistrationFieldValue(question, answers) {
 		}
 
 		return answer[0].value;
+	}
+
+	return null;
+}
+
+export function getOxeRegistrationFieldId(question, answers) {
+	const answer = answers.filter((a) => a.form_question_id === question.id);
+
+	if (answer.length > 0) {
+		return answer[0].id;
 	}
 
 	return null;
