@@ -49,10 +49,11 @@ def patch_request_oxe(target, data, jwt=None):
     return r
 
 
-def get_request_eccc(target, with_api_key=True, with_http_auth=True, params=""):
-    url = f"{ECCC_API_ENDPOINT}{target}?{'api-key=' + ECCC_API_KEY if with_api_key else ''}{params}"
+def get_request_eccc(target, with_api_key=True, with_http_auth=True, params={}):
+    url = f"{ECCC_API_ENDPOINT}{target}"
     r = requests.get(
         url,
+        params={**params, **({"api-key": ECCC_API_KEY} if with_api_key else {})},
         allow_redirects=True,
         auth=requests.auth.HTTPBasicAuth(ECCC_HTTP_AUTH_LOGIN, ECCC_HTTP_AUTH_PASS)
         if with_http_auth and ECCC_HTTP_AUTH_LOGIN is not None
