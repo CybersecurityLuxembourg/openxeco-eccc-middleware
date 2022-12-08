@@ -32,6 +32,9 @@ export default class PageRegistration extends React.Component {
 	refresh() {
 		this.getEcccTaxonomies();
 		this.getFormAndQuestions();
+		if (this.props.refreshUserInfo) {
+			this.props.refreshUserInfo();
+		}
 	}
 
 	getEcccTaxonomies() {
