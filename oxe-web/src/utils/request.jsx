@@ -13,9 +13,6 @@ export async function getRequest(url, callback, catchBadResponse, catchError) {
 		if (response.status === 200) {
 			return response.json();
 		}
-		if (response.status === 403) {
-			window.location.replace("/?status=expiredSession");
-		}
 		if (catchBadResponse !== null) {
 			catchBadResponse(response);
 			throw new Error(null);
@@ -41,9 +38,6 @@ export async function getNoCorsRequest(url, callback, catchBadResponse, catchErr
 		if (response.status === 200) {
 			return response.json();
 		}
-		if (response.status === 403) {
-			window.location.replace("/?status=expiredSession");
-		}
 		if (catchBadResponse !== null) {
 			catchBadResponse(response);
 			throw new Error(response.error);
@@ -68,9 +62,6 @@ export async function getBlobRequest(url, callback, catchBadResponse, catchError
 	}).then((response) => {
 		if (response.status === 200) {
 			return response.blob();
-		}
-		if (response.status === 403) {
-			window.location.replace("/?status=expiredSession");
 		}
 		if (catchBadResponse !== null) {
 			catchBadResponse(response);
@@ -99,9 +90,6 @@ export async function postRequest(url, params, callback, catchBadResponse, catch
 		if (response.status === 200) {
 			return response.json();
 		}
-		if (response.status === 403) {
-			window.location.replace("/?status=expiredSession");
-		}
 		if (catchBadResponse !== null) {
 			catchBadResponse(response);
 			throw new Error(null);
@@ -126,9 +114,6 @@ export async function getForeignRequest(url, callback, catchBadResponse, catchEr
 	}).then((response) => {
 		if (response.status === 200) {
 			return response.json();
-		}
-		if (response.status === 403) {
-			window.location.replace("/?status=expiredSession");
 		}
 		if (catchBadResponse !== null) {
 			catchBadResponse(response);
