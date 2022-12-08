@@ -62,20 +62,18 @@ export default class RegistrationStatus extends React.Component {
 				const questionToCreate = getFormQuestions(this.props.ecccTaxonomies)
 					.filter((q) => !existingQuestionReferences.includes(q.reference));
 
-				for (let i = 0; i < questionToCreate.length; i++) {
-					this.addQuestion(questionToCreate[i], this.props.form.id);
-				}
-
-				this.reorderQuestions();
-				nm.info("The form questions have been generated. Please refresh");
+				Promise.all(questionToCreate.map((q) => this.addQuestion(q, this.props.form.id)))
+					.then(() => {
+						nm.info("The questions have been generated");
+						this.reorderQuestions();
+					})
+					.catch(() => {
+						nm.error("An error happened while generating the questions");
+					});
 			}, (response) => {
-				this.setState({
-					userGroupAssignments: response.statusText,
-				});
+				nm.warning(response.statusText);
 			}, (error) => {
-				this.setState({
-					userGroupAssignments: error.message,
-				});
+				nm.error(error.message);
 			});
 		} else {
 			nm.warning("Form not found");
@@ -83,29 +81,32 @@ export default class RegistrationStatus extends React.Component {
 	}
 
 	addQuestion(questionToCreate, formId) {
-		const params1 = {
-			form_id: formId,
-		};
-
-		postRequest.call(this, getOpenxecoEndpoint() + "form/add_form_question", params1, (question) => {
-			const params2 = {
-				id: question.id,
-				status: "ACTIVE",
-				...questionToCreate,
+		return new Promise((resolve, reject) => {
+			const params1 = {
+				form_id: formId,
 			};
 
-			delete params2.mandatory;
+			postRequest.call(this, getOpenxecoEndpoint() + "form/add_form_question", params1, (question) => {
+				const params2 = {
+					id: question.id,
+					status: "ACTIVE",
+					...questionToCreate,
+				};
 
-			postRequest.call(this, getOpenxecoEndpoint() + "form/update_form_question", params2, () => {
+				delete params2.mandatory;
+
+				postRequest.call(this, getOpenxecoEndpoint() + "form/update_form_question", params2, () => {
+					resolve();
+				}, (response) => {
+					reject(response.statusText);
+				}, (error) => {
+					reject(error.message);
+				});
 			}, (response) => {
-				nm.warning(response.statusText);
+				reject(response.statusText);
 			}, (error) => {
-				nm.error(error.message);
+				reject(error.message);
 			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
 		});
 	}
 
@@ -124,6 +125,7 @@ export default class RegistrationStatus extends React.Component {
 
 				postRequest.call(this, getOpenxecoEndpoint() + "form/update_form_question_order", params, () => {
 					nm.info("The questions has been reordered");
+					nm.info("Please refresh to see the result");
 				}, (response) => {
 					nm.warning(response.statusText);
 				}, (error) => {
@@ -214,6 +216,42 @@ export default class RegistrationStatus extends React.Component {
 		return warnings;
 	}
 
+	hasRight(endpoint) {
+		if (!this.props.userGroupRights) {
+			return null;
+		}
+
+		return this.props.userGroupRights
+			.filter((a) => a.resource === endpoint).length > 0;
+	}
+
+	getRightStatusBox(endpoint) {
+		if (this.hasRight(endpoint) === null) {
+			return <Loading
+				height={100}
+			/>;
+		}
+
+		if (this.hasRight(endpoint) === true) {
+			return <Info
+				content={"OK: " + endpoint}
+				height={50}
+			/>;
+		}
+
+		return <Warning
+			content={<div>
+				The current user does not have the right to use this
+				resource: {endpoint}
+				<br/>
+				Some of the features won&apos;t be accessible
+				<br/>
+				Please review the right on the openXeco administration app if needed
+			</div>}
+			height={100}
+		/>;
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -248,66 +286,18 @@ export default class RegistrationStatus extends React.Component {
 						<h3>Check user rights</h3>
 
 						{!this.props.userGroupRights
-							&& <Loading
-								height={150}
+							? <Loading
+								height={200}
 							/>
-						}
-
-						{this.props.userGroupRights
-							&& this.props.userGroupRights
-								.filter((a) => a.resource === "/form/add_form_answer").length > 0
-							&& <Info
-								content={"OK: /form/add_form_answer"}
-								height={150}
-							/>
-						}
-
-						{this.props.userGroupRights
-							&& this.props.userGroupRights
-								.filter((a) => a.resource === "/form/add_form_answer").length === 0
-							&& <Warning
-								content={<div>
-									The current user does not have the following resource to use this
-									resource: /form/add_form_answer
-									<br/>
-									It won&apos;t be possible to perform an upload of registration
-									not a modification of a registration
-									<br/>
-									Please review the right on the openXeco administration app
-								</div>}
-								height={150}
-							/>
-						}
-
-						{!this.props.userGroupRights
-							&& <Loading
-								height={150}
-							/>
-						}
-
-						{this.props.userGroupRights
-							&& this.props.userGroupRights
-								.filter((a) => a.resource === "/form/update_form_answer").length > 0
-							&& <Info
-								content={"OK: /form/update_form_answer"}
-								height={150}
-							/>
-						}
-
-						{this.props.userGroupRights
-							&& this.props.userGroupRights
-								.filter((a) => a.resource === "/form/update_form_answer").length === 0
-							&& <Warning
-								content={<div>
-									The current user does not have the following resource to use this
-									resource: /form/update_form_answer
-									<br/>
-									It won&apos;t be possible to perform a modification of a registration
-									<br/>
-									Please review the right on the openXeco administration app
-								</div>}
-								height={150}
-							/>
+							: <div>
+								{this.getRightStatusBox("/form/add_form")}
+								{this.getRightStatusBox("/form/update_form")}
+								{this.getRightStatusBox("/form/add_form_question")}
+								{this.getRightStatusBox("/form/update_form_question")}
+								{this.getRightStatusBox("/form/update_form_question_order")}
+								{this.getRightStatusBox("/form/add_form_answer")}
+								{this.getRightStatusBox("/form/update_form_answer")}
+							</div>
 						}
 					</div>
 				</div>
@@ -353,40 +343,64 @@ export default class RegistrationStatus extends React.Component {
 					<div className="col-md-12">
 						<h3>Check form</h3>
 
-						{this.props.form === null
+						{(this.props.form === null || !this.props.ecccTaxonomies)
 							&& <Loading
 								height={150}
 							/>
 						}
 
-						{this.props.form
+						{this.props.ecccTaxonomies && this.props.form
 							&& <Info
 								content={"OK"}
 								height={150}
 							/>
 						}
 
-						{typeof this.props.form === "undefined"
+						{this.props.ecccTaxonomies && typeof this.props.form === "undefined"
 							&& <div>
 								<Warning
 									content={"No form found with the following reference: FORM-ECCC-001"}
 									height={150}
 								/>
-								<Info
-									content={<div>
-										You can generate the form by clicking this button:&nbsp;&nbsp;
-										<DialogConfirmation
-											text={"Are you sure you want to generate the form?"}
-											trigger={
-												<button>
-													<i className="fas fa-tools"/> Generate form...
-												</button>
-											}
-											afterConfirmation={() => this.generateForm()}
-										/>
-									</div>}
-									height={150}
-								/>
+								{this.hasRight("/form/add_form") !== true
+									|| this.hasRight("/form/update_form") !== true
+									|| (!this.props.ecccTaxonomies
+										|| Object.keys(this.state.requiredTaxonomies)
+											.filter((t) => !this.props.ecccTaxonomies[t]).length > 0)
+									? <Warning
+										content={<div>
+											You can&apos;t generate the form for the following reason(s):<br/>
+											{this.hasRight("/form/add_form") !== true
+												&& <div>- The current user does not the following
+												right: /form/add_form</div>}
+											{this.hasRight("/form/update_form") !== true
+												&& <div>- The current user does not the
+												following right: /form/update_form</div>}
+											{Object.keys(this.state.requiredTaxonomies)
+												.filter((t) => !this.props.ecccTaxonomies[t]).length > 0
+												&& Object.keys(this.state.requiredTaxonomies)
+													.filter((t) => !this.props.ecccTaxonomies[t])
+													.map((t) => <div key={t}>- Taxonomy not found: {t}</div>)}
+											<br/>Please review so you can generate the form
+										</div>}
+										height={150}
+									/>
+									: <Info
+										content={<div>
+											You can generate the form by clicking this button:&nbsp;&nbsp;
+											<DialogConfirmation
+												text={"Are you sure you want to generate the form?"}
+												trigger={
+													<button>
+														<i className="fas fa-tools"/> Generate form...
+													</button>
+												}
+												afterConfirmation={() => this.generateForm()}
+											/>
+										</div>}
+										height={150}
+									/>
+								}
 							</div>
 						}
 					</div>
@@ -395,36 +409,68 @@ export default class RegistrationStatus extends React.Component {
 						&& <div className="col-md-12">
 							<h3>Check questions</h3>
 
-							{!this.props.formQuestions
+							{(!this.props.formQuestions || !this.props.ecccTaxonomies)
 								&& <Loading
 									height={150}
 								/>
 							}
 
-							{this.props.formQuestions && this.getQuestionBoxes().length === 0
+							{this.props.formQuestions
+								&& this.getQuestionBoxes().length === 0
+								&& this.props.ecccTaxonomies
 								&& <Info
 									content={"OK"}
 									height={150}
 								/>
 							}
 
-							{this.props.formQuestions && this.getQuestionBoxes().length > 0
+							{this.props.formQuestions
+								&& this.getQuestionBoxes().length > 0
+								&& this.props.ecccTaxonomies
 								&& <div>
-									<Info
-										content={<div>
-											You can generate the questions by clicking this button:&nbsp;&nbsp;
-											<DialogConfirmation
-												text={"Are you sure you want to generate the questions?"}
-												trigger={
-													<button>
-														<i className="fas fa-tools"/> Generate questions...
-													</button>
-												}
-												afterConfirmation={() => this.generateQuestions()}
-											/>
-										</div>}
-										height={150}
-									/>
+									{this.hasRight("/form/add_form_question") !== true
+										|| this.hasRight("/form/update_form_question") !== true
+										|| this.hasRight("/form/update_form_question_order") !== true
+										|| (!this.props.ecccTaxonomies
+											|| Object.keys(this.state.requiredTaxonomies)
+												.filter((t) => !this.props.ecccTaxonomies[t]).length > 0)
+										? <Warning
+											content={<div>
+												You can&apos;t generate the questions for the following reason(s):<br/>
+												{this.hasRight("/form/add_form_question") !== true
+													&& <div>- The current user does not the following
+													right: /form/add_form_question</div>}
+												{this.hasRight("/form/update_form_question") !== true
+													&& <div>- The current user does not the
+													following right: /form/update_form_question</div>}
+												{this.hasRight("/form/update_form_question_order") !== true
+													&& <div>- The current user does not the
+													following right: /form/update_form_question_order</div>}
+												{Object.keys(this.state.requiredTaxonomies)
+													.filter((t) => !this.props.ecccTaxonomies[t]).length > 0
+													&& Object.keys(this.state.requiredTaxonomies)
+														.filter((t) => !this.props.ecccTaxonomies[t])
+														.map((t) => <div key={t}>- Taxonomy not found: {t}</div>)}
+												<br/>Please fix this issues so you can generate the questions
+											</div>}
+											height={150}
+										/>
+										: <Info
+											content={<div>
+												You can generate the questions by clicking this button:&nbsp;&nbsp;
+												<DialogConfirmation
+													text={"Are you sure you want to generate the questions?"}
+													trigger={
+														<button>
+															<i className="fas fa-tools"/> Generate questions...
+														</button>
+													}
+													afterConfirmation={() => this.generateQuestions()}
+												/>
+											</div>}
+											height={150}
+										/>
+									}
 
 									{this.getQuestionBoxes()}
 								</div>
