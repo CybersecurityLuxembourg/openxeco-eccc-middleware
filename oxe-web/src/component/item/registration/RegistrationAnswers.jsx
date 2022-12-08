@@ -135,60 +135,62 @@ export default class RegistrationAnswers extends React.Component {
 												height={30}
 												content="No answer found"
 											/>}
-										<div className="RegistratioAnswer-edit">
-											<Popup
-												trigger={<button className={"RegistratioAnswer-edit-button small-button"}>
-													<i className="fas fa-edit"/>
-												</button>}
-												modal
-												onOpen={() => this.onEditOpen(
-													getOxeRegistrationFieldValue(q, this.props.formAnswers),
-												)}
-												closeOnDocumentClick
-											>
-												{(close) => (
-													<div className="row">
-														<div className="col-md-9 row-spaced">
-															<h3>Update an answer</h3>
-														</div>
+										{q.type === "TEXT"
+											&& <div className="RegistratioAnswer-edit">
+												<Popup
+													trigger={<button className={"RegistratioAnswer-edit-button small-button"}>
+														<i className="fas fa-edit"/>
+													</button>}
+													modal
+													onOpen={() => this.onEditOpen(
+														getOxeRegistrationFieldValue(q, this.props.formAnswers),
+													)}
+													closeOnDocumentClick
+												>
+													{(close) => (
+														<div className="row">
+															<div className="col-md-9 row-spaced">
+																<h3>Update an answer</h3>
+															</div>
 
-														<div className={"col-md-3"}>
-															<div className="top-right-buttons">
-																<button
-																	className={"grey-background"}
-																	data-hover="Close"
-																	data-active=""
-																	onClick={close}>
-																	<span><i className="far fa-times-circle"/></span>
-																</button>
+															<div className={"col-md-3"}>
+																<div className="top-right-buttons">
+																	<button
+																		className={"grey-background"}
+																		data-hover="Close"
+																		data-active=""
+																		onClick={close}>
+																		<span><i className="far fa-times-circle"/></span>
+																	</button>
+																</div>
+															</div>
+
+															<div className="col-md-12">
+																<FormLine
+																	label={"Answer"}
+																	value={this.state.fieldValue}
+																	onChange={(v) => this.changeState("fieldValue", v)}
+																/>
+															</div>
+
+															<div className="col-md-12">
+																<div className={"right-buttons"}>
+																	<button
+																		data-hover="Ok"
+																		data-active=""
+																		onClick={() => this.updateAnswer(
+																			getOxeRegistrationFieldId(q, this.props.formAnswers),
+																			close,
+																		)}>
+																		<i className="far fa-check-circle"/> Update answer
+																	</button>
+																</div>
 															</div>
 														</div>
-
-														<div className="col-md-12">
-															<FormLine
-																label={"Answer"}
-																value={this.state.fieldValue}
-																onChange={(v) => this.changeState("fieldValue", v)}
-															/>
-														</div>
-
-														<div className="col-md-12">
-															<div className={"right-buttons"}>
-																<button
-																	data-hover="Ok"
-																	data-active=""
-																	onClick={() => this.updateAnswer(
-																		getOxeRegistrationFieldId(q, this.props.formAnswers),
-																		close,
-																	)}>
-																	<i className="far fa-check-circle"/> Update answer
-																</button>
-															</div>
-														</div>
-													</div>
-												)}
-											</Popup>
-										</div>
+													)}
+												</Popup>
+											</div>
+										}
 									</fieldset>
 								</div>
 
