@@ -7,7 +7,6 @@ import json
 
 from decorator.catch_exception import catch_exception
 from utils.request import patch_request_eccc
-from utils.request import get_request_eccc
 from utils.registration import \
     manage_country, \
     manage_cluster_thematic_areas, \
