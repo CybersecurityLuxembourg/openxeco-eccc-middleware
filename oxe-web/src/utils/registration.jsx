@@ -285,7 +285,6 @@ export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies =
 	const location = getFieldLocation()[question.reference];
 
 	if (location) {
-		console.log("AAA", location);
 		const path = location.split(".");
 		let value = ecccObject;
 
