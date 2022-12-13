@@ -1,7 +1,7 @@
 import React from "react";
 import Message from "../component/box/Message.jsx";
 
-function getFieldLocation() {
+export function getFieldLocation() {
 	return {
 		"FORM-ECCC-001-Q000": "id",
 		"FORM-ECCC-001-Q101": "attributes.title",
@@ -285,11 +285,17 @@ export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies =
 	const location = getFieldLocation()[question.reference];
 
 	if (location) {
+		console.log("AAA", location);
 		const path = location.split(".");
 		let value = ecccObject;
 
 		for (let i = 0; i < path.length; i++) {
+			// HARDCODED FIX
+			// Discrepancy between ECCC object field and taxonomy name
+			path[i] = path[i].replace("field_fields_of_activity", "field_field_of_activity");
+
 			if (value[path[i]]) {
+				path[i] = path[i].replace("field_fields_of_activity", "field_field_of_activity");
 				value = value[path[i]];
 			} else {
 				return null;
@@ -297,10 +303,15 @@ export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies =
 		}
 
 		if (location.startsWith("relationships.")) {
-			const t = taxonomies[location.split(".").slice(-1)[0].split(".")];
+			const t = taxonomies[location.split(".").slice(-1)[0].replace("field_", "")];
 
 			if (t) {
-				return "C'est un objet avec une taxo";
+				const values = (Array.isArray(value.data) ? value.data : [value.data])
+					.map((v) => t[v.id])
+					.sort()
+					.join(", ");
+
+				return values;
 			}
 
 			return <Message
@@ -309,7 +320,7 @@ export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies =
 			/>;
 		}
 
-		return value;
+		return value + "";
 	}
 
 	return null;

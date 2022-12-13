@@ -19,6 +19,6 @@ class GetRegistrations(MethodResource, Resource):
     @catch_exception
     def get(self):
 
-        r = get_request_eccc("jsonapi/node/cluster", params={"filter[status]": False})
+        r = get_request_eccc("jsonapi/node/cluster", params={"filter[status]": "false"})
 
         return json.loads(r.content), "200 "

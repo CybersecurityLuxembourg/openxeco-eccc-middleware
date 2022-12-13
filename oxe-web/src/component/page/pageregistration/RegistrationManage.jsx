@@ -141,7 +141,8 @@ export default class RegistrationManage extends React.Component {
 			ecccObject = ecccObject[0];
 
 			for (let i = 0; i < this.props.formQuestions.length; i++) {
-				if (areValuesEqual(this.props.formQuestions[i], ecccObject, this.state.formAnswers)) {
+				if (areValuesEqual(this.props.formQuestions[i], ecccObject,
+					this.state.formAnswers, this.props.ecccTaxonomies)) {
 					return "Uploaded - not synchronized";
 				}
 			}

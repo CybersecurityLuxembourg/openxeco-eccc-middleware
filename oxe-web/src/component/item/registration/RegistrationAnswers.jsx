@@ -8,6 +8,7 @@ import FormLine from "../../button/FormLine.jsx";
 import { postRequest } from "../../../utils/request.jsx";
 import { getOpenxecoEndpoint } from "../../../utils/env.jsx";
 import {
+	getFieldLocation,
 	getEcccRegistrationFieldValue,
 	getOxeRegistrationFieldValue,
 	getOxeRegistrationFieldId,
@@ -39,6 +40,13 @@ export default class RegistrationAnswers extends React.Component {
 			const qu = this.props.formQuestions.filter((q) => q.id === questionId);
 
 			if (qu.length > 0) {
+				if (!getFieldLocation()[qu[0].reference]) {
+					return <Message
+						height={30}
+						content="No answer expected"
+					/>;
+				}
+
 				return <div>
 					{getEcccRegistrationFieldValue(qu[0], this.props.ecccObject, this.props.ecccTaxonomies)
 						? getEcccRegistrationFieldValue(qu[0], this.props.ecccObject, this.props.ecccTaxonomies)
@@ -196,7 +204,14 @@ export default class RegistrationAnswers extends React.Component {
 
 								<div className="col-md-6">
 									<fieldset className={"RegistratioAnswer-answer "
-										+ (!areValuesEqual(q, this.props.ecccObject, this.props.formAnswers) && "RegistratioAnswer-answer-orange")}>
+										+ ((getFieldLocation()[q.reference]
+											&& !areValuesEqual(
+												q,
+												this.props.ecccObject,
+												this.props.formAnswers,
+												this.props.ecccTaxonomies,
+											))
+											&& "RegistratioAnswer-answer-orange")}>
 										<legend>ECCC</legend>
 
 										{this.getEcccAnswerOfQuestion(q.id)}
