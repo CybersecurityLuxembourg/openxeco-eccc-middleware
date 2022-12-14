@@ -282,9 +282,13 @@ export function getFormQuestions(taxonomies) {
 }
 
 export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies = {}) {
-	const location = getFieldLocation()[question.reference];
+	let location = getFieldLocation()[question.reference];
 
 	if (location) {
+		// HARDCODED FIX
+		// Discrepancy between ECCC object field and taxonomy name
+		location = location.replace("attributes.field_address.country_code", "relationships.field_country");
+
 		const path = location.split(".");
 		let value = ecccObject;
 
