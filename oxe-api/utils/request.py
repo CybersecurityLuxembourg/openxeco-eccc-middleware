@@ -2,13 +2,13 @@ from urllib3 import ProxyManager
 from urllib import request
 import requests
 
-from config.config import HTTP_PROXY
 from config.config import \
     OPENXECO_API_ENDPOINT, \
     ECCC_API_ENDPOINT, \
     ECCC_API_KEY, \
     ECCC_HTTP_AUTH_LOGIN, \
-    ECCC_HTTP_AUTH_PASS
+    ECCC_HTTP_AUTH_PASS, \
+    HTTP_PROXY
 
 
 def get_request(target):
@@ -60,6 +60,7 @@ def get_request_eccc(target, with_api_key=True, with_http_auth=True, params=None
             "Expires": "0",
         },
         params={**(params if params is not None else {}), **({"api-key": ECCC_API_KEY} if with_api_key else {})},
+        proxies={"https": HTTP_PROXY} if HTTP_PROXY is not None else None,
         allow_redirects=True,
         auth=requests.auth.HTTPBasicAuth(ECCC_HTTP_AUTH_LOGIN, ECCC_HTTP_AUTH_PASS)
         if with_http_auth and ECCC_HTTP_AUTH_LOGIN is not None
@@ -77,6 +78,7 @@ def post_request_eccc(target, data, with_api_key=True, with_http_auth=True):
             "Accept": "application/vnd.api+json",
         },
         data=data,
+        proxies={"https": HTTP_PROXY} if HTTP_PROXY is not None else None,
         allow_redirects=True,
         auth=requests.auth.HTTPBasicAuth(ECCC_HTTP_AUTH_LOGIN, ECCC_HTTP_AUTH_PASS)
         if with_http_auth and ECCC_HTTP_AUTH_LOGIN is not None
@@ -94,6 +96,7 @@ def patch_request_eccc(target, data, with_api_key=True, with_http_auth=True):
             "Accept": "application/vnd.api+json",
         },
         data=data,
+        proxies={"https": HTTP_PROXY} if HTTP_PROXY is not None else None,
         allow_redirects=True,
         auth=requests.auth.HTTPBasicAuth(ECCC_HTTP_AUTH_LOGIN, ECCC_HTTP_AUTH_PASS)
         if with_http_auth and ECCC_HTTP_AUTH_LOGIN is not None
