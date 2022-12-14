@@ -3,7 +3,7 @@ import "./RegistrationManage.css";
 import { NotificationManager as nm } from "react-notifications";
 import { dictToURI } from "../../../utils/url.jsx";
 import { getRequest } from "../../../utils/request.jsx";
-import { areValuesEqual } from "../../../utils/registration.jsx";
+import { areValuesEqual, getFieldLocation } from "../../../utils/registration.jsx";
 import { getOpenxecoEndpoint, getMiddlewareEndpoint } from "../../../utils/env.jsx";
 import Registration from "../../item/Registration.jsx";
 import User from "../../item/User.jsx";
@@ -140,8 +140,11 @@ export default class RegistrationManage extends React.Component {
 		if (ecccObject.length > 0) {
 			ecccObject = ecccObject[0];
 
-			for (let i = 0; i < this.props.formQuestions.length; i++) {
-				if (areValuesEqual(this.props.formQuestions[i], ecccObject,
+			const questionToCheck = this.props.formQuestions
+				.map((q) => getFieldLocation()[q.reference]);
+
+			for (let i = 0; i < questionToCheck.length; i++) {
+				if (areValuesEqual(questionToCheck[i], ecccObject,
 					this.state.formAnswers, this.props.ecccTaxonomies)) {
 					return "Uploaded - not synchronized";
 				}
