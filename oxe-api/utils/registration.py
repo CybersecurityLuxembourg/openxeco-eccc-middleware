@@ -2,7 +2,6 @@ import json
 from utils.request import get_request_eccc
 
 
-@staticmethod
 def manage_country(kwargs):
     eccc_countries = get_request_eccc("jsonapi/taxonomy_term/country")
     eccc_countries = json.loads(eccc_countries.content)["data"]
@@ -31,7 +30,6 @@ def manage_country(kwargs):
     return kwargs
 
 
-@staticmethod
 def manage_cluster_types(kwargs):
     if "field_cluster_type" in kwargs["body"]["relationships"]:
         eccc_cluster_types = get_request_eccc("jsonapi/taxonomy_term/cluster_type")
@@ -57,7 +55,6 @@ def manage_cluster_types(kwargs):
     return kwargs
 
 
-@staticmethod
 def manage_cluster_thematic_areas(kwargs):
     if "field_cluster_thematic_area" in kwargs["body"]["relationships"]:
         eccc_cluster_thematic_areas = get_request_eccc("jsonapi/taxonomy_term/cluster_thematic_area")
@@ -83,7 +80,6 @@ def manage_cluster_thematic_areas(kwargs):
     return kwargs
 
 
-@staticmethod
 def manage_fields_of_activity(kwargs):
     if "field_fields_of_activity" in kwargs["body"]["relationships"]:
         eccc_fields_of_activity = get_request_eccc("jsonapi/taxonomy_term/fields_of_activity")
