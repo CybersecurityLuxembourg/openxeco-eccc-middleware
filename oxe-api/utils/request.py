@@ -53,11 +53,17 @@ def get_request_eccc(target, with_api_key=True, with_http_auth=True, params=None
     url = f"{ECCC_API_ENDPOINT}{target}"
     r = requests.get(
         url,
+        headers={
+            "Connection": "close",
+            "Cache-Control": "private, max-age=0, no-cache",
+            "Pragma": "no-cache",
+            "Expires": "0",
+        },
         params={**(params if params is not None else {}), **({"api-key": ECCC_API_KEY} if with_api_key else {})},
         allow_redirects=True,
         auth=requests.auth.HTTPBasicAuth(ECCC_HTTP_AUTH_LOGIN, ECCC_HTTP_AUTH_PASS)
         if with_http_auth and ECCC_HTTP_AUTH_LOGIN is not None
-        else None
+        else None,
     )
     return r
 
