@@ -28,6 +28,4 @@ class GetRegistrations(MethodResource, Resource):
             }
         )
 
-        print(json.loads(r.content))
-
         return json.loads(r.content), "200 "
