@@ -110,7 +110,7 @@ export default class RegistrationStatus extends React.Component {
 					<div className="col-md-6">
 						<h3>Synchronization status</h3>
 
-						{this.props.syncStatus === "Synchronized"
+						{this.props.syncStatus === "Uploaded - synchronized"
 							? <Info
 								content={this.props.syncStatus}
 								height={150}
@@ -123,7 +123,7 @@ export default class RegistrationStatus extends React.Component {
 					</div>
 				</div>
 
-				{this.props.syncStatus !== "Synchronized"
+				{this.props.syncStatus !== "Uploaded - synchronized"
 					&& <div className={"row"}>
 						<div className="col-md-12">
 							<h2>Action</h2>
