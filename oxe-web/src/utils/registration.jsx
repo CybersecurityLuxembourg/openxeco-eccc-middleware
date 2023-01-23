@@ -323,7 +323,7 @@ export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies =
 			/>;
 		}
 
-		return value + "";
+		return (value + "").replaceAll("\n", "<br/>");
 	}
 
 	return null;

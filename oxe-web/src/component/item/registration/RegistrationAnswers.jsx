@@ -49,7 +49,12 @@ export default class RegistrationAnswers extends React.Component {
 
 				return <div>
 					{getEcccRegistrationFieldValue(qu[0], this.props.ecccObject, this.props.ecccTaxonomies)
-						? getEcccRegistrationFieldValue(qu[0], this.props.ecccObject, this.props.ecccTaxonomies)
+						? <div dangerouslySetInnerHTML={{
+							__html:
+							dompurify.sanitize(getEcccRegistrationFieldValue(
+								qu[0], this.props.ecccObject, this.props.ecccTaxonomies,
+							)),
+						}} />
 						: <Message
 							height={30}
 							content="No answer found"
