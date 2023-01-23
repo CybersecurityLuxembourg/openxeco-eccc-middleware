@@ -1,3 +1,4 @@
+import time
 from flask_apispec import MethodResource
 from flask_apispec import doc
 from flask_restful import Resource
@@ -19,6 +20,14 @@ class GetRegistrations(MethodResource, Resource):
     @catch_exception
     def get(self):
 
-        r = get_request_eccc("jsonapi/node/cluster", params={"filter[status]": "false"})
+        r = get_request_eccc(
+            "jsonapi/node/cluster",
+            params={
+                "filter[status]": "false",
+                "timestamp": time.time(),
+            }
+        )
+
+        print(json.loads(r.content))
 
         return json.loads(r.content), "200 "
