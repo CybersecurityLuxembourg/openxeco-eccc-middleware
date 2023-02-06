@@ -3,7 +3,7 @@ import "./Login.css";
 import { NotificationManager as nm } from "react-notifications";
 import FormLine from "./button/FormLine.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
-import { getOpenxecoEndpoint, getCookieOptions } from "../utils/env.jsx";
+import { getOpenxecoEndpoint } from "../utils/env.jsx";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -40,15 +40,12 @@ export default class Login extends React.Component {
 			password: this.state.password,
 		};
 
-		postRequest.call(this, getOpenxecoEndpoint() + "account/login", params, (response) => {
-			// TODO use httponly cookies
-			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
-
+		postRequest.call(this, getOpenxecoEndpoint() + "account/login", params, () => {
 			getRequest.call(this, getOpenxecoEndpoint() + "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
-					this.props.connect(response.user);
+					this.props.connect(data);
 				} else {
-					this.props.cookies.remove("access_token_cookie");
+					this.props.logout();
 					nm.warning("This user is not an admin");
 				}
 			}, (response2) => {

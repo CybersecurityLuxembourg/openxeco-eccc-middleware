@@ -56,7 +56,7 @@ export default class InsideApp extends React.Component {
 			}, () => {
 				getRequest.call(this, getOpenxecoEndpoint() + "user/get_user_group_assignments", (data) => {
 					this.setState({
-						userGroupAssignments: data.filter((a) => a.user_id === this.props.user).pop()
+						userGroupAssignments: data.filter((a) => a.user_id === this.props.user.id).pop()
 							|| "No group found for this user",
 					}, () => {
 						if (typeof this.state.userGroupAssignments === "object") {
@@ -104,7 +104,7 @@ export default class InsideApp extends React.Component {
 					selectedMenu={this.state.selectedMenu}
 					changeMenu={(v) => this.changeState("selectedMenu", v)}
 					disconnect={this.props.disconnect}
-					cookies={this.props.cookies}
+					logout={this.props.logout}
 					settings={this.state.settings}
 					{...props}
 				/>}/>
