@@ -156,6 +156,21 @@ export default class RegistrationManage extends React.Component {
 		return "Uploaded - not found";
 	}
 
+	// eslint-disable-next-line class-methods-use-this
+	getSynchronisationStatusColoration(s) {
+		if (s === "Uploaded - synchronized") {
+			return <div className="blue-font">{s}</div>;
+		}
+		if (s === "Uploaded - not synchronized") {
+			return <div className="orange-font">{s}</div>;
+		}
+		if (s === "Uploaded - not found") {
+			return <div className="red-font">{s}</div>;
+		}
+
+		return s;
+	}
+
 	getRegistrationId(userId) {
 		const refQuestions = this.props.formQuestions
 			.filter((q) => q.reference === "FORM-ECCC-001-Q000");
@@ -246,24 +261,44 @@ export default class RegistrationManage extends React.Component {
 				),
 			},
 			{
-				Header: "Validated by user",
+				id: "validated_by_user",
+				Header: () => <div className="centered">Validated by user</div>,
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<div>
+					<div className="centered">
 						{this.isValidatedByUser(value)}
 					</div>
 				),
+				width: 150,
 			},
 			{
-				Header: "Synchronization status",
+				id: "synch_status",
+				Header: () => <div className="centered">Synch. status</div>,
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<div>
-						{this.getSynchronisationStatus(
-							this.getRegistrationId(value),
+					<div className="centered">
+						{this.getSynchronisationStatusColoration(
+							this.getSynchronisationStatus(
+								this.getRegistrationId(value),
+							),
 						)}
 					</div>
 				),
+				width: 150,
+			},
+			{
+				id: "eccc_status",
+				Header: () => <div className="centered">ECCC status</div>,
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<div className="centered">
+						{this.getEcccRegistrationObject(this.getRegistrationId(value))
+							? this.getEcccRegistrationObject(this.getRegistrationId(value)).moderation_state
+							: "N/A"
+						}
+					</div>
+				),
+				width: 150,
 			},
 		];
 
