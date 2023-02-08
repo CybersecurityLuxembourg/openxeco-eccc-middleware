@@ -293,7 +293,8 @@ export default class RegistrationManage extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					<div className="centered">
 						{this.getEcccRegistrationObject(this.getRegistrationId(value))
-							? this.getEcccRegistrationObject(this.getRegistrationId(value)).moderation_state
+							? this.getEcccRegistrationObject(this.getRegistrationId(value))
+								.attributes.moderation_state
 							: "N/A"
 						}
 					</div>
