@@ -65,7 +65,7 @@ export default class RegistrationManage extends React.Component {
 			ids: this.getUserList(),
 		};
 
-		getRequest.call(this, getOpenxecoEndpoint() + "user/get_users?id=" + dictToURI(filters), (data2) => {
+		getRequest.call(this, getOpenxecoEndpoint() + "user/get_users?" + dictToURI(filters), (data2) => {
 			this.setState({
 				users: data2.items,
 			});
