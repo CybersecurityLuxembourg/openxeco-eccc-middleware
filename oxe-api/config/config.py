@@ -30,6 +30,7 @@ OPENXECO_API_ENDPOINT   = _getenv('OPENXECO_API_ENDPOINT',  mandatory=True)
 
 ECCC_API_ENDPOINT       = _getenv('ECCC_API_ENDPOINT',      mandatory=True)
 ECCC_API_KEY            = _getenv('ECCC_API_KEY',           mandatory=True)
+ECCC_USER_ID            = _getenv('ECCC_USER_ID',           mandatory=True)
 ECCC_HTTP_AUTH_LOGIN    = _getenv('ECCC_HTTP_AUTH_LOGIN',   mandatory=False, default=None)
 ECCC_HTTP_AUTH_PASS     = _getenv('ECCC_HTTP_AUTH_PASS',    mandatory=False, default=None)
 

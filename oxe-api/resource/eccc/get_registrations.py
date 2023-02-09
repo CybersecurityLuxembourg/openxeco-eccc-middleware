@@ -7,6 +7,7 @@ from flask_jwt_extended import jwt_required
 
 from decorator.catch_exception import catch_exception
 from utils.request import get_request_eccc
+from config.config import ECCC_USER_ID
 
 
 class GetRegistrations(MethodResource, Resource):
@@ -23,7 +24,7 @@ class GetRegistrations(MethodResource, Resource):
         r = get_request_eccc(
             "jsonapi/node/cluster",
             params={
-                "filter[status]": "false",
+                "filter[uid.meta.drupal_internal__target_id]": ECCC_USER_ID,
                 "timestamp": time.time(),
             }
         )
