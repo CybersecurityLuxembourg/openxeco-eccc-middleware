@@ -40,11 +40,10 @@ class GetRegistrations(MethodResource, Resource):
         if len(users) > 1:
             return "", "500 Too many users found linked to the API key"
 
-        if "attributes" not in users[0]
-            or "drupal_internal__uid" not in users[0]["attributes"]
+        if "attributes" not in users[0] \
+            or "drupal_internal__uid" not in users[0]["attributes"] \
             or users[0]["attributes"]["drupal_internal__uid"] is None:
             return "", "500 Error while parsing the ECCC user information"
-
 
         r = get_request_eccc(
             "jsonapi/node/cluster",
