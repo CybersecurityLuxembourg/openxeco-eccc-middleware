@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  oxe-web:
+    image: openxeco-eccc-middleware_oxe-web:local
+    build:
+      context: .
+      dockerfile: oxe-web/.docker/Dockerfile
+    tty: true
+    volumes:
+      - ./oxe-web:/usr/app
+      - /usr/app/node_modules
+    command: npm start
+    ports:
+      - "3006:3006"
+    expose:
+      - '3006'
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+  oxe-api:
+    image: openxeco-eccc-middleware_oxe-api:local
+    build:
+      context: .
+      dockerfile: oxe-api/.docker/Dockerfile
+    restart: always
+    volumes:
+      - ./oxe-api:/usr/app
+    ports:
+      - "5002:5002"
+    expose:
+      - '5002'
+    environment:
+      DEBUG: "true"
+      JWT_SECRET_KEY: "some_random_secret"
+      REG_FORM_REFERENCE: "FORM-ECCC-001"
+      OPENXECO_API_ENDPOINT: "http://localhost:5000/"
+      ECCC_API_ENDPOINT: ""
+      ECCC_API_KEY: "TO FILL"
+      ECCC_USER_ID: "TO FILL"
+      ECCC_HTTP_AUTH_LOGIN: "TO FILL"
+      ECCC_HTTP_AUTH_PASS: "TO FILL"
+
+networks:
+  default:
+    name: openxeco
+    external: true
