@@ -35,7 +35,6 @@ services:
       OPENXECO_API_ENDPOINT: "http://localhost:5000/"
       ECCC_API_ENDPOINT: ""
       ECCC_API_KEY: "https://dg-cnect-cybersecurity-atlas.acc.fpfis.tech.ec.europa.eu/"
-      ECCC_USER_ID: "1022"
       ECCC_HTTP_AUTH_LOGIN: "shared"
       ECCC_HTTP_AUTH_PASS: "fpfis2022"
 
