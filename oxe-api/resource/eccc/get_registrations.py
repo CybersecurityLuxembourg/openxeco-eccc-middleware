@@ -16,39 +16,28 @@ class GetRegistrations(MethodResource, Resource):
          description='Get registrations from the ECCC API',
          responses={
              "200": {},
-             "500.a": {"description": "No user found linked to the API key"},
-             "500.b": {"description": "Too many users found linked to the API key"},
-             "500.c": {"description": "Error while parsing the ECCC user information"},
+             "500.a": {"description": "No user ID found linked to the API key"},
          })
     @jwt_required
     @catch_exception
     def get(self):
 
         r = get_request_eccc(
-            "jsonapi/user/user",
+            "jsonapi",
             params={
-                "filter[api_key][value]": ECCC_API_KEY,
                 "timestamp": time.time(),
             }
         )
 
-        users = json.loads(r.content)["data"]
-
-        if len(users) == 0:
-            return "", "500 No user found linked to the API key"
-
-        if len(users) > 1:
-            return "", "500 Too many users found linked to the API key"
-
-        if "attributes" not in users[0] \
-            or "drupal_internal__uid" not in users[0]["attributes"] \
-            or users[0]["attributes"]["drupal_internal__uid"] is None:
-            return "", "500 Error while parsing the ECCC user information"
+        try:
+            user_id = json.loads(r.content)["meta"]["links"]["me"]["meta"]["id"]
+        except KeyError:
+            return "", "500 No user ID found linked to the API key"
 
         r = get_request_eccc(
             "jsonapi/node/cluster",
             params={
-                "filter[uid.meta.drupal_internal__target_id]": users[0]["attributes"]["drupal_internal__uid"],
+                "filter[uid.id][value]": user_id,
                 "timestamp": time.time(),
             }
         )
