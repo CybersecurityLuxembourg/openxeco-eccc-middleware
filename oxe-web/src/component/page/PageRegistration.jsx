@@ -53,7 +53,7 @@ export default class PageRegistration extends React.Component {
 		});
 	}
 
-	getFormAndQuestions() {
+	getFormAndQuestions(afterRequest) {
 		this.setState({
 			form: null,
 			formQuestions: null,
@@ -74,6 +74,10 @@ export default class PageRegistration extends React.Component {
 						getRequest.call(this, getOpenxecoEndpoint() + "form/get_form_questions?" + dictToURI(filters), (data2) => {
 							this.setState({
 								formQuestions: data2,
+							}, () => {
+								if (afterRequest) {
+									afterRequest();
+								}
 							});
 						}, (response) => {
 							nm.warning(response.statusText);
@@ -104,7 +108,8 @@ export default class PageRegistration extends React.Component {
 							form={this.state.form}
 							formQuestions={this.state.formQuestions}
 							ecccTaxonomies={this.state.ecccTaxonomies}
-							refreshFormAndQuestions={() => this.refresh()}
+							getFormAndQuestions={(afterRequest) => this.getFormAndQuestions(afterRequest)}
+							refresh={() => this.refresh()}
 							userGroupRights={this.props.userGroupRights}
 						/>,
 						<RegistrationManage

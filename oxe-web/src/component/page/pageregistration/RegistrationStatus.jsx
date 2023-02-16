@@ -36,11 +36,11 @@ export default class RegistrationStatus extends React.Component {
 			};
 
 			postRequest.call(this, getOpenxecoEndpoint() + "form/update_form", params, () => {
-				if (this.props.refreshFormAndQuestions) {
-					this.props.refreshFormAndQuestions();
-				}
-
 				nm.info("The form has been edited");
+
+				if (this.props.getFormAndQuestions) {
+					this.props.getFormAndQuestions(() => this.generateQuestions());
+				}
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -66,6 +66,9 @@ export default class RegistrationStatus extends React.Component {
 					.then(() => {
 						nm.info("The questions have been generated");
 						this.reorderQuestions();
+						if (this.props.getFormAndQuestions) {
+							this.props.getFormAndQuestions();
+						}
 					})
 					.catch(() => {
 						nm.error("An error happened while generating the questions");
@@ -270,7 +273,7 @@ export default class RegistrationStatus extends React.Component {
 							<button
 								className={"blue-background"}
 								data-hover="Refresh"
-								onClick={() => this.props.refreshFormAndQuestions()}>
+								onClick={() => this.props.refresh()}>
 								<span><i className="fas fa-redo-alt"/></span>
 							</button>
 						</div>
