@@ -312,7 +312,7 @@ export default class RegistrationManage extends React.Component {
 
 					<div className="col-md-3">
 						<div className={"top-right-buttons"}>
-							<button onClick={() => this.props.refresh()}>
+							<button onClick={() => this.refresh()}>
 								<i className="fas fa-redo-alt"/>
 							</button>
 						</div>
