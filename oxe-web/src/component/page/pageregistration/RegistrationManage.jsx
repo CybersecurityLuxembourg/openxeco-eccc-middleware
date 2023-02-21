@@ -120,7 +120,7 @@ export default class RegistrationManage extends React.Component {
 		return null;
 	}
 
-	getSynchronisationStatus(orgId) {
+	getSynchronisationStatus(orgId, userId) {
 		if (!this.state.ecccRegistrations) {
 			return "Loading ECCC registrations...";
 		}
@@ -145,9 +145,8 @@ export default class RegistrationManage extends React.Component {
 
 			for (let i = 0; i < questionToCheck.length; i++) {
 				if (!areValuesEqual(questionToCheck[i], ecccObject,
-					this.state.formAnswers, this.props.ecccTaxonomies)) {
-					console.log(questionToCheck[i], ecccObject,
-						this.state.formAnswers, this.props.ecccTaxonomies);
+					this.state.formAnswers.filter((a) => a.user_id === userId),
+					this.props.ecccTaxonomies)) {
 					return "Uploaded - not synchronized";
 				}
 			}
@@ -253,7 +252,7 @@ export default class RegistrationManage extends React.Component {
 								this.getRegistrationId(value),
 							)}
 							syncStatus={this.getSynchronisationStatus(
-								this.getRegistrationId(value),
+								this.getRegistrationId(value), value,
 							)}
 							ecccTaxonomies={this.props.ecccTaxonomies}
 							afterUpload={() => this.refresh()}
@@ -281,7 +280,7 @@ export default class RegistrationManage extends React.Component {
 					<div className="centered">
 						{this.getSynchronisationStatusColoration(
 							this.getSynchronisationStatus(
-								this.getRegistrationId(value),
+								this.getRegistrationId(value), value,
 							),
 						)}
 					</div>
