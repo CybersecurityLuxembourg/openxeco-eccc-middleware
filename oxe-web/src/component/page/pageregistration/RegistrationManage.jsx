@@ -146,6 +146,8 @@ export default class RegistrationManage extends React.Component {
 			for (let i = 0; i < questionToCheck.length; i++) {
 				if (!areValuesEqual(questionToCheck[i], ecccObject,
 					this.state.formAnswers, this.props.ecccTaxonomies)) {
+					console.log(questionToCheck[i], ecccObject,
+						this.state.formAnswers, this.props.ecccTaxonomies);
 					return "Uploaded - not synchronized";
 				}
 			}
