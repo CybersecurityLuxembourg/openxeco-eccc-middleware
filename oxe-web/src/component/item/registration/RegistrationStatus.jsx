@@ -8,6 +8,8 @@ import Info from "../../box/Info.jsx";
 import Warning from "../../box/Warning.jsx";
 import Message from "../../box/Message.jsx";
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
+import DialogHintEcccStatus from "../../dialog/dialoghint/DialogHintEcccStatus.jsx";
+import DialogHintSynchStatus from "../../dialog/dialoghint/DialogHintSynchStatus.jsx";
 import { getMiddlewareEndpoint, getOpenxecoEndpoint } from "../../../utils/env.jsx";
 
 export default class RegistrationStatus extends React.Component {
@@ -142,7 +144,7 @@ export default class RegistrationStatus extends React.Component {
 					</div>
 
 					<div className="col-md-6">
-						<h3>Synchronization status</h3>
+						<h3>Synchronization status <DialogHintSynchStatus/></h3>
 
 						{this.props.syncStatus === "Uploaded - synchronized"
 							? <Info
@@ -215,9 +217,10 @@ export default class RegistrationStatus extends React.Component {
 							/>
 						</div>
 					}
+
 					{this.props.calculateFormCompletion() === 100 && this.props.ecccObject
 						&& <div className="col-md-6">
-							<h3>Change the registration status</h3>
+							<h3>Change the registration ECCC status <DialogHintEcccStatus/></h3>
 
 							<Info
 								content={<div>

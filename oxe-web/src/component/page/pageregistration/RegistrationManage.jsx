@@ -9,6 +9,8 @@ import Registration from "../../item/Registration.jsx";
 import User from "../../item/User.jsx";
 import Loading from "../../box/Loading.jsx";
 import Table from "../../table/Table.jsx";
+import DialogHintEcccStatus from "../../dialog/dialoghint/DialogHintEcccStatus.jsx";
+import DialogHintSynchStatus from "../../dialog/dialoghint/DialogHintSynchStatus.jsx";
 
 export default class RegistrationManage extends React.Component {
 	constructor(props) {
@@ -274,7 +276,7 @@ export default class RegistrationManage extends React.Component {
 			},
 			{
 				id: "synch_status",
-				Header: () => <div className="centered">Synch. status</div>,
+				Header: () => <div className="centered">Synch. status <DialogHintSynchStatus/></div>,
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
 					<div className="centered">
@@ -289,7 +291,7 @@ export default class RegistrationManage extends React.Component {
 			},
 			{
 				id: "eccc_status",
-				Header: () => <div className="centered">ECCC status</div>,
+				Header: () => <div className="centered">ECCC status <DialogHintEcccStatus/></div>,
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
 					<div className="centered">
