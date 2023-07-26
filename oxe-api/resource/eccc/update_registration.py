@@ -55,11 +55,12 @@ class UpdateRegistration(MethodResource, Resource):
 
         # Body building
 
-        kwargs["body"]["type"] = "node--cluster"
-
         body = {
             "data": kwargs["body"],
         }
+
+        body["data"]["type"] = "node--cluster"
+        body["data"]["attributes"]["moderation_state"] = "draft"
 
         # Query ECCC endpoint
 

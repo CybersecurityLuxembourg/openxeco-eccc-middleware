@@ -3,7 +3,7 @@ import "./RegistrationManage.css";
 import { NotificationManager as nm } from "react-notifications";
 import { dictToURI } from "../../../utils/url.jsx";
 import { getRequest } from "../../../utils/request.jsx";
-import { areValuesEqual, getFieldLocation } from "../../../utils/registration.jsx";
+import { areValuesEqual, getFieldLocation, getStatusLabel } from "../../../utils/registration.jsx";
 import { getOpenxecoEndpoint, getMiddlewareEndpoint } from "../../../utils/env.jsx";
 import Registration from "../../item/Registration.jsx";
 import User from "../../item/User.jsx";
@@ -294,8 +294,10 @@ export default class RegistrationManage extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					<div className="centered">
 						{this.getEcccRegistrationObject(this.getRegistrationId(value))
-							? this.getEcccRegistrationObject(this.getRegistrationId(value))
-								.attributes.moderation_state
+							? getStatusLabel(
+								this.getEcccRegistrationObject(this.getRegistrationId(value))
+									.attributes.moderation_state,
+							)
 							: "N/A"
 						}
 					</div>

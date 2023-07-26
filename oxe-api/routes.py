@@ -4,6 +4,7 @@ from resource.eccc.add_registration import AddRegistration
 from resource.eccc.get_registrations import GetRegistrations
 from resource.eccc.get_taxonomies import GetTaxonomies
 from resource.eccc.update_registration import UpdateRegistration
+from resource.eccc.update_registration_status import UpdateRegistrationStatus
 from resource.eccc.get_status import GetStatus
 from resource.get_endpoints import GetEndpoints
 from resource.healthz import Healthz

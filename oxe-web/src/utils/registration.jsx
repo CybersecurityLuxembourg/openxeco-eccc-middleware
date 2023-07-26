@@ -411,3 +411,11 @@ export function areValuesEqual(question, ecccObject, answers, taxonomies = {}) {
 
 	return false;
 }
+
+export function getStatusLabel(label) {
+	return {
+		draft: "Draft",
+		ready_for_publication: "Ready for publication",
+		published: "Published",
+	}[label];
+}
