@@ -7,7 +7,6 @@ from flask_jwt_extended import jwt_required
 
 from decorator.catch_exception import catch_exception
 from utils.request import get_request_eccc
-from config.config import ECCC_API_KEY
 
 
 class GetRegistrations(MethodResource, Resource):
