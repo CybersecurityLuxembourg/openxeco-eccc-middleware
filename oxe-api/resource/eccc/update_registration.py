@@ -60,7 +60,6 @@ class UpdateRegistration(MethodResource, Resource):
         }
 
         body["data"]["type"] = "node--cluster"
-        body["data"]["attributes"]["moderation_state"] = "draft"
 
         # Query ECCC endpoint
 
