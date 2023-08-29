@@ -5,6 +5,7 @@ export function getFieldLocation() {
 	return {
 		"FORM-ECCC-001-Q000": "id",
 		"FORM-ECCC-001-Q101": "attributes.title",
+		"FORM-ECCC-001-Q101.2": "attributes.field_institution_name_in_nation",
 		"FORM-ECCC-001-Q102": "attributes.field_address.country_code",
 		"FORM-ECCC-001-Q103": "attributes.field_address.locality",
 		"FORM-ECCC-001-Q104": "attributes.field_address.address_line1",
@@ -71,8 +72,15 @@ export function getFormQuestions(taxonomies) {
 		mandatory: true,
 	},
 	{
-		reference: "FORM-ECCC-001-Q102",
+		reference: "FORM-ECCC-001-Q101.b",
 		position: 2,
+		type: "TEXT",
+		value: "Name in English (if no translation, same value than previous field)",
+		mandatory: true,
+	},
+	{
+		reference: "FORM-ECCC-001-Q102",
+		position: 3,
 		type: "SELECT",
 		value: "Address: Country",
 		options: taxonomies && taxonomies.country ? Object.keys(taxonomies.country).map((e) => taxonomies.country[e]).join("|") : undefined,
@@ -80,28 +88,28 @@ export function getFormQuestions(taxonomies) {
 	},
 	{
 		reference: "FORM-ECCC-001-Q103",
-		position: 3,
+		position: 4,
 		type: "TEXT",
 		value: "Address: Street address",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q104",
-		position: 4,
+		position: 5,
 		type: "TEXT",
 		value: "Address: City",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q105",
-		position: 5,
+		position: 6,
 		type: "TEXT",
 		value: "Company/organization registration number",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q106",
-		position: 6,
+		position: 7,
 		type: "TEXT",
 		value: "Is this your organisation’s main seat / headquarter? (is your organisation a subsidiary of an organisation?)"
 			+ "<br/><br/>"
@@ -109,28 +117,28 @@ export function getFormQuestions(taxonomies) {
 	},
 	{
 		reference: "FORM-ECCC-001-Q107",
-		position: 7,
+		position: 8,
 		type: "TEXT",
 		value: "Website",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q108",
-		position: 8,
+		position: 9,
 		type: "TEXT",
 		value: "Phone number",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q109",
-		position: 9,
+		position: 10,
 		type: "TEXT",
 		value: "Email",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q110",
-		position: 10,
+		position: 11,
 		type: "SELECT",
 		value: "Organisation type",
 		options: taxonomies && taxonomies.cluster_type ? Object.keys(taxonomies.cluster_type).map((e) => taxonomies.cluster_type[e]).join("|") : undefined,
@@ -138,7 +146,7 @@ export function getFormQuestions(taxonomies) {
 	},
 	{
 		reference: "FORM-ECCC-001-Q111",
-		position: 11,
+		position: 12,
 		type: "TEXT",
 		value: "Does your organization have subsidiaries in other EU Member States (including EEA/EFTA countries)"
 			+ "<br/><br/>"
@@ -146,7 +154,7 @@ export function getFormQuestions(taxonomies) {
 	},
 	{
 		reference: "FORM-ECCC-001-Q112",
-		position: 12,
+		position: 13,
 		type: "TEXT",
 		value: "Do you hold majority shares of organizations located outside of the Member State (incl.  EEA/EFTA countries)?"
 			+ "<br/><br/>"
@@ -154,14 +162,14 @@ export function getFormQuestions(taxonomies) {
 	},
 	{
 		reference: "FORM-ECCC-001-Q113",
-		position: 13,
+		position: 14,
 		type: "CHECKBOX",
 		value: "Does your organization comply to the requirements described in Article 136 of the EU Financial Regulation?  (see Annex 3)",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q114",
-		position: 14,
+		position: 15,
 		type: "CHECKBOX",
 		value: "Please review and accept the Confidentiality agreement",
 		mandatory: true,
@@ -169,28 +177,28 @@ export function getFormQuestions(taxonomies) {
 
 	{
 		reference: "FORM-ECCC-001-Q201",
-		position: 15,
+		position: 16,
 		type: "TEXT",
 		value: "<p><b>Representative / Contact Person</b></p><p>First name</p>",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q202",
-		position: 16,
+		position: 17,
 		type: "TEXT",
 		value: "Family name",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q203",
-		position: 17,
+		position: 18,
 		type: "TEXT",
 		value: "Position",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q204",
-		position: 18,
+		position: 19,
 		type: "SELECT",
 		value: "Gender",
 		options: "male|female|na",
@@ -198,21 +206,21 @@ export function getFormQuestions(taxonomies) {
 	},
 	{
 		reference: "FORM-ECCC-001-Q205",
-		position: 19,
+		position: 20,
 		type: "TEXT",
 		value: "Email",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q206",
-		position: 20,
+		position: 21,
 		type: "TEXT",
 		value: "Phone number (personal)",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q207",
-		position: 21,
+		position: 22,
 		type: "TEXT",
 		value: "Please specify the contact person’s expertise in the field of cybersecurity",
 		mandatory: true,
@@ -220,7 +228,7 @@ export function getFormQuestions(taxonomies) {
 
 	{
 		reference: "FORM-ECCC-001-Q301",
-		position: 22,
+		position: 23,
 		type: "OPTIONS",
 		value: "<p><b>Fields of Activity / Expertise</b></p><p>Your organizations expertise in the field of cybersecurity (according to Article 8 (3)</p>",
 		options: taxonomies && taxonomies.fields_of_activity ? Object.keys(taxonomies.fields_of_activity).map((e) => taxonomies.fields_of_activity[e]).join("|") : undefined,
@@ -228,14 +236,14 @@ export function getFormQuestions(taxonomies) {
 	},
 	{
 		reference: "FORM-ECCC-001-Q302",
-		position: 23,
+		position: 24,
 		type: "TEXTAREA",
 		value: "Expertise - detail description",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303",
-		position: 24,
+		position: 25,
 		type: "OPTIONS",
 		value: "Expertise according to the Cybersecurity Taxonomy",
 		options: taxonomies && taxonomies.cluster_thematic_area ? Object.keys(taxonomies.cluster_thematic_area).map((e) => taxonomies.cluster_thematic_area[e]).join("|") : undefined,
@@ -243,14 +251,14 @@ export function getFormQuestions(taxonomies) {
 	},
 	{
 		reference: "FORM-ECCC-001-Q304",
-		position: 25,
+		position: 26,
 		type: "TEXTAREA",
 		value: "What do you seek to achieve by joining the community?",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q305",
-		position: 26,
+		position: 27,
 		type: "TEXTAREA",
 		value: "How and in which goals and tasks of community can you contribute?",
 		mandatory: true,
@@ -258,14 +266,14 @@ export function getFormQuestions(taxonomies) {
 
 	{
 		reference: "FORM-ECCC-001-Q401",
-		position: 27,
+		position: 28,
 		type: "CHECKBOX",
 		value: "<p><b>Disclaimer</b></p><p>Article 9 – Tasks of community</p>",
 		mandatory: true,
 	},
 	{
 		reference: "FORM-ECCC-001-Q402",
-		position: 28,
+		position: 29,
 		type: "CHECKBOX",
 		value: "GDPR Conformity",
 		mandatory: true,
@@ -273,7 +281,7 @@ export function getFormQuestions(taxonomies) {
 
 	{
 		reference: "FORM-ECCC-001-Q501",
-		position: 29,
+		position: 30,
 		type: "CHECKBOX",
 		value: "<p><b>Confirmation</b></p><p>I have finished filling the form and accept the answers to be reviewed by the NCC</p>",
 		mandatory: true,
