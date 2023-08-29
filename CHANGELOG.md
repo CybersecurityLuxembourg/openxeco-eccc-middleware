@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.0.1-b.21] - 2023-08-29
+
+### Added
+
+- Field in registration form for company name in native language
+
 ## [0.0.1-b.19] - 2023-07-26
 
 ### Added
