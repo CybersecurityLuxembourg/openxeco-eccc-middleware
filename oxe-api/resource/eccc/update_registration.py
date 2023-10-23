@@ -7,11 +7,7 @@ import json
 
 from decorator.catch_exception import catch_exception
 from utils.request import patch_request_eccc
-from utils.registration import \
-    manage_country, \
-    manage_cluster_thematic_areas, \
-    manage_cluster_types, \
-    manage_fields_of_activity
+from utils.registration import manage_attributes
 
 
 class UpdateRegistration(MethodResource, Resource):
@@ -48,10 +44,7 @@ class UpdateRegistration(MethodResource, Resource):
 
         # Manage taxonomy values in body
 
-        kwargs = manage_country(kwargs)
-        kwargs = manage_cluster_types(kwargs)
-        kwargs = manage_cluster_thematic_areas(kwargs)
-        kwargs = manage_fields_of_activity(kwargs)
+        kwargs = manage_attributes(kwargs)
 
         # Body building
 
