@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2023-10-24
+
+### Added
+
+- Missing question in the form regarding expertise sub-domains, sector, technology and use-case
+- Version compatibility table in the README
+
 ## [0.0.1-b.21] - 2023-08-29
 
 ### Added

@@ -48,6 +48,19 @@
 </tr>
 </table>
 
+# openXeco compatibility
+
+<table>
+<tr>
+  <td>openXeco middleware version</td>
+  <td>compatible openXeco core versions</td>
+</tr>
+<tr>
+  <td>v1.0.0</td>
+  <td>v1.17.x</td>
+</tr>
+</table>
+
 # Set up an instance
 
 ## For development
