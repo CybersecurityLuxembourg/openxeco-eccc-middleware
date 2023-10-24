@@ -247,7 +247,6 @@ export function getFormQuestions(taxonomies) {
 		value: "Please specify the contact person’s expertise in the field of cybersecurity",
 		mandatory: true,
 	},
-
 	{
 		reference: "FORM-ECCC-001-Q301",
 		position: 23,
@@ -276,7 +275,7 @@ export function getFormQuestions(taxonomies) {
 		position: 26,
 		type: "TEXTAREA",
 		value: "Other expertise",
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.1",
@@ -284,7 +283,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Assurance, Audit, and Certification",
 		options: taxonomies && taxonomies.assurance_audit_certification ? Object.keys(taxonomies.assurance_audit_certification).map((e) => taxonomies.assurance_audit_certification[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.2",
@@ -292,7 +291,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Cryptology (Cryptography and Cryptanalysis)",
 		options: taxonomies && taxonomies.cryptology ? Object.keys(taxonomies.cryptology).map((e) => taxonomies.cryptology[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.3",
@@ -300,7 +299,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Data Security and Privacy",
 		options: taxonomies && taxonomies.data_security_and_privacy ? Object.keys(taxonomies.data_security_and_privacy).map((e) => taxonomies.data_security_and_privacy[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.4",
@@ -308,7 +307,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Education and Training",
 		options: taxonomies && taxonomies.education_and_training ? Object.keys(taxonomies.education_and_training).map((e) => taxonomies.education_and_training[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.5",
@@ -316,7 +315,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Human aspects",
 		options: taxonomies && taxonomies.human_aspects ? Object.keys(taxonomies.human_aspects).map((e) => taxonomies.human_aspects[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.6",
@@ -324,7 +323,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Identity Management",
 		options: taxonomies && taxonomies.identity_and_access_management ? Object.keys(taxonomies.identity_and_access_management).map((e) => taxonomies.identity_and_access_management[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.7",
@@ -332,7 +331,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Incident Handling and Digital Forensics",
 		options: taxonomies && taxonomies.op_incident_handling_forensics ? Object.keys(taxonomies.op_incident_handling_forensics).map((e) => taxonomies.op_incident_handling_forensics[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.8",
@@ -340,7 +339,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Legal aspects",
 		options: taxonomies && taxonomies.legal_aspects ? Object.keys(taxonomies.legal_aspects).map((e) => taxonomies.legal_aspects[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.9",
@@ -348,7 +347,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Network and Distributed Systems",
 		options: taxonomies && taxonomies.network_and_distributed_systems ? Object.keys(taxonomies.network_and_distributed_systems).map((e) => taxonomies.network_and_distributed_systems[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.10",
@@ -356,7 +355,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Security Management and Governance",
 		options: taxonomies && taxonomies.security_management_and_governan ? Object.keys(taxonomies.security_management_and_governan).map((e) => taxonomies.security_management_and_governan[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.11",
@@ -364,7 +363,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Security Measurements",
 		options: taxonomies && taxonomies.security_measurements ? Object.keys(taxonomies.security_measurements).map((e) => taxonomies.security_measurements[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.12",
@@ -372,7 +371,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Software and Hardware Security Engineering",
 		options: taxonomies && taxonomies.soft_and_hard_sec_engineering ? Object.keys(taxonomies.soft_and_hard_sec_engineering).map((e) => taxonomies.soft_and_hard_sec_engineering[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.13",
@@ -380,7 +379,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Steganography, Steganalysis and Watermarking",
 		options: taxonomies && taxonomies.steganography_steganalysis_and_w ? Object.keys(taxonomies.steganography_steganalysis_and_w).map((e) => taxonomies.steganography_steganalysis_and_w[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.14",
@@ -388,7 +387,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Theoretical Foundations",
 		options: taxonomies && taxonomies.theoretical_foundation ? Object.keys(taxonomies.theoretical_foundation).map((e) => taxonomies.theoretical_foundation[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.1.15",
@@ -396,7 +395,7 @@ export function getFormQuestions(taxonomies) {
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Trust Management and Accountability",
 		options: taxonomies && taxonomies.trust_management_accountability ? Object.keys(taxonomies.trust_management_accountability).map((e) => taxonomies.trust_management_accountability[e]).join("|") : undefined,
-		mandatory: true,
+		mandatory: false,
 	},
 	{
 		reference: "FORM-ECCC-001-Q303.3",
