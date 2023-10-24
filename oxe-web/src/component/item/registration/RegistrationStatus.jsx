@@ -102,7 +102,7 @@ export default class RegistrationStatus extends React.Component {
 				nm.warning("An error occured. Please check the logs below");
 				const l = this.state.logs;
 				l["Log " + new Date().toISOString()] = response.statusText;
-				console.log(response.statusText);
+
 				this.setState({
 					logs: l,
 				});
