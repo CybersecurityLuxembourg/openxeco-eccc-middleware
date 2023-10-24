@@ -26,7 +26,6 @@ def manage_attributes(kwargs):
     kwargs = manage_theoretical_foundations(kwargs)
     kwargs = manage_trust_management_accountability(kwargs)
 
-
     return kwargs
 
 
@@ -157,8 +156,6 @@ def manage_sectors(kwargs):
             ]
         }
 
-        del kwargs["body"]["relationships"]["field_sectors"]
-
     return kwargs
 
 
@@ -183,8 +180,6 @@ def manage_technologies(kwargs):
                 if o in eccc_technologies
             ]
         }
-
-        del kwargs["body"]["relationships"]["field_technologies"]
 
     return kwargs
 
@@ -211,8 +206,6 @@ def manage_use_cases(kwargs):
             ]
         }
 
-        del kwargs["body"]["relationships"]["field_use_cases"]
-
     return kwargs
 
 
@@ -228,7 +221,7 @@ def manage_assurance_audit_certification(kwargs):
         except Exception:
             return "", "500 Failed to parse the 'assurance_audit_certification' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_assurance_audit_certification"] = {
+        kwargs["body"]["relationships"]["field_assurance_audit_cert"] = {
             "data": [{
                 "type": "taxonomy_term--assurance_audit_certification",
                 "id": eccc_assurance_audit_certification[o],
@@ -265,8 +258,6 @@ def manage_cryptology(kwargs):
             ]
         }
 
-        del kwargs["body"]["relationships"]["field_cryptology"]
-
     return kwargs
 
 
@@ -291,8 +282,6 @@ def manage_data_security_and_privacy(kwargs):
                 if o in eccc_data_security_and_privacy
             ]
         }
-
-        del kwargs["body"]["relationships"]["field_data_security_and_privacy"]
 
     return kwargs
 
@@ -319,8 +308,6 @@ def manage_education_and_training(kwargs):
             ]
         }
 
-        del kwargs["body"]["relationships"]["field_education_and_training"]
-
     return kwargs
 
 
@@ -346,8 +333,6 @@ def manage_human_aspects(kwargs):
             ]
         }
 
-        del kwargs["body"]["relationships"]["field_human_aspects"]
-
     return kwargs
 
 
@@ -363,7 +348,7 @@ def manage_identity_and_access_management(kwargs):
         except Exception:
             return "", "500 Failed to parse the 'identity_and_access_management' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_identity_and_access_management"] = {
+        kwargs["body"]["relationships"]["field_identity_and_access_mngmt"] = {
             "data": [{
                 "type": "taxonomy_term--identity_and_access_management",
                 "id": eccc_identity_and_access_management[o],
@@ -390,7 +375,7 @@ def manage_op_incident_handling_forensics(kwargs):
         except Exception:
             return "", "500 Failed to parse the 'op_incident_handling_forensics' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_op_incident_handling_forensics"] = {
+        kwargs["body"]["relationships"]["field_operational_incident_handl"] = {
             "data": [{
                 "type": "taxonomy_term--op_incident_handling_forensics",
                 "id": eccc_op_incident_handling_forensics[o],
@@ -427,8 +412,6 @@ def manage_legal_aspects(kwargs):
             ]
         }
 
-        del kwargs["body"]["relationships"]["field_legal_aspects"]
-
     return kwargs
 
 
@@ -444,7 +427,7 @@ def manage_network_and_distributed_systems(kwargs):
         except Exception:
             return "", "500 Failed to parse the 'network_and_distributed_systems' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_network_and_distributed_systems"] = {
+        kwargs["body"]["relationships"]["field_network_and_distributed_sy"] = {
             "data": [{
                 "type": "taxonomy_term--network_and_distributed_systems",
                 "id": eccc_network_and_distributed_systems[o],
@@ -471,7 +454,7 @@ def manage_security_management_and_governan(kwargs):
         except Exception:
             return "", "500 Failed to parse the 'security_management_and_governan' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_security_management_and_governan"] = {
+        kwargs["body"]["relationships"]["field_security_management"] = {
             "data": [{
                 "type": "taxonomy_term--security_management_and_governan",
                 "id": eccc_security_management_and_governan[o],
@@ -508,8 +491,6 @@ def manage_security_measurements(kwargs):
             ]
         }
 
-        del kwargs["body"]["relationships"]["field_security_measurements"]
-
     return kwargs
 
 
@@ -525,7 +506,7 @@ def manage_soft_and_hard_sec_engineering(kwargs):
         except Exception:
             return "", "500 Failed to parse the 'soft_and_hard_sec_engineering' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_soft_and_hard_sec_engineering"] = {
+        kwargs["body"]["relationships"]["field_security_engineering"] = {
             "data": [{
                 "type": "taxonomy_term--soft_and_hard_sec_engineering",
                 "id": eccc_soft_and_hard_sec_engineering[o],
@@ -552,7 +533,7 @@ def manage_steganography_steganalysis_and_w(kwargs):
         except Exception:
             return "", "500 Failed to parse the 'steganography_steganalysis_and_w' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_steganography_steganalysis_and_w"] = {
+        kwargs["body"]["relationships"]["field_steganography_steganalysis"] = {
             "data": [{
                 "type": "taxonomy_term--steganography_steganalysis_and_w",
                 "id": eccc_steganography_steganalysis_and_w[o],
@@ -589,8 +570,6 @@ def manage_theoretical_foundations(kwargs):
             ]
         }
 
-        del kwargs["body"]["relationships"]["field_theoretical_foundations"]
-
     return kwargs
 
 
@@ -606,7 +585,7 @@ def manage_trust_management_accountability(kwargs):
         except Exception:
             return "", "500 Failed to parse the 'trust_management_accountability' from the ECCC endpoint"
 
-        kwargs["body"]["relationships"]["field_trust_management_accountability"] = {
+        kwargs["body"]["relationships"]["field_trust_management_and_accou"] = {
             "data": [{
                 "type": "taxonomy_term--trust_management_accountability",
                 "id": eccc_trust_management_accountability[o],
