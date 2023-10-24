@@ -386,7 +386,7 @@ export function getFormQuestions(taxonomies) {
 		position: 40,
 		type: "OPTIONS",
 		value: "Sub-domain of expertise according to the Cybersecurity Taxonomy - Theoretical Foundations",
-		options: taxonomies && taxonomies.theoretical_foundation ? Object.keys(taxonomies.theoretical_foundation).map((e) => taxonomies.theoretical_foundation[e]).join("|") : undefined,
+		options: taxonomies && taxonomies.theoretical_foundations ? Object.keys(taxonomies.theoretical_foundations).map((e) => taxonomies.theoretical_foundations[e]).join("|") : undefined,
 		mandatory: false,
 	},
 	{
@@ -402,7 +402,7 @@ export function getFormQuestions(taxonomies) {
 		position: 42,
 		type: "OPTIONS",
 		value: "Sectors according to the Cybersecurity Taxonomy",
-		options: taxonomies && taxonomies.field_sectors ? Object.keys(taxonomies.field_sectors).map((e) => taxonomies.field_sectors[e]).join("|") : undefined,
+		options: taxonomies && taxonomies.sectors ? Object.keys(taxonomies.sectors).map((e) => taxonomies.sectors[e]).join("|") : undefined,
 		mandatory: true,
 	},
 	{
@@ -417,7 +417,7 @@ export function getFormQuestions(taxonomies) {
 		position: 44,
 		type: "OPTIONS",
 		value: "Technologies according to the Cybersecurity Taxonomy",
-		options: taxonomies && taxonomies.field_technologies ? Object.keys(taxonomies.field_technologies).map((e) => taxonomies.field_technologies[e]).join("|") : undefined,
+		options: taxonomies && taxonomies.technologies ? Object.keys(taxonomies.technologies).map((e) => taxonomies.technologies[e]).join("|") : undefined,
 		mandatory: true,
 	},
 	{
@@ -432,7 +432,7 @@ export function getFormQuestions(taxonomies) {
 		position: 46,
 		type: "OPTIONS",
 		value: "Use cases according to the Cybersecurity Taxonomy",
-		options: taxonomies && taxonomies.field_use_cases ? Object.keys(taxonomies.field_use_cases).map((e) => taxonomies.field_use_cases[e]).join("|") : undefined,
+		options: taxonomies && taxonomies.use_cases ? Object.keys(taxonomies.use_cases).map((e) => taxonomies.use_cases[e]).join("|") : undefined,
 		mandatory: true,
 	},
 	{
