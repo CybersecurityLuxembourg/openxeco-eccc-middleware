@@ -51,7 +51,7 @@ export function getFieldLocation() {
 		"FORM-ECCC-001-Q303.4": "attributes.field_other_sectors",
 		"FORM-ECCC-001-Q303.5": "relationships.field_technologies",
 		"FORM-ECCC-001-Q303.6": "attributes.field_other_technologies",
-		"FORM-ECCC-001-Q303.7": "relationships.field_use_cases ",
+		"FORM-ECCC-001-Q303.7": "relationships.field_use_cases",
 		"FORM-ECCC-001-Q303.8": "attributes.field_other_use_cases",
 		"FORM-ECCC-001-Q304": "attributes.field_goals_to_achieve",
 		"FORM-ECCC-001-Q305": "attributes.field_goals_to_contribute",
@@ -497,9 +497,16 @@ export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies =
 			// HARDCODED FIX
 			// Discrepancy between ECCC object field and taxonomy name
 			path[i] = path[i].replace("field_fields_of_activity", "field_field_of_activity");
+			path[i] = path[i].replace("field_op_incident_handling_forensics", "field_operational_incident_handl");
+			path[i] = path[i].replace("field_assurance_audit_certification", "field_assurance_audit_cert");
+			path[i] = path[i].replace("field_identity_and_access_management", "field_identity_and_access_mngmt");
+			path[i] = path[i].replace("field_network_and_distributed_systems", "field_network_and_distributed_sy");
+			path[i] = path[i].replace("field_security_management_and_governan", "field_security_management");
+			path[i] = path[i].replace("field_soft_and_hard_sec_engineering", "field_security_engineering");
+			path[i] = path[i].replace("field_steganography_steganalysis_and_w", "field_steganography_steganalysis");
+			path[i] = path[i].replace("field_trust_management_accountability", "field_trust_management_and_accou");
 
 			if (value[path[i]]) {
-				path[i] = path[i].replace("field_fields_of_activity", "field_field_of_activity");
 				value = value[path[i]];
 			} else {
 				return null;
@@ -510,18 +517,28 @@ export function getEcccRegistrationFieldValue(question, ecccObject, taxonomies =
 			const t = taxonomies[location.split(".").slice(-1)[0].replace("field_", "")];
 
 			if (t) {
-				const values = (Array.isArray(value.data) ? value.data : [value.data])
-					.map((v) => t[v.id])
-					.sort()
-					.join(", ");
+				let values = (Array.isArray(value.data) ? value.data : [value.data]);
 
-				return values;
+				if (values.length > 0) {
+					values = values
+						.map((v) => t[v.id])
+						.sort()
+						.join(", ");
+
+					return values;
+				}
+
+				return null;
 			}
 
 			return <Message
 				height={30}
 				content={"No taxonomy found"}
 			/>;
+		}
+
+		if (value.length === 0) {
+			return null;
 		}
 
 		return (value + "").replaceAll("\n", "<br/>");
