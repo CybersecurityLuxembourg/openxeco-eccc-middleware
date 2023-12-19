@@ -103,6 +103,10 @@ export default class RegistrationAnswers extends React.Component {
 				if (close) {
 					close();
 				}
+
+				if (this.props.closeRegistrationPopup) {
+					this.props.closeRegistrationPopup();
+				}
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -120,6 +124,10 @@ export default class RegistrationAnswers extends React.Component {
 
 				if (close) {
 					close();
+				}
+
+				if (this.props.closeRegistrationPopup) {
+					this.props.closeRegistrationPopup();
 				}
 			}, (response) => {
 				nm.warning(response.statusText);

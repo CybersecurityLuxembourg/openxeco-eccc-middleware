@@ -106,6 +106,7 @@ export default class Registration extends Component {
 									syncStatus={this.props.syncStatus}
 									ecccObject={this.props.ecccObject}
 									afterUpload={this.props.afterUpload}
+									closeRegistrationPopup={close}
 								/>,
 								<RegistrationAnswers
 									key={this.state.tabs[1]}
@@ -114,6 +115,7 @@ export default class Registration extends Component {
 									formAnswers={this.props.formAnswers}
 									ecccObject={this.props.ecccObject}
 									ecccTaxonomies={this.props.ecccTaxonomies}
+									closeRegistrationPopup={close}
 								/>,
 							]}
 						/>
