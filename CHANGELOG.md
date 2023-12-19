@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2023-12-19
+
+### Added
+
+- Being able to add an answer when empty on registration management
+
+### Changed
+
+- Behaviour after changing an answer on registration management.
+
 ## [1.0.0] - 2023-10-25
 
 ### Added
