@@ -88,23 +88,45 @@ export default class RegistrationAnswers extends React.Component {
 		return false;
 	}
 
-	updateAnswer(answerId, close) {
-		const params = {
-			id: answerId,
-			value: this.state.fieldValue,
-		};
+	modifyAnswer(question, answers, close) {
+		const answerId = getOxeRegistrationFieldId(question, answers);
 
-		postRequest.call(this, getOpenxecoEndpoint() + "form/update_form_answer", params, () => {
-			nm.info("The answer has been updated");
+		if (answerId) {
+			const params = {
+				id: answerId,
+				value: this.state.fieldValue,
+			};
 
-			if (close) {
-				close();
-			}
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
+			postRequest.call(this, getOpenxecoEndpoint() + "form/update_form_answer", params, () => {
+				nm.info("The answer has been updated");
+
+				if (close) {
+					close();
+				}
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		} else {
+			const params = {
+				user_id: this.props.userId,
+				form_question_id: question.id,
+				value: this.state.fieldValue,
+			};
+
+			postRequest.call(this, getOpenxecoEndpoint() + "form/add_form_answer", params, () => {
+				nm.info("The answer has been updated");
+
+				if (close) {
+					close();
+				}
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
 	}
 
 	onEditOpen(value) {
@@ -191,9 +213,8 @@ export default class RegistrationAnswers extends React.Component {
 																	<button
 																		data-hover="Ok"
 																		data-active=""
-																		onClick={() => this.updateAnswer(
-																			getOxeRegistrationFieldId(q, this.props.formAnswers),
-																			close,
+																		onClick={() => this.modifyAnswer(
+																			q, this.props.formAnswers, close,
 																		)}>
 																		<i className="far fa-check-circle"/> Update answer
 																	</button>

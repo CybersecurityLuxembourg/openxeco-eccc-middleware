@@ -109,6 +109,7 @@ export default class Registration extends Component {
 								/>,
 								<RegistrationAnswers
 									key={this.state.tabs[1]}
+									userId={this.props.userId}
 									formQuestions={this.props.formQuestions}
 									formAnswers={this.props.formAnswers}
 									ecccObject={this.props.ecccObject}

@@ -86,6 +86,9 @@ export default class RegistrationManage extends React.Component {
 				ecccRegistrations: data,
 			});
 		}, (response) => {
+			this.setState({
+				ecccRegistrations: [],
+			});
 			nm.warning(response.statusText);
 		}, (error) => {
 			nm.error(error.message);
@@ -324,13 +327,13 @@ export default class RegistrationManage extends React.Component {
 					</div>
 
 					<div className="col-md-12">
-						{!this.state.formAnswers
+						{(!this.state.formAnswers || !this.state.ecccRegistrations)
 							&& <Loading
 								height={300}
 							/>
 						}
 
-						{this.state.formAnswers
+						{this.state.formAnswers && this.state.ecccRegistrations
 							&& <Table
 								columns={columns}
 								data={this.getUserList()}
